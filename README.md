@@ -3,7 +3,7 @@
 GLM is a web application whose aim is to work as a POS and game tracking system.
 
 ## Installation
-It has been bootstrapped by react in the front-end and uses firebase's firestore and Authentication in the back-end.
+It has been bootstrapped by react and material-ui in the front-end and uses firebase's firestore and Authentication in the back-end.
 1.  Create a firestore db and setup firebase authentification in the firebase console.
 2.  Clone this repository.
 3.  npm install
