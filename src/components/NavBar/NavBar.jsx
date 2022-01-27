@@ -17,6 +17,10 @@ import TemporaryDrawer from './TemporaryDrawer/TemporaryDrawer'
 import CustomLink from './CustomLink/CustomLink';
 import { styled, } from '@mui/material/styles';
 import { useNavigate, Outlet } from 'react-router-dom';
+import { projectFireStore as db } from '../../firebase/firebase';
+import { useAuth } from '../../contexts/AuthContext'
+import Notification from './Notification/Notification';
+
 const StyledImg = styled('img')(({ theme }) => ({
     height: theme.spacing(7),
     [theme.breakpoints.down('md')]: {
@@ -29,21 +33,45 @@ const StyledImg = styled('img')(({ theme }) => ({
 const NavBar = ({ email, checked, toogleTheme }) => {
 
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [anchorElNotification, setAnchorNotification] = React.useState(null)
+    const [statements, setStatements] = React.useState([])
+    const { currentUser } = useAuth();
     const navigate = useNavigate()
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
     };
 
+    const handleOpenNotificationMenu = (event) => {
+        setAnchorNotification(event.currentTarget);
+    };
 
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
 
+
+    const handleCloseNotificationMenu = () => {
+        setAnchorNotification(null);
+    };
+
+
     const settingsButtonHandler = () => {
         navigate('settings')
     }
+
+    React.useEffect(() => {
+        function fetchNotifications() {
+            //fetching notifications from the database using authenticated user's credentials
+            const query = db.collection(`users/${currentUser.uid}/statements`).where('viewed', '==', false)
+            query.onSnapshot(querySnapshot => {
+                setStatements(querySnapshot.docs.map(doc => doc.data()))
+            })
+        }
+        fetchNotifications()
+        return () => setStatements([])
+    }, [currentUser])
 
     return (
         <>
@@ -87,8 +115,9 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                 <IconButton
                                     aria-label="show 17 new notifications"
                                     size='small'
+                                    onClick={handleOpenNotificationMenu}
                                 >
-                                    <Badge badgeContent={17} color="error" >
+                                    <Badge badgeContent={statements.length} color="error" >
                                         <NotificationsIcon
                                             sx={{
                                                 fontSize: { xs: '24px', sm: '26px', md: '28px' },
@@ -98,6 +127,35 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                     </Badge>
                                 </IconButton>
                             </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px', maxHeight: 400 }}
+                                id="menu-appbar0"
+                                anchorEl={anchorElNotification}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElNotification)}
+                                onClose={handleCloseNotificationMenu}
+                            >
+                                {
+                                    statements.map((item, index) => {
+                                        return (
+                                            <Notification
+                                                key={index}
+                                                amount={item.amount}
+                                                name={item.from}
+                                                date ={item.date.toDate().toString().split(' G')[0]}
+                                            />
+                                        )
+                                    })
+                                }
+                            </Menu>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ ml: 1 }} >
                                     <Avatar

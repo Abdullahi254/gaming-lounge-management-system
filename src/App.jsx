@@ -59,11 +59,11 @@ function PrivateRoute({ children }) {
 }
 
 function App() {
-  const [themeMode, setThemeMode] = useState(true)
+  const [darkmode, setDarkmode] = useState(false)
   const { currentUser } = useAuth();
-  const darkModeTheme = createTheme(getDesignTokens(themeMode ? 'dark' : 'light'));
+  const darkModeTheme = createTheme(getDesignTokens(darkmode ? 'dark' : 'light'));
   const handleTheme = () => {
-    setThemeMode(prev => !prev)
+    setDarkmode(prev => !prev)
   }
   return (
     <ThemeProvider theme={darkModeTheme}>
@@ -73,7 +73,7 @@ function App() {
           <Route path="/login" element={<SignIn />} />
           <Route path="/"
             element={currentUser ?
-              <NavBar email={currentUser.email} checked={themeMode} toogleTheme={handleTheme} /> :
+              <NavBar email={currentUser.email} checked={darkmode} toogleTheme={handleTheme} /> :
               <Navigate to="/login" />
             }>
             <Route index element={<Navigate to="dashboard" />} />
