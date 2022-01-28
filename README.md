@@ -34,6 +34,10 @@ REACT_APP_FIREBASE_APPID = [your key]
 ```bash
 npm start
 ```
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
 
 ## ScreenShots
 ![image](https://user-images.githubusercontent.com/38002443/151437887-77162b10-5746-4191-94b0-da983ed42a0d.png)
@@ -44,11 +48,3 @@ npm start
 ![image](https://user-images.githubusercontent.com/38002443/151438543-c2023ceb-dfc6-46cd-9e67-9ace8288d4d5.png)
 
 
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
