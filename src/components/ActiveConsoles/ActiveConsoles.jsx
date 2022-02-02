@@ -4,6 +4,7 @@ import { Box, CircularProgress as Spinner, Typography, Alert } from '@mui/materi
 import { projectFireStore as db } from '../../firebase/firebase'
 import {useAuth} from '../../contexts/AuthContext'
 import QrComponent from '../QrComponent/QrComponent'
+import {useNavigate} from 'react-router-dom' 
 
 function ActiveConsoles() {
     const {currentUser} = useAuth()
@@ -13,6 +14,7 @@ function ActiveConsoles() {
     const [time, setTime] = useState(0)
     const [qrComponent, showQrComponent] = useState(false)
     const [qrConsole, setQrConsole] = useState('')
+    let navigate = useNavigate()
 
     useEffect(() => {
         // fetching consoles data from firebase
@@ -57,8 +59,7 @@ function ActiveConsoles() {
 
     //this function also take time info and sends it to the payment page via url parameter together with price/min charges
     function paymmentHandler(time, index) {
-        const win = window.open(`/payment/console/${time}/${consoles[index].price}`, "_blank");
-        win.focus();
+        navigate(`/activeconsoles/payment/${time}/${consoles[index].price}`);
     }
 
     //handles unmounting of qrcomponent on click of close button

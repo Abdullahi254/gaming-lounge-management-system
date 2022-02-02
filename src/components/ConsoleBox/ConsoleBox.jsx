@@ -148,11 +148,11 @@ function ConsoleBox({ activeIcons, idleIcon, qrCode, pay, name, eject, addHandle
     }
 
     function qrCodeHandler() {
-        qrCode(startTime)
+        qrCode(time)
     }
 
     function paymentHandler() {
-        pay(startTime)
+        pay(time)
     }
 
     return (
