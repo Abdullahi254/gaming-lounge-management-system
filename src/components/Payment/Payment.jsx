@@ -4,7 +4,9 @@ import { styled } from '@mui/material/styles';
 import SelectComp from './SelectComp';
 import MpesaComp from './MpesaComp';
 import CashComp from './CashComp';
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+import { projectFireStore as db } from '../../firebase/firebase';
+import { useAuth } from '../../contexts/AuthContext';
 
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -24,8 +26,11 @@ function Payment() {
     const [type, setType] = React.useState('Mpesa');
     const [total, setTotal] = React.useState(0);
     const [showText, setShowText] = React.useState(true)
-
+    const [success, setSuccess] = React.useState()
+    const [error, setError] = React.useState()
     const { time, price } = useParams()
+
+    const { currentUser } = useAuth()
 
     React.useEffect(() => {
         const minutes = time / 60000
@@ -36,8 +41,29 @@ function Payment() {
         setType(value)
     }
 
-    const handleCashSale = () => {
+    const handleCashSale = async (e) => {
+        e.preventDefault()
+        try {
+            const event = new Date()
+            const month = event.getMonth()
+            const year = event.getFullYear()
+            await db.collection(`users/${currentUser.uid}/statements`)
+                .add({
+                    amount: parseInt(total),
+                    date: event,
+                    from: 'anonymous',
+                    month,
+                    receiptNumber: Math.random().toString(36).replace('0.', ''),
+                    type: "Cash",
+                    viewed: false,
+                    year
+                })
+            setSuccess("Created SuccessFully")
 
+        } catch (er) {
+            console.log(er)
+            setError("Failed To Create a Sale!")
+        }
     }
 
     const toogledit = () => {
@@ -49,6 +75,10 @@ function Payment() {
         setTotal(parseInt(e.target.value))
     }
 
+    const resetSuccessErrorStates = () => {
+        setSuccess()
+        setError()
+    }
 
     return (
         <StyledBox>
@@ -87,8 +117,8 @@ function Payment() {
                     }
                 }}
                 onBlur={saveAmount}
-                onKeyPress={(e)=>{
-                    if(e.key === "Enter"){
+                onKeyPress={(e) => {
+                    if (e.key === "Enter") {
                         setShowText(true)
                     }
                 }}
@@ -98,8 +128,16 @@ function Payment() {
                 type={type}
                 handleSelectChange={(value) => handleChange(value)}
             />
+
             {type === "Mpesa" && <MpesaComp />}
-            {type === "Cash" && <CashComp amount={total.toFixed(2)} cashSale={handleCashSale} />}
+            {type === "Cash" &&
+                <CashComp
+                    amount={total.toFixed(2)}
+                    cashSale={handleCashSale}
+                    success={success}
+                    error={error}
+                    close={resetSuccessErrorStates}
+                />}
         </StyledBox>
     )
 }
