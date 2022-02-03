@@ -12,6 +12,7 @@ import IdleConsoles from './components/IdleConsoles/IdleConsoles';
 import Dashbord from './components/Dashboard/Dashbord';
 import Settings from './components/Settings/Settings';
 import Payment from './components/Payment/Payment';
+import AmountStatus from './components/AmountStatus/AmountStatus';
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -79,11 +80,12 @@ function App() {
             }>
             <Route index element={<Navigate to="dashboard" />} />
             <Route path="activeconsoles" element={<PrivateRoute><ActiveConsoles /></PrivateRoute>} />
-            <Route path="activeconsoles/payment/:time/:price" element={<PrivateRoute><Payment/></PrivateRoute>} />
+            <Route path="activeconsoles/payment/:time/:price" element={<PrivateRoute><Payment /></PrivateRoute>} />
             <Route path="idleconsoles" element={<PrivateRoute><IdleConsoles /></PrivateRoute>} />
             <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
             <Route path="settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
           </Route>
+          <Route path="view-amount/:time/:price" element={<AmountStatus/>} />
         </Routes>
       </AuthProvider>
     </ThemeProvider>
