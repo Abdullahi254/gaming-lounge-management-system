@@ -52,8 +52,17 @@ const NavBar = ({ email, checked, toogleTheme }) => {
     };
 
 
-    const handleCloseNotificationMenu = () => {
+    const handleCloseNotificationMenu = async () => {
         setAnchorNotification(null);
+        try {
+            const consoleRef = await db.collection(`users/${currentUser.uid}/statements`).where('viewed', '==', false).get()
+            consoleRef.forEach((doc) => doc.ref.update({
+                viewed: true
+            }))
+
+        } catch (error) {
+            console.log(error)
+        }
     };
 
 
@@ -150,7 +159,7 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                                 key={index}
                                                 amount={item.amount}
                                                 name={item.from}
-                                                date ={item.date.toDate().toString().split(' G')[0]}
+                                                date={item.date.toDate().toString().split(' G')[0]}
                                             />
                                         )
                                     })
