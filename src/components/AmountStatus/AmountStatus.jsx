@@ -46,7 +46,7 @@ function AmountStatus() {
                 <Typography variant='h5' align='center' gutterBottom>
                     You owe:
                 </Typography>
-                <Typography variant='h4' align='center' sx={{ marginBottom: 3 }}>
+                <Typography variant='h4' align='center' sx={{ marginBottom: 3 }} color="secondary">
                     KSH.{Math.round((totalMilliseconds / 60000) * price)}
                 </Typography>
                 <Typography variant='subtitle1' align='center' gutterBottom>

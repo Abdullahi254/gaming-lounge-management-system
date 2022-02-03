@@ -152,7 +152,7 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                 open={Boolean(anchorElNotification)}
                                 onClose={handleCloseNotificationMenu}
                             >
-                                {
+                                {statements.length > 0 ?
                                     statements.map((item, index) => {
                                         return (
                                             <Notification
@@ -162,7 +162,8 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                                 date={item.date.toDate().toString().split(' G')[0]}
                                             />
                                         )
-                                    })
+                                    }) :
+                                    <Typography color="secondary" sx={{ width: '200px', height: '100px' }} align='center'>No new notifications!</Typography>
                                 }
                             </Menu>
                             <Tooltip title="Open settings">

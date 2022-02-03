@@ -13,6 +13,7 @@ import Dashbord from './components/Dashboard/Dashbord';
 import Settings from './components/Settings/Settings';
 import Payment from './components/Payment/Payment';
 import AmountStatus from './components/AmountStatus/AmountStatus';
+import NotFound from './components/404/NotFound';
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -84,8 +85,9 @@ function App() {
             <Route path="idleconsoles" element={<PrivateRoute><IdleConsoles /></PrivateRoute>} />
             <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
             <Route path="settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+            <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path="view-amount/:time/:price" element={<AmountStatus/>} />
+          <Route path="/view-amount/:time/:price" element={<AmountStatus/>} />
         </Routes>
       </AuthProvider>
     </ThemeProvider>
