@@ -75,9 +75,13 @@ const NavBar = ({ email, checked, toogleTheme }) => {
             console.log('log out successfully')
             console.log(res)
         }).catch(er=>{
-            console.log('failed to logout')
+            console.log('failed to logout!')
             console.log(er)
         })
+    }
+
+    const accountButtonHandler = ()=>{
+        navigate('myaccount')
     }
 
     React.useEffect(() => {
@@ -92,7 +96,6 @@ const NavBar = ({ email, checked, toogleTheme }) => {
         return () => setStatements([])
     }, [currentUser])
 
-    console.log(currentUser)
     return (
         <>
             <AppBar position="static" sx={{ background: (theme) => theme.palette.background.paper }}>
@@ -210,7 +213,7 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <ListItem button >
+                                <ListItem button onClick={accountButtonHandler}>
                                     <ListItemIcon>
                                         <AccountBox />
                                     </ListItemIcon>
