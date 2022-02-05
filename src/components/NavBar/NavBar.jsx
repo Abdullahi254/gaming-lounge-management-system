@@ -35,7 +35,7 @@ const NavBar = ({ email, checked, toogleTheme }) => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElNotification, setAnchorNotification] = React.useState(null)
     const [statements, setStatements] = React.useState([])
-    const { currentUser } = useAuth();
+    const { currentUser, logout } = useAuth();
     const navigate = useNavigate()
 
     const handleOpenUserMenu = (event) => {
@@ -70,6 +70,16 @@ const NavBar = ({ email, checked, toogleTheme }) => {
         navigate('settings')
     }
 
+    const logOutHandler = ()=>{
+        logout().then(res=>{
+            console.log('log out successfully')
+            console.log(res)
+        }).catch(er=>{
+            console.log('failed to logout')
+            console.log(er)
+        })
+    }
+
     React.useEffect(() => {
         function fetchNotifications() {
             //fetching notifications from the database using authenticated user's credentials
@@ -82,6 +92,7 @@ const NavBar = ({ email, checked, toogleTheme }) => {
         return () => setStatements([])
     }, [currentUser])
 
+    console.log(currentUser)
     return (
         <>
             <AppBar position="static" sx={{ background: (theme) => theme.palette.background.paper }}>
@@ -219,7 +230,7 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                     <Switch checked={checked} onChange={toogleTheme} />
                                 </ListItem>
                                 <Divider />
-                                <ListItem button >
+                                <ListItem button onClick={logOutHandler}>
                                     <ListItemIcon>
                                         <Logout />
                                     </ListItemIcon>
