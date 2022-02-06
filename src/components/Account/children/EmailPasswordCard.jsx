@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Button, Collapse, TextField, Typography, IconButton, InputAdornment } from '@mui/material'
+import { Box, Button, Collapse, TextField, Typography, IconButton, InputAdornment, Alert } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useAuth } from '../../../contexts/AuthContext';
+import Login from './Login';
 
 const StyledBox = styled(Box)(({ theme }) => ({
     background: theme.palette.background.paper,
@@ -36,17 +37,24 @@ const ExpandMore = styled((props) => {
 function EmailPasswordCard() {
     const [expanded, setExpanded] = React.useState(false);
     const [showPassword, setShowPassword] = React.useState(false)
-    const { currentUser, updateEmail, passwordResetByMail } = useAuth()
+    const [showLogin, setShowLogin] = React.useState(false)
+    const [success, setSuccess] = React.useState()
+    const emailRef = React.useRef()
+    const { currentUser, updateUserEmail} = useAuth()
 
     const handleEmailUpdate = (e) => {
         e.preventDefault()
-        updateEmail(e.target.value).then(res => {
-            console.log('updated successfully')
+        setSuccess()
+        updateUserEmail(emailRef.current.value).then(res => {
+            console.log('successfull')
+            setSuccess('successfully updated email!')
         }).catch(er => {
-            console.log('error updating...', er)
+            console.log('error updating email')
+            setShowLogin(true)
         })
     }
 
+    
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -59,9 +67,20 @@ function EmailPasswordCard() {
         event.preventDefault();
     };
 
-    console.log(currentUser)
+    const closeAlertHandler = ()=>{
+        setSuccess()
+    }
+
     return (
         <StyledBox>
+            {success && <Alert severity="success" sx={{justifyContent:'center'}} onClose={closeAlertHandler}>{success}</Alert>}
+            <Login
+                show={showLogin}
+                clicked={() => setShowLogin(false)}
+                showPassword={showPassword}
+                handleClickShowPassword={handleClickShowPassword}
+                handleMouseDownPassword={handleMouseDownPassword}
+            />
             <Typography variant='h6' gutterBottom sx={{ textDecoration: 'underline' }}>Email address.</Typography>
             <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>{currentUser.email}</Typography>
             <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px' }}>Primary.</Typography>
@@ -109,6 +128,7 @@ function EmailPasswordCard() {
                         label="New Email"
                         defaultValue={currentUser.email}
                         type='email'
+                        inputRef={emailRef}
                     />
                     <Button
                         size='small'

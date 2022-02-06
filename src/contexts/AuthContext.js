@@ -1,6 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { auth } from '../firebase/firebase'
 import { CircularProgress as Spinner } from '@mui/material'
+import {
+    EmailAuthProvider,
+    reauthenticateWithCredential,
+    updateEmail,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    updatePassword,
+    sendPasswordResetEmail,
+
+} from 'firebase/auth'
 
 export const AuthContext = React.createContext()
 
@@ -12,25 +23,35 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState('')
     const [loading, setLoading] = useState(true)
     function signUp(email, password) {
-        return auth.createUserWithEmailAndPassword(email, password)
+        return createUserWithEmailAndPassword(auth, email, password)
     }
     function login(email, password) {
-        return auth.signInWithEmailAndPassword(email, password)
+        return signInWithEmailAndPassword(auth, email, password)
     }
     function logout() {
-        return auth.signOut()
+        return signOut(auth)
     }
 
-    function updatePassword(password) {
-        return currentUser.updatePassword(password)
+    function updateUserPassword(password) {
+        return updatePassword(auth.currentUser, password)
     }
 
-    function updateEmail(email) {
-        return currentUser.updateEmail(email)
+    function updateUserEmail(email) {
+        return updateEmail(auth.currentUser, email)
     }
 
-    function passwordResetByMail(email){
-        return auth.sendPasswordResetEmail(email)
+    function passwordResetByMail(email) {
+        return sendPasswordResetEmail(auth, email)
+    }
+
+    function getCredentials(email, password) {
+        return EmailAuthProvider.credential(
+            email,
+            password
+        );
+    }
+    function reauthenticate(credential) {
+        return reauthenticateWithCredential(auth.currentUser, credential)
     }
 
     useEffect(() => {
@@ -46,9 +67,11 @@ export function AuthProvider({ children }) {
         signUp,
         login,
         logout,
-        updatePassword,
-        updateEmail,
-        passwordResetByMail
+        updateUserPassword,
+        updateUserEmail,
+        passwordResetByMail,
+        getCredentials,
+        reauthenticate
     }
     return (
         <AuthContext.Provider value={value}>
