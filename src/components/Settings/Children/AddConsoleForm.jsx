@@ -78,7 +78,7 @@ function AddConsoleForm({ name, brandProp, generationProp, price, popup, sx, id 
                 name: nameRef.current.value,
                 brand: brand,
                 generation: generation,
-                price: amountRef.current.value,
+                price: parseInt(amountRef.current.value),
                 active: false,
                 startTime: '00:00:00'
             }
