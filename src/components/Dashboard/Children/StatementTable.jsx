@@ -58,6 +58,9 @@ function StatementTable() {
         try {
             const input1 = new Date(date1.current.value)
             const input2 = new Date(date2.current.value)
+            const now = new Date()
+            input1.setHours(0,0,0,0)
+            input2.setTime(now.getTime())
             const statementsQueryRes = await db.collection(`users/${currentUser.uid}/statements`).where('date', '>=', input1).where('date', '<=', input2).get()
             if (statementsQueryRes.empty) {
                 setError('No matching documents for selected date')
