@@ -1,5 +1,16 @@
 import React from 'react';
-import { Box, Button, Collapse, TextField, Typography, IconButton, InputAdornment, Alert } from '@mui/material'
+import {
+    Box,
+    Button,
+    Collapse,
+    TextField,
+    Typography,
+    IconButton,
+    InputAdornment,
+    Alert,
+    CircularProgress as Spinner
+} from '@mui/material'
+
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -39,22 +50,97 @@ function EmailPasswordCard() {
     const [showPassword, setShowPassword] = React.useState(false)
     const [showLogin, setShowLogin] = React.useState(false)
     const [success, setSuccess] = React.useState()
+    const [error, setError] = React.useState()
+    const [loading, setLoading] = React.useState(false)
+    const [password1Error, setPass1Error] = React.useState(false)
+    const [password2Error, setPass2Error] = React.useState(false)
+    const [emailError, setEmailError] = React.useState(false)
     const emailRef = React.useRef()
-    const { currentUser, updateUserEmail} = useAuth()
+    const pass1Ref = React.useRef()
+    const pass2Ref = React.useRef()
+    const { currentUser, updateUserEmail, updateUserPassword } = useAuth()
 
     const handleEmailUpdate = (e) => {
         e.preventDefault()
         setSuccess()
-        updateUserEmail(emailRef.current.value).then(res => {
-            console.log('successfull')
-            setSuccess('successfully updated email!')
-        }).catch(er => {
-            console.log('error updating email')
-            setShowLogin(true)
-        })
+        setError()
+        if (!emailError) {
+            setLoading(true)
+            updateUserEmail(emailRef.current.value).then(res => {
+                setLoading(false)
+                console.log('successfull')
+                setSuccess('successfully updated email!')
+            }).catch(er => {
+                setLoading(false)
+                console.log(er.code)
+                if (er.code === 'auth/requires-recent-login') {
+                    console.log('prompting user for credentials....')
+                    setShowLogin(true)
+                } else {
+                    setError('Error! Enter correct input or contact admin.')
+                }
+            })
+        }else {
+            emailRef.current.focus()
+        }
+
     }
 
-    
+    const passwordUpdateHandler = (e) => {
+        e.preventDefault()
+        setSuccess()
+        setError()
+        if (!password1Error && !password2Error) {
+            setLoading(true)
+            updateUserPassword(pass1Ref.current.value).then(() => {
+                setLoading(false)
+                console.log('successfully updated password')
+                setSuccess('successfully updated password')
+            }).catch(er => {
+                setLoading(false)
+                console.log(er.code)
+                if (er.code === 'auth/requires-recent-login') {
+                    console.log('prompting user for credentials....')
+                    setShowLogin(true)
+                } else {
+                    setError('Error! Enter correct input or contact admin.')
+                }
+            })
+        }
+        if (password1Error) {
+            pass1Ref.current.focus()
+        } else {
+            pass2Ref.current.focus()
+        }
+
+    }
+
+    const pass1RefCheck = () => {
+        if (pass1Ref.current.value.length >= 10) {
+            setPass1Error(false)
+        }
+        else {
+            setPass1Error(true)
+        }
+    }
+
+    const pass2RefCheck = () => {
+        if (pass2Ref.current.value !== pass1Ref.current.value) {
+            setPass2Error(true)
+        }
+        else {
+            setPass2Error(false)
+        }
+    }
+    const emailRefCheck = () => {
+        if (/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+            .test(emailRef.current.value)) {
+            setEmailError(false)
+        } else {
+            setEmailError(true)
+        }
+    }
+
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
@@ -67,16 +153,35 @@ function EmailPasswordCard() {
         event.preventDefault();
     };
 
-    const closeAlertHandler = ()=>{
+    const closeAlertHandler = () => {
         setSuccess()
+        setError()
+    }
+
+    const closeSpinnerBackdropHandler = () => {
+        setLoading(false)
+        setShowLogin(false)
     }
 
     return (
         <StyledBox>
-            {success && <Alert severity="success" sx={{justifyContent:'center'}} onClose={closeAlertHandler}>{success}</Alert>}
+            {success && <Alert severity="success" sx={{ justifyContent: 'center' }} onClose={closeAlertHandler}>{success}</Alert>}
+            {error && <Alert severity="error" sx={{ justifyContent: 'center' }} onClose={closeAlertHandler}>{error}</Alert>}
+            {loading && <Spinner
+                color='inherit'
+                size={80}
+                sx={{
+                    position: 'fixed',
+                    left: '43%',
+                    top: '30%',
+                    transform: 'translateX(50%)',
+                    zIndex: 300
+                }}
+            />}
             <Login
+                spinner={loading}
                 show={showLogin}
-                clicked={() => setShowLogin(false)}
+                clicked={closeSpinnerBackdropHandler}
                 showPassword={showPassword}
                 handleClickShowPassword={handleClickShowPassword}
                 handleMouseDownPassword={handleMouseDownPassword}
@@ -129,6 +234,9 @@ function EmailPasswordCard() {
                         defaultValue={currentUser.email}
                         type='email'
                         inputRef={emailRef}
+                        error={emailError}
+                        helperText={emailError && 'invalid email!'}
+                        onChange={emailRefCheck}
                     />
                     <Button
                         size='small'
@@ -146,6 +254,7 @@ function EmailPasswordCard() {
                         width: '100%',
                         flexDirection: 'column',
                     }}
+                    onSubmit={passwordUpdateHandler}
                 >
                     <TextField
                         sx={{
@@ -155,6 +264,11 @@ function EmailPasswordCard() {
                         id="outlined-password"
                         label="New Password"
                         type={showPassword ? 'string' : 'password'}
+                        error={password1Error}
+                        helperText={password1Error && 'must be atleast 6 digits!'}
+                        onChange={pass1RefCheck}
+                        inputRef={pass1Ref}
+                        autoComplete='off'
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -179,6 +293,11 @@ function EmailPasswordCard() {
                         id="outlined-password2"
                         label="Confirm Password"
                         type={showPassword ? 'string' : 'password'}
+                        error={password2Error}
+                        helperText={password2Error && 'passwords not matching!'}
+                        onChange={pass2RefCheck}
+                        inputRef={pass2Ref}
+                        autoComplete='off'
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">

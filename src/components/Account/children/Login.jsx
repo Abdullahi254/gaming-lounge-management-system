@@ -26,16 +26,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 }))
 
-function Login({ show, clicked, showPassword, handleClickShowPassword, handleMouseDownPassword }) {
+function Login({ show, clicked, showPassword, handleClickShowPassword, handleMouseDownPassword, spinner }) {
     const emailRef = React.useRef()
     const passwordRef = React.useRef()
     const { reauthenticate, getCredentials } = useAuth()
     const reAuthHandler = (e) => {
         e.preventDefault()
-        console.log(emailRef.current.value)
-        console.log(passwordRef.current.value)
         const credential = getCredentials(emailRef.current.value, passwordRef.current.value)
-        console.log(credential)
         reauthenticate(credential).then(() => {
             console.log('user re-authenticated')
             clicked()
@@ -46,8 +43,8 @@ function Login({ show, clicked, showPassword, handleClickShowPassword, handleMou
     }
     return (
         <>
-            <BackDrop open={show} clicked={clicked} />
-            <StyledBox sx={{ display: show ? 'flex' : 'none' }} component='form' onSubmit={reAuthHandler}>
+            <BackDrop open={(show || spinner)} clicked={clicked} />
+            <StyledBox sx={{ display: (show && !spinner) ? 'flex' : 'none' }} component='form' onSubmit={reAuthHandler}>
                 <Typography>
                     Login to continue...
                 </Typography>
