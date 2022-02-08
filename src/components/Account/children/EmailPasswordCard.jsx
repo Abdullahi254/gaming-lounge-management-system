@@ -235,7 +235,7 @@ function EmailPasswordCard() {
                         type='email'
                         inputRef={emailRef}
                         error={emailError}
-                        helperText={emailError && 'invalid email!'}
+                        helperText={emailError && 'Invalid email!'}
                         onChange={emailRefCheck}
                     />
                     <Button

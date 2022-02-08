@@ -182,7 +182,7 @@ function AddConsoleForm({ name, brandProp, generationProp, price, popup, sx, id 
                 sx={{ marginRight: 1, my: 1 }}
                 inputRef={amountRef}
                 type="number"
-                placeholder={price}
+                placeholder={`${price}`}
                 error={priceError}
                 helperText={priceError && 'price can not be less than 1 :{'}
                 onChange={handlePriceChange}

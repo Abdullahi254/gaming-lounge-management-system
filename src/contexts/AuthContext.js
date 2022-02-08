@@ -10,6 +10,7 @@ import {
     signOut,
     updatePassword,
     sendPasswordResetEmail,
+    updateProfile
 
 } from 'firebase/auth'
 
@@ -38,6 +39,18 @@ export function AuthProvider({ children }) {
 
     function updateUserEmail(email) {
         return updateEmail(auth.currentUser, email)
+    }
+
+    function updateUserName(name) {
+        return updateProfile(auth.currentUser, {
+            displayName: name
+        })
+    }
+
+    function updateUserDp(url){
+        return updateProfile(auth.currentUser,{
+            photoURL:url
+        })
     }
 
     function passwordResetByMail(email) {
@@ -71,7 +84,9 @@ export function AuthProvider({ children }) {
         updateUserEmail,
         passwordResetByMail,
         getCredentials,
-        reauthenticate
+        reauthenticate,
+        updateUserName,
+        updateUserDp
     }
     return (
         <AuthContext.Provider value={value}>

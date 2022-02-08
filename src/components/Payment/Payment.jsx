@@ -30,6 +30,8 @@ function Payment() {
     const [error, setError] = React.useState()
     const { time, price } = useParams()
 
+    const amountRef = React.useRef()
+
     const { currentUser } = useAuth()
 
     React.useEffect(() => {
@@ -66,8 +68,9 @@ function Payment() {
         }
     }
 
-    const toogledit = () => {
-        setShowText(prev => !prev)
+    const toogledit = async () => {
+        await setShowText(prev => !prev)
+        amountRef.current.focus()
     }
 
     const saveAmount = (e) => {
@@ -105,6 +108,7 @@ function Payment() {
                 variant="standard"
                 defaultValue={Math.round((time / 60000) * price)}
                 type="number"
+                inputRef={amountRef}
                 sx={{
                     display: !showText ? 'block' : 'none',
                     marginRight: 1,
@@ -114,14 +118,16 @@ function Payment() {
                     style: {
                         fontSize: '20px',
                         fontWeight: 'bold',
+                    },
+                    onBlurCapture: saveAmount,
+                    onKeyPress: (e) => {
+                        if (e.key === "Enter") {
+                            setShowText(true)
+                        }
                     }
                 }}
-                onBlur={saveAmount}
-                onKeyPress={(e) => {
-                    if (e.key === "Enter") {
-                        setShowText(true)
-                    }
-                }}
+
+
             />
 
             <SelectComp
