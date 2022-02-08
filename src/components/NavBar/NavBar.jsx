@@ -70,17 +70,17 @@ const NavBar = ({ email, checked, toogleTheme }) => {
         navigate('settings')
     }
 
-    const logOutHandler = ()=>{
-        logout().then(res=>{
+    const logOutHandler = () => {
+        logout().then(res => {
             console.log('log out successfully')
             console.log(res)
-        }).catch(er=>{
+        }).catch(er => {
             console.log('failed to logout!')
             console.log(er)
         })
     }
 
-    const accountButtonHandler = ()=>{
+    const accountButtonHandler = () => {
         navigate('myaccount')
     }
 
@@ -95,7 +95,6 @@ const NavBar = ({ email, checked, toogleTheme }) => {
         fetchNotifications()
         return () => setStatements([])
     }, [currentUser])
-
     return (
         <>
             <AppBar position="static" sx={{ background: (theme) => theme.palette.background.paper }}>
@@ -186,13 +185,18 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                         sx={{
                                             width: { xs: '30px', sm: '40px' }, height: { xs: '30px', sm: '40px' },
                                         }}
+                                        src={currentUser.photoURL}
                                     >
                                         <Typography
                                             sx={{
                                                 color: (theme) => theme.palette.mode === "dark" ? "white" : "black"
                                             }}
                                         >
-                                            {email[0].toUpperCase()}
+                                            {
+                                                currentUser.displayName ?
+                                                    currentUser.displayName[0].toUpperCase() :
+                                                    email[0].toUpperCase()
+                                            }
                                         </Typography>
                                     </Avatar>
                                 </IconButton>

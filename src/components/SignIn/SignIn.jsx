@@ -34,7 +34,6 @@ export default function SignIn() {
         })
     };
 
-
     return (
 
         <Container component="main" maxWidth="xs">
@@ -55,16 +54,21 @@ export default function SignIn() {
                                 height: { xs: '30px', sm: '40px' },
                                 background:(theme)=>theme.palette.background.paper
                             }}
+                            src={currentUser.photoURL}
                         >
                             <Typography
                                 sx={{
                                     color: (theme) => theme.palette.mode === "dark" ? "white" : "black"
                                 }}
                             >
-                                {currentUser.email[0].toUpperCase()}
+                                {
+                                                currentUser.displayName ?
+                                                    currentUser.displayName[0].toUpperCase() :
+                                                    currentUser.email[0].toUpperCase()
+                                            }
                             </Typography>
                         </Avatar> :
-                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }} >
                             <LockOutlinedIcon />
                         </Avatar>
                 }
