@@ -58,7 +58,11 @@ function ImgMediaCard({ uploadImgHandler, newDp, progress }) {
             <CardActions sx={{ display: 'flex', flexDirection: 'column' }}>
                 <label htmlFor="icon-button-file">
                     <Input
-                        accept="image/*"
+                        inputProps={
+                            {
+                                accept:".jpg, .jpeg, .png"
+                            }
+                        }
                         id="icon-button-file"
                         type="file"
                         sx={{ display: 'none' }}
