@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, Typography, Button } from '@mui/material'
 import { styled } from '@mui/material/styles';
 import analytImg from '../../../assets/imgs/Analytic.png'
+import {useAuth} from '../../../contexts/AuthContext'
 
 const StyledBox = styled(Box)(({ theme }) => ({
     maxWidth: '500px',
@@ -36,10 +37,12 @@ const StyledText = styled(Typography)(({ theme }) => ({
 }))
 
 function ReportCard() {
+    const {currentUser} = useAuth()
+    
     return (
         <StyledBox>
             <StyledDiv>
-                <StyledText>Hey There,</StyledText>
+                <StyledText>Hey there {currentUser.displayName},</StyledText>
                 <StyledText>Download Latest Report</StyledText>
                 <Button color='secondary'  size="small" sx={{my:2}} variant='outlined'>Download</Button>
             </StyledDiv>
