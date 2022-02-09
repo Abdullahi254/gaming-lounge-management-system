@@ -31,11 +31,12 @@ const StyledImg = styled('img')(({ theme }) => ({
 }))
 
 
-const NavBar = ({ email, checked, toogleTheme }) => {
+const NavBar = ({ email, isDarkMode }) => {
 
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElNotification, setAnchorNotification] = React.useState(null)
     const [statements, setStatements] = React.useState([])
+    const [darkmode, setDarkmode] = React.useState(false)
     const { currentUser, logout } = useAuth();
     const navigate = useNavigate()
 
@@ -96,6 +97,39 @@ const NavBar = ({ email, checked, toogleTheme }) => {
         fetchNotifications()
         return () => setStatements([])
     }, [currentUser])
+
+    const toogleTheme = () => {
+        setDarkmode(prev => {
+            isDarkMode(!prev)
+            db.collection('users').doc(`${currentUser.uid}`).update({
+                darkmode: !prev
+            })
+                .then(() => {
+                    console.log("Document successfully written!");
+                })
+                .catch((error) => {
+                    console.error("Error writing document: ", error);
+                });
+            return !prev
+        })
+    }
+
+    React.useEffect(() => {
+        const fetchTheme = async () => {
+            const UserRef = db.collection('users').doc(`${currentUser.uid}`);
+            const doc = await UserRef.get();
+            const mode = doc.data().darkmode
+            if (mode === true || mode === false) {
+                isDarkMode(mode)
+                setDarkmode(mode)
+                console.log('document exists')
+            } else {
+                console.log('No such field in document!');
+            }
+        }
+        fetchTheme()
+        return () => setDarkmode(false)
+    }, [currentUser, isDarkMode])
     return (
         <>
             <AppBar position="static" sx={{ background: (theme) => theme.palette.background.paper }}>
@@ -235,7 +269,7 @@ const NavBar = ({ email, checked, toogleTheme }) => {
                                         <AppearanceIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Appearance" />
-                                    <Switch checked={checked} onChange={toogleTheme} />
+                                    <Switch checked={darkmode} onChange={toogleTheme} />
                                 </ListItem>
                                 <Divider />
                                 <ListItem button onClick={logOutHandler}>

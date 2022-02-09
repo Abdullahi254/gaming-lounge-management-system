@@ -65,9 +65,6 @@ function App() {
   const [darkmode, setDarkmode] = useState(false)
   const { currentUser } = useAuth();
   const darkModeTheme = createTheme(getDesignTokens(darkmode ? 'dark' : 'light'));
-  const handleTheme = () => {
-    setDarkmode(prev => !prev)
-  }
   return (
     <ThemeProvider theme={darkModeTheme}>
       <CssBaseline />
@@ -75,7 +72,7 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/"
           element={currentUser ?
-            <NavBar email={currentUser.email} checked={darkmode} toogleTheme={handleTheme} /> :
+            <NavBar email={currentUser.email} isDarkMode={(mode)=>setDarkmode(mode)}/> :
             <Navigate to="/login" />
           }>
           <Route index element={<Navigate to="dashboard" />} />
