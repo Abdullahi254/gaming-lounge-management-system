@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { grey, } from '@mui/material/colors';
-import { AuthProvider } from './contexts/AuthContext';
 import NavBar from "./components/NavBar/NavBar";
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ActiveConsoles from './components/ActiveConsoles/ActiveConsoles';
@@ -72,26 +71,24 @@ function App() {
   return (
     <ThemeProvider theme={darkModeTheme}>
       <CssBaseline />
-      <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<SignIn />} />
-          <Route path="/"
-            element={currentUser ?
-              <NavBar email={currentUser.email} checked={darkmode} toogleTheme={handleTheme} /> :
-              <Navigate to="/login" />
-            }>
-            <Route index element={<Navigate to="dashboard" />} />
-            <Route path="activeconsoles" element={<PrivateRoute><ActiveConsoles /></PrivateRoute>} />
-            <Route path="activeconsoles/payment/:time/:price" element={<PrivateRoute><Payment /></PrivateRoute>} />
-            <Route path="idleconsoles" element={<PrivateRoute><IdleConsoles /></PrivateRoute>} />
-            <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
-            <Route path="settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-            <Route path="myaccount" element={<PrivateRoute><Account/></PrivateRoute>} />
-            <Route path="*" element={<NotFound />} />
-          </Route>
-          <Route path="/view-amount/:time/:price" element={<AmountStatus/>} />
-        </Routes>
-      </AuthProvider>
+      <Routes>
+        <Route path="/login" element={<SignIn />} />
+        <Route path="/"
+          element={currentUser ?
+            <NavBar email={currentUser.email} checked={darkmode} toogleTheme={handleTheme} /> :
+            <Navigate to="/login" />
+          }>
+          <Route index element={<Navigate to="dashboard" />} />
+          <Route path="activeconsoles" element={<PrivateRoute><ActiveConsoles /></PrivateRoute>} />
+          <Route path="activeconsoles/payment/:time/:price" element={<PrivateRoute><Payment /></PrivateRoute>} />
+          <Route path="idleconsoles" element={<PrivateRoute><IdleConsoles /></PrivateRoute>} />
+          <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
+          <Route path="settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
+          <Route path="myaccount" element={<PrivateRoute><Account /></PrivateRoute>} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+        <Route path="/view-amount/:time/:price" element={<AmountStatus />} />
+      </Routes>
     </ThemeProvider>
   );
 }
