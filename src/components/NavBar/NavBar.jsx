@@ -26,7 +26,8 @@ const StyledImg = styled('img')(({ theme }) => ({
     [theme.breakpoints.down('md')]: {
         height: theme.spacing(5)
     },
-    borderRadius: '10px'
+    borderRadius: '10px',
+    filter: theme.palette.mode === 'light' ? 'invert(100%)' : 'invert(20%)'
 }))
 
 
