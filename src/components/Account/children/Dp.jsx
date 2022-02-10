@@ -74,7 +74,7 @@ function ImgMediaCard({ uploadImgHandler, newDp, progress }) {
                         size="small"
                         sx={{ color: (theme) => theme.palette.mode === 'light' && 'black' }}
                     >
-                        Upload LOGO
+                        Upload Image
                     </Button>
                 </label>
                 {

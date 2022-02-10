@@ -188,7 +188,12 @@ function EmailPasswordCard() {
             />
             <Typography variant='h6' gutterBottom sx={{ textDecoration: 'underline' }}>Email address.</Typography>
             <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>{currentUser.email}</Typography>
-            <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px' }}>Primary.</Typography>
+            {
+                !currentUser.emailVerified ?
+                <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px', color:'red' }}>Not Verified.</Typography>:
+                <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px',color:'green' }}>Verified.</Typography>
+            }
+            
             <Typography variant='subtitle2' gutterBottom sx={{ marginBottom: '15px' }}>
                 To update your email, you might need to login again with your current credentials.
             </Typography>

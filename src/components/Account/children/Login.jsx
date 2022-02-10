@@ -6,7 +6,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import BackDrop from '../../BackDrop/BackDrop'
 import { useAuth } from '../../../contexts/AuthContext';
 
-const StyledBox = styled(Box)(({ theme }) => ({
+export const StyledBox = styled(Box)(({ theme }) => ({
     background: theme.palette.background.paper,
     padding: 20,
     display: 'flex',
@@ -16,7 +16,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     minHeight: '200px',
     width: '500px',
     [theme.breakpoints.down('sm')]: {
-        width: '250px'
+        width: '90%'
     },
     top: '20%',
     left: '50%',

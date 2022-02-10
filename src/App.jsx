@@ -14,6 +14,7 @@ import Payment from './components/Payment/Payment';
 import AmountStatus from './components/AmountStatus/AmountStatus';
 import NotFound from './components/404/NotFound';
 import Account from './components/Account/Account';
+import GetEmailCard from './components/SignIn/children/GetEmailCard';
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -85,6 +86,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/view-amount/:time/:price" element={<AmountStatus />} />
+        <Route path="/password-reset" element={<GetEmailCard/>}/>
       </Routes>
     </ThemeProvider>
   );
