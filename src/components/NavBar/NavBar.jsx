@@ -211,7 +211,20 @@ const NavBar = ({ email, isDarkMode }) => {
                                             />
                                         )
                                     }) :
-                                    <Typography color="secondary" sx={{ width: '200px', height: '100px' }} align='center'>No new notifications!</Typography>
+                                    <Typography
+                                        sx={{
+                                            width: '200px',
+                                            height: '100px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            justifyContent:'flex-end',
+                                            alignItems:'center',
+                                            padding:'10px'
+                                        }}
+                                        component='div'
+                                    >
+                                        <Typography>No notifications!</Typography>
+                                    </Typography>
                                 }
                             </Menu>
                             <Tooltip title="Open settings">

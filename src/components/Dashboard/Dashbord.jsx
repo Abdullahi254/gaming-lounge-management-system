@@ -8,6 +8,7 @@ import StatementTable from './Children/StatementTable';
 import AddIcon from '@mui/icons-material/Add';
 import { Tooltip, IconButton } from '@mui/material';
 import SalesForm from './Children/SalesForm';
+import VerificationCard from './Children/VerificationCard';
 
 export const StyledContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -32,6 +33,7 @@ function Dashbord() {
 
     return (
         <StyledContainer >
+            <VerificationCard/>
             <ReportCard />
             <SalesChart />
             <SalesCard />

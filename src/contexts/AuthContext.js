@@ -10,7 +10,8 @@ import {
     signOut,
     updatePassword,
     sendPasswordResetEmail,
-    updateProfile
+    updateProfile,
+    sendEmailVerification
 
 } from 'firebase/auth'
 
@@ -67,6 +68,10 @@ export function AuthProvider({ children }) {
         return reauthenticateWithCredential(auth.currentUser, credential)
     }
 
+    function sendUserVerification(){
+        return sendEmailVerification(auth.currentUser)
+    }
+
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user)
@@ -86,7 +91,8 @@ export function AuthProvider({ children }) {
         getCredentials,
         reauthenticate,
         updateUserName,
-        updateUserDp
+        updateUserDp,
+        sendUserVerification
     }
     return (
         <AuthContext.Provider value={value}>
