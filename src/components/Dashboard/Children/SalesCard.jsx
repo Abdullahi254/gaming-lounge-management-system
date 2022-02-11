@@ -40,48 +40,51 @@ function SalesCard() {
     const [monthEarning, setMonthEarning] = useState(0)
 
     useEffect(() => {
-        // get months earnings from db
-        const event = new Date()
-        const currentMonth = event.getMonth()
-        const currentYear = event.getFullYear()
+        const getMonthEarning = () => {
+            // get months earnings from db
+            const event = new Date()
+            const currentMonth = event.getMonth()
+            const currentYear = event.getFullYear()
 
-        const query = db.collection(`users/${currentUser.uid}/statements`).where('month', '==', currentMonth)
-            .where('year', '==', currentYear)
-        query.onSnapshot(querySnapshot => {
-            if (!querySnapshot.empty) {
-                let totalSum = querySnapshot.docs.map(doc => doc.data().amount).reduce((prev, curr) => prev + curr, 0)
-                setMonthEarning(totalSum)
-            }
-        }, err => {
-            console.log(err)
-        })
-        return () => setMonthEarning(0)
+            const query = db.collection(`users/${currentUser.uid}/statements`).where('month', '==', currentMonth)
+                .where('year', '==', currentYear)
+            query.onSnapshot(querySnapshot => {
+                if (!querySnapshot.empty) {
+                    let totalSum = querySnapshot.docs.map(doc => doc.data().amount).reduce((prev, curr) => prev + curr, 0)
+                    setMonthEarning(totalSum)
+                }
+            }, err => {
+                console.log(err)
+            })
+        }
+        const getWeekEarning = () => {
+            // get weeks earnings from db
+            const event = new Date()
+            let currentDate = event.getDate()
+            event.setDate(currentDate - 6)
+            const now = new Date()
+
+            const query = db.collection(`users/${currentUser.uid}/statements`).where('date', '>=', event)
+                .where('date', '<=', now)
+            query.onSnapshot(querySnapshot => {
+                if (!querySnapshot.empty) {
+                    let totalSum = querySnapshot.docs.map(doc => doc.data().amount).reduce((prev, curr) => prev + curr, 0)
+                    setWeekEarning(totalSum)
+                }
+            }, err => {
+                console.log(err)
+            })
+        }
+        getWeekEarning()
+        getMonthEarning()
+        return () => {
+            setMonthEarning(0)
+            setWeekEarning(0)
+        }
 
     }, [currentUser])
 
-    useEffect(() => {
-        // get weeks earnings from db
-        const event = new Date()
-        let currentDate = event.getDate()
-        event.setDate(currentDate - 6)
-        const now = new Date()
 
-        const query = db.collection(`users/${currentUser.uid}/statements`).where('date', '>=', event)
-            .where('date', '<=', now)
-        query.onSnapshot(querySnapshot => {
-            if (!querySnapshot.empty) {
-                let totalSum = querySnapshot.docs.map(doc => doc.data().amount).reduce((prev, curr) => prev + curr, 0)
-                setWeekEarning(totalSum)
-            }
-        }, err => {
-            console.log(err)
-        })
-
-
-        return () => setWeekEarning(0)
-
-
-    }, [currentUser])
 
     return (
         <StyledBox>
