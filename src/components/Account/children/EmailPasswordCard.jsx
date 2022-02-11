@@ -33,12 +33,11 @@ const StyledBox = styled(Box)(({ theme }) => ({
     boxShadow: 'rgb(0, 0, 0) 0px 20px 30px -10px'
 }))
 
-const ExpandMore = styled((props) => {
+export const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
     return <IconButton {...other} />;
 })(({ theme, expand }) => ({
     transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
     transition: theme.transitions.create('transform', {
         duration: theme.transitions.duration.shortest,
     }),
