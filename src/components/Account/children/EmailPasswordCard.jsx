@@ -190,8 +190,8 @@ function EmailPasswordCard() {
             <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>{currentUser.email}</Typography>
             {
                 !currentUser.emailVerified ?
-                <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px', color:'red' }}>Not Verified.</Typography>:
-                <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px',color:'green' }}>Verified.</Typography>
+                <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px', color:(theme)=>theme.palette.error.light }}>Not Verified.</Typography>:
+                <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px', color:(theme)=>theme.palette.success.light }}>Verified.</Typography>
             }
             
             <Typography variant='subtitle2' gutterBottom sx={{ marginBottom: '15px' }}>

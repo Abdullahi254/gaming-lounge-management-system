@@ -55,7 +55,7 @@ function SalesForm({ open, handleClose }) {
                         from: fromRef.current.value,
                         month,
                         receiptNumber: type === "Cash" ?
-                            Math.random().toString(36).replace('0.', '') :
+                            Math.random().toString(36).replace('0.', '').toUpperCase() :
                             mpesaRef.current.value
                         ,
                         type: type,

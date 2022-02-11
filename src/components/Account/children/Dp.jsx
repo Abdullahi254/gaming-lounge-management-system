@@ -125,7 +125,7 @@ function Dp() {
             setUploadAlert('Upload size limit exceeded!')
             return
         }
-        const storageRef = ref(storage, `profilePics/${currentUser.uid}/${file.name}`);
+        const storageRef = ref(storage, `profilePics/${currentUser.uid}/profile-pic`);
         const uploadTask = uploadBytesResumable(storageRef, file);
         uploadTask.on('state_changed', (snapshot) => {
             const progressData = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
