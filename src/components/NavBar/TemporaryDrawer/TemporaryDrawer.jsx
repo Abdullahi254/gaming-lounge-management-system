@@ -7,7 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import CustomLink from '../CustomLink/CustomLink';
 export default function TemporaryDrawer() {
     const [anchor, setAnchor] = useState(false)
@@ -27,24 +27,23 @@ export default function TemporaryDrawer() {
             onClick={() => setAnchor(false)}
             onKeyDown={() => setAnchor(false)}
         >
-            <List>
-                <CustomLink to="dashboard" startIcon={<ToggleOnIcon />} sx={{ padding: '15px 45px' }}>
+            <List sx={{ margin: '2px 0', width: '100%' }}>
+                <CustomLink to="dashboard" startIcon={<DashboardIcon />} size='large' sx={{ width: '100%' }}>
                     Dashboard
                 </CustomLink>
-
-                <CustomLink to="activeconsoles" startIcon={<ToggleOffIcon />} sx={{ padding: '15px 45px', my: '10px' }}>
-                    Active Console
-                </CustomLink>
-
             </List>
             <Divider />
-            <List>
-                <CustomLink to="idleconsoles" startIcon={<AccountBalanceWalletIcon />} sx={{ padding: '15px 45px' }}>
-                    Idle Console
+            <List sx={{ margin: '20px 0', marginBottom: 5, width: '100%' }}>
+                <CustomLink to="activeconsoles" startIcon={<ToggleOnIcon />} size='large' sx={{ width: '100%' }}>
+                    Active Console
                 </CustomLink>
-
             </List>
-        </Box>
+            <List sx={{ width: '100%' }}>
+                <CustomLink to="idleconsoles" startIcon={<ToggleOffIcon />} size='large' sx={{ width: '100%' }}>
+                    Idle----- Console
+                </CustomLink>
+            </List>
+        </Box >
     );
 
     return (

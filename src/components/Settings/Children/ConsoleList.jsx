@@ -82,7 +82,7 @@ function ConsoleList() {
                             <TableCell sx={{ fontWeight: 'bold', textDecoration: 'underline' }}>Console Name</TableCell>
                             <TableCell sx={{ fontWeight: 'bold', textDecoration: 'underline' }}>Brand</TableCell>
                             <TableCell sx={{ fontWeight: 'bold', textDecoration: 'underline' }}>Generation</TableCell>
-                            <TableCell sx={{ fontWeight: 'bold', textDecoration: 'underline' }} align='center' >Price/Minute</TableCell>
+                            <TableCell sx={{ fontWeight: 'bold', textDecoration: 'underline' }} align='center' >Price/Min(KSH)</TableCell>
                             <TableCell sx={{ fontWeight: 'bold', textDecoration: 'underline' }} align='center'>Action</TableCell>
                         </TableRow>
                     </TableHead>

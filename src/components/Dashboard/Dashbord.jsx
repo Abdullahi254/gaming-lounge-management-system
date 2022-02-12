@@ -33,7 +33,7 @@ function Dashbord() {
 
     return (
         <StyledContainer >
-            <VerificationCard/>
+            <VerificationCard />
             <ReportCard />
             <SalesChart />
             <SalesCard />
@@ -46,7 +46,7 @@ function Dashbord() {
                     <AddIcon fontSize='large' />
                 </IconButton>
             </Tooltip>
-            <SalesForm open={open} handleClose={handleClose}/>
+            <SalesForm open={open} handleClose={handleClose} />
         </StyledContainer>
     )
 }

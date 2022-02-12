@@ -43,7 +43,7 @@ const getDesignTokens = (mode) => ({
       ...(mode === 'light'
         ? {
           primary: grey[900],
-          secondary: grey[800],
+          secondary: grey[700],
         }
         : {
           primary: '#fff',

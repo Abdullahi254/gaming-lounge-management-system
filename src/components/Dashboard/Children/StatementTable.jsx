@@ -20,7 +20,7 @@ export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     padding: 20,
     margin: 10,
     borderRadius: 20,
-    maxHeight: 400
+    maxHeight: 420
 }))
 
 
@@ -40,7 +40,7 @@ function StatementTable() {
     useEffect(() => {
         function fetchStatements() {
             //fetching statements from the database using authenticated user's credentials
-            const query = db.collection(`users/${currentUser.uid}/statements`).orderBy('date', 'desc').limit(7)
+            const query = db.collection(`users/${currentUser.uid}/statements`).orderBy('date', 'desc').limit(5)
             query.onSnapshot(querySnapshot => {
                 if (querySnapshot.empty) {
                     console.log('No matching documents')

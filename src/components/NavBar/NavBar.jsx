@@ -16,10 +16,11 @@ import { AccountBox, Settings, Logout, DarkMode as AppearanceIcon } from '@mui/i
 import TemporaryDrawer from './TemporaryDrawer/TemporaryDrawer'
 import CustomLink from './CustomLink/CustomLink';
 import { styled, } from '@mui/material/styles';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet, useMatch, useResolvedPath } from 'react-router-dom';
 import { projectFireStore as db } from '../../firebase/firebase';
 import { useAuth } from '../../contexts/AuthContext'
 import Notification from './Notification/Notification';
+import Footer from '../Footer/Footer'
 
 const StyledImg = styled('img')(({ theme }) => ({
     height: theme.spacing(7),
@@ -38,6 +39,9 @@ const NavBar = ({ email, isDarkMode }) => {
     const [statements, setStatements] = React.useState([])
     const [darkmode, setDarkmode] = React.useState(false)
     const { currentUser, logout } = useAuth();
+
+    let resolved = useResolvedPath('dashboard');
+    let match = useMatch({ path: resolved.pathname, end: true });
     const navigate = useNavigate()
 
     const handleOpenUserMenu = (event) => {
@@ -217,9 +221,9 @@ const NavBar = ({ email, isDarkMode }) => {
                                             height: '100px',
                                             display: 'flex',
                                             flexDirection: 'column',
-                                            justifyContent:'flex-end',
-                                            alignItems:'center',
-                                            padding:'10px'
+                                            justifyContent: 'flex-end',
+                                            alignItems: 'center',
+                                            padding: '10px'
                                         }}
                                         component='div'
                                     >
@@ -298,6 +302,7 @@ const NavBar = ({ email, isDarkMode }) => {
             </AppBar>
 
             <Outlet />
+            {!match && <Footer />}
         </>
     );
 };
