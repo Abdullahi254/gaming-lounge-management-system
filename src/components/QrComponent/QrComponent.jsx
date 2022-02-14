@@ -40,7 +40,7 @@ function QrComponent({ show, close, time, price }) {
     })
 
     useEffect(() => {
-        qrcode.toDataURL(`http://192.168.1.6:3000/view-amount/${time}/${price}`,
+        qrcode.toDataURL(`https://gaming-payment-system-dev.web.app/view-amount/${time}/${price}`,
             {
                 errorCorrectionLevel: 'H',
                 type: 'image/jpeg',
