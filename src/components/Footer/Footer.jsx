@@ -70,7 +70,7 @@ export default function Footer() {
                 </span>
             </SocialsContainer>
             <Typography variant='subtitle2' sx={{color:(theme)=>theme.palette.text.secondary}}>
-                <StyledLink href='href="https://github.com/Abdullahi254" target="_blank"'>
+                <StyledLink href="https://linkedin.com/in/abdullahi-mohamud-aa04291b6" target="_blank">
                     @Abdullah
                 </StyledLink>
             </Typography>
