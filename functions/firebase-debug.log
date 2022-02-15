@@ -1,0 +1,23 @@
+[debug] [2022-02-15T22:54:01.497Z] ----------------------------------------------------------------------
+[debug] [2022-02-15T22:54:01.499Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\abdus\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2022-02-15T22:54:01.499Z] CLI Version:   10.2.0
+[debug] [2022-02-15T22:54:01.499Z] Platform:      win32
+[debug] [2022-02-15T22:54:01.499Z] Node Version:  v16.13.1
+[debug] [2022-02-15T22:54:01.500Z] Time:          Wed Feb 16 2022 01:54:01 GMT+0300 (East Africa Time)
+[debug] [2022-02-15T22:54:01.500Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-02-15T22:54:01.565Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-02-15T22:54:01.566Z] > authorizing via signed-in user (abdush504@gmail.com)
+[debug] [2022-02-15T22:54:01.566Z] [iam] checking project gaming-payment-system-dev for permissions ["firebase.projects.get"]
+[debug] [2022-02-15T22:54:01.568Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/gaming-payment-system-dev:testIamPermissions [none]
+[debug] [2022-02-15T22:54:01.569Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/gaming-payment-system-dev:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-02-15T22:54:03.206Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/gaming-payment-system-dev:testIamPermissions 200
+[debug] [2022-02-15T22:54:03.206Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/gaming-payment-system-dev:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2022-02-15T22:54:03.222Z] [functions] Using node@16 from host.
+[debug] [2022-02-15T22:54:03.223Z] defaultcredentials: writing to file C:\Users\abdus\AppData\Roaming\firebase\abdush504_gmail_com_application_default_credentials.json
+[debug] [2022-02-15T22:54:03.224Z] DEBUG: Setting GAC to C:\Users\abdus\AppData\Roaming\firebase\abdush504_gmail_com_application_default_credentials.json
+[debug] [2022-02-15T22:54:03.224Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/gaming-payment-system-dev/adminSdkConfig [none]
+[debug] [2022-02-15T22:54:03.818Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/gaming-payment-system-dev/adminSdkConfig 200
+[debug] [2022-02-15T22:54:03.818Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/gaming-payment-system-dev/adminSdkConfig {"projectId":"gaming-payment-system-dev","databaseURL":"https://gaming-payment-system-dev-default-rtdb.firebaseio.com","storageBucket":"gaming-payment-system-dev.appspot.com","locationId":"europe-west"}
+[debug] [2022-02-15T22:54:03.831Z] [functions] Watching "E:\PROJECTS\gaming-system-2.0\functions" for Cloud Functions...
+[debug] [2022-02-15T22:54:03.836Z] Validating nodejs source

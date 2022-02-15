@@ -17,14 +17,17 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 }))
 
 
-function MpesaComp() {
+function MpesaComp({mpesaPrompt,mpesaRef,handleChange,error}) {
     return (
-        <StyledBox component="form">
+        <StyledBox component="form" onSubmit={mpesaPrompt}>
             <Typography variant="subtitle1" align='center' sx={{marginBottom:4}}>
                 Insert Mpesa Phone Number.
             </Typography>
             <FormControl sx={{ m: 1, marginBottom:4}} variant="outlined" fullWidth>
                 <OutlinedInput
+                    error={error}
+                    onChange={handleChange}
+                    inputRef={mpesaRef}
                     required
                     type="number"
                     id="outlined-adornment-mpesa"
