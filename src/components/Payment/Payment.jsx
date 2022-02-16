@@ -44,6 +44,7 @@ function Payment() {
     React.useEffect(() => {
         const minutes = time / 60000
         setTotal(Math.round(minutes * price))
+        return ()=>setTotal()
     }, [time, price])
 
     // generating auth token for safaricom api request
@@ -63,6 +64,10 @@ function Payment() {
             setMpesaError('Something went wrong (Token Error)')
             console.log(er)
         })
+        return ()=>{
+            setAccessToken()
+            setMpesaError()
+        }
     }, [])
 
     const handleChange = (value) => {
