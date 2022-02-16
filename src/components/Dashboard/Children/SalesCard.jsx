@@ -96,7 +96,7 @@ function SalesCard() {
             >
                 <StyledDiv>
                     <Typography component="div" sx={{ my: 2 }}>
-                        <Typography variant='h5'>Week Earnings</Typography>
+                        <Typography variant='h5'>Last Seven Days</Typography>
                     </Typography>
                     <Typography variant='h6'>KSH {weekEarning.toFixed(2)}</Typography>
                     <Typography variant='caption'>This Weeks Revenue.</Typography>

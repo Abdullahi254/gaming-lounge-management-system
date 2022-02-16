@@ -31,6 +31,9 @@ function Payment() {
     const [error, setError] = React.useState()
     const [accessToken, setAccessToken] = React.useState()
     const [isInvalid, setIsInvalid] = React.useState(true)
+    const [requestId, setRequestId] = React.useState(' ')
+    const [loading, setLoading] = React.useState(false)
+    const [mpesaError, setMpesaError] = React.useState()
     const { time, price } = useParams()
 
     const amountRef = React.useRef()
@@ -57,7 +60,7 @@ function Payment() {
             console.log('access token aquired')
             setAccessToken(res.data.access_token)
         }).catch(er => {
-            setError('Something went wrong (Token Error)')
+            setMpesaError('Something went wrong (Token Error)')
             console.log(er)
         })
     }, [])
@@ -93,8 +96,13 @@ function Payment() {
 
     const handleMpesaPrompt = (e) => {
         e.preventDefault()
-        setError()
+        setMpesaError()
+        setRequestId(' ')
         if (!isInvalid) {
+            setLoading(true)
+            setTimeout(()=>{
+                setLoading(false)
+            },60000)
             const url = "/mpesa/stkpush/v1/processrequest"
             const shortCode = process.env.REACT_APP_SAFARICOM_SHORTCODE.toString()
             const passKey = process.env.REACT_APP_SAFARICOM_PASSKEY.toString()
@@ -135,16 +143,17 @@ function Payment() {
                     "PartyA": phone,
                     "PartyB": shortCode,
                     "PhoneNumber": phone,
-                    "CallBackURL": `https://us-central1-gaming-payment-system-dev.cloudfunctions.net/lipanamobile/${currentUser.uid}`,
+                    "CallBackURL": `https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/lipanamobile/${currentUser.uid}`,
                     "AccountReference": "Gaming Lounge Payment System",
                     "TransactionDesc": "GAMING SERVICE"
                 }
             }).then(res => {
                 console.log(res)
+                setRequestId(res.data.MerchantRequestID)
             }).catch(er => {
                 console.log('error sending spt')
                 console.log(er)
-                setError('something went wrong (SPT error)')
+                setMpesaError('something went wrong. Another transaction might be processing!')
             })
         }
     }
@@ -231,6 +240,12 @@ function Payment() {
                 mpesaPrompt={handleMpesaPrompt}
                 handleChange={checkValidity}
                 error={isInvalid}
+                requestId={requestId}
+                loading={loading}
+                stopLoading={()=>setLoading(false)}
+                resetRequestId={()=>setRequestId(' ')}
+                transactionError={mpesaError}
+                close={()=>setMpesaError()}
             />}
             {type === "Cash" &&
                 <CashComp

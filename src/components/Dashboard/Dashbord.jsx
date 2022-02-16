@@ -38,7 +38,7 @@ function Dashbord() {
             <SalesChart />
             <SalesCard />
             <StatementTable />
-            <Tooltip title="Create Statement ">
+            <Tooltip title="Create Sale">
                 <IconButton size='large'
                     sx={{ background: (theme) => theme.palette.background.paper }}
                     onClick={handleToggle}
