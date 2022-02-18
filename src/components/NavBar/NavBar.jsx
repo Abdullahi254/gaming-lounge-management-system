@@ -73,7 +73,7 @@ const NavBar = ({ email, isDarkMode }) => {
 
 
     const settingsButtonHandler = () => {
-        navigate('settings')
+        navigate('settings/console-settings')
     }
 
     const logOutHandler = () => {
@@ -87,7 +87,7 @@ const NavBar = ({ email, isDarkMode }) => {
     }
 
     const accountButtonHandler = () => {
-        navigate('myaccount')
+        navigate('/settings/my-account')
     }
 
     React.useEffect(() => {

@@ -9,12 +9,15 @@ import SignIn from './components/SignIn/SignIn';
 import { CssBaseline } from '@mui/material';
 import IdleConsoles from './components/IdleConsoles/IdleConsoles';
 import Dashbord from './components/Dashboard/Dashbord';
-import Settings from './components/Settings/Settings';
+import Layout from './components/Settings/Layout';
 import Payment from './components/Payment/Payment';
 import AmountStatus from './components/AmountStatus/AmountStatus';
 import NotFound from './components/404/NotFound';
 import Account from './components/Account/Account';
 import GetEmailCard from './components/SignIn/children/GetEmailCard';
+import ConsoleSettings from './components/Settings/Children/ConsoleSettings/ConsoleSettings';
+import Subscription from './components/Subscription/Subscription';
+
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -73,7 +76,7 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/"
           element={currentUser ?
-            <NavBar email={currentUser.email} isDarkMode={(mode)=>setDarkmode(mode)}/> :
+            <NavBar email={currentUser.email} isDarkMode={(mode) => setDarkmode(mode)} /> :
             <Navigate to="/login" />
           }>
           <Route index element={<Navigate to="dashboard" />} />
@@ -81,12 +84,15 @@ function App() {
           <Route path="activeconsoles/payment/:time/:price" element={<PrivateRoute><Payment /></PrivateRoute>} />
           <Route path="idleconsoles" element={<PrivateRoute><IdleConsoles /></PrivateRoute>} />
           <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
-          <Route path="settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
-          <Route path="myaccount" element={<PrivateRoute><Account /></PrivateRoute>} />
+          <Route path="settings" element={<PrivateRoute><Layout /></PrivateRoute>}>
+            <Route path="my-account" index element={<PrivateRoute><Account /></PrivateRoute>} />
+            <Route path="console-settings" element={<PrivateRoute><ConsoleSettings /></PrivateRoute>} />
+            <Route path="my-subscription" element={<PrivateRoute> <Subscription /></PrivateRoute>} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/view-amount/:time/:price" element={<AmountStatus />} />
-        <Route path="/password-reset" element={<GetEmailCard/>}/>
+        <Route path="/password-reset" element={<GetEmailCard />} />
       </Routes>
     </ThemeProvider>
   );

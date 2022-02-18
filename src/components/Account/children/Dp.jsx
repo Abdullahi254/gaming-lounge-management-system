@@ -25,7 +25,11 @@ const StyledBox = styled(Box)(({ theme }) => ({
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: 'rgb(0, 0, 0) 0px 20px 30px -10px'
+    boxShadow: 'rgb(0, 0, 0) 0px 20px 30px -10px',
+    width:'580px',
+    [theme.breakpoints.down('lg')]:{
+        width:'auto'
+    }
 }))
 
 function LinearProgressWithLabel(props) {

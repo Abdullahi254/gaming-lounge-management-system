@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import { TextField, MenuItem, Box, Button, Alert } from '@mui/material'
 import { styled } from '@mui/material/styles';
-import { projectFireStore as db } from '../../../firebase/firebase';
-import { useAuth } from '../../../contexts/AuthContext';
+import { projectFireStore as db } from '../../../../../firebase/firebase';
+import { useAuth } from '../../../../../contexts/AuthContext';
 
 const StyledBox = styled(Box)(({ theme }) => ({
     background: theme.palette.background.paper,
@@ -13,8 +13,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     minHeight: '150px',
     alignItems: 'center',
     justifyContent: 'center',
-    top: '20%',
-    margin: 30
+    marginTop: 30
 }))
 
 const brands = ["X-Box", "PlayStation"]

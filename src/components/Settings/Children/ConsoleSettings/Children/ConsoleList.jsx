@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { StyledTableContainer } from '../../Dashboard/Children/StatementTable';
+import { StyledTableContainer } from '../../../../Dashboard/Children/StatementTable';
 import { Table, TableHead, TableRow, TableBody, TableCell, Paper, Button, Typography, Alert } from '@mui/material'
-import { projectFireStore as db } from '../../../firebase/firebase'
-import { useAuth } from '../../../contexts/AuthContext'
+import { projectFireStore as db } from '../../../../../firebase/firebase'
+import { useAuth } from '../../../../../contexts/AuthContext'
 import UpdateConsoleForm from './UpdateConsoleForm';
 function ConsoleList() {
     const [consoles, setConsoles] = useState([])
@@ -71,7 +71,7 @@ function ConsoleList() {
                 price={selectedPrice}
                 id={selectedConsoleId}
             />
-            <StyledTableContainer component={Paper} sx={{ maxHeight: 500 }}>
+            <StyledTableContainer component={Paper} sx={{ maxHeight: 500, maxWidth:'1200px' }}>
                 <Typography variant='h6' align='center' sx={{ marginBottom: 1, textDecoration: 'underline' }}>
                     Console List.
                 </Typography>

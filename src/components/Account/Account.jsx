@@ -1,14 +1,14 @@
 import React from 'react';
-import {StyledContainer} from '../Dashboard/Dashbord'
+import { StyledContainer } from '../Settings/Children/ConsoleSettings/ConsoleSettings'
 import Dp from './children/Dp';
 import EmailPasswordCard from './children/EmailPasswordCard';
 
 function Account() {
   return (
-      <StyledContainer sx={{flexDirection:'column'}}>
-          <Dp/>
-          <EmailPasswordCard/>
-      </StyledContainer>
+    <StyledContainer>
+      <Dp />
+      <EmailPasswordCard />
+    </StyledContainer>
   )
 }
 

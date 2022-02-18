@@ -18,7 +18,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useAuth } from '../../../contexts/AuthContext';
 import Login from './Login';
 
-const StyledBox = styled(Box)(({ theme }) => ({
+export const StyledBox = styled(Box)(({ theme }) => ({
     background: theme.palette.background.paper,
     padding: 20,
     display: 'flex',
@@ -26,11 +26,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     margin: 10,
     borderRadius: '20px',
     flexWrap: 'wrap',
-    width: '450px',
-    [theme.breakpoints.down('sm')]: {
-        width: 'auto'
-    },
-    boxShadow: 'rgb(0, 0, 0) 0px 20px 30px -10px'
+    boxShadow: 'rgb(0, 0, 0) 0px 20px 30px -10px',
 }))
 
 export const ExpandMore = styled((props) => {
@@ -115,7 +111,7 @@ function EmailPasswordCard() {
     }
 
     const pass1RefCheck = () => {
-        if (pass1Ref.current.value.length >= 10) {
+        if (pass1Ref.current.value.length >= 6) {
             setPass1Error(false)
         }
         else {
