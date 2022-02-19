@@ -73,7 +73,7 @@ const NavBar = ({ email, isDarkMode }) => {
 
 
     const settingsButtonHandler = () => {
-        navigate('settings/console-settings')
+        navigate('settings')
     }
 
     const logOutHandler = () => {

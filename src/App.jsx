@@ -13,10 +13,10 @@ import Layout from './components/Settings/Layout';
 import Payment from './components/Payment/Payment';
 import AmountStatus from './components/AmountStatus/AmountStatus';
 import NotFound from './components/404/NotFound';
-import Account from './components/Account/Account';
+import Account from './components/Settings/Children/Account/Account'
 import GetEmailCard from './components/SignIn/children/GetEmailCard';
 import ConsoleSettings from './components/Settings/Children/ConsoleSettings/ConsoleSettings';
-import Subscription from './components/Subscription/Subscription';
+import Subscription from './components/Settings/Children/Subscription/Subscription'
 
 const getDesignTokens = (mode) => ({
   palette: {
@@ -85,7 +85,8 @@ function App() {
           <Route path="idleconsoles" element={<PrivateRoute><IdleConsoles /></PrivateRoute>} />
           <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
           <Route path="settings" element={<PrivateRoute><Layout /></PrivateRoute>}>
-            <Route path="my-account" index element={<PrivateRoute><Account /></PrivateRoute>} />
+            <Route index element={<Navigate to="console-settings" />} />
+            <Route path="my-account"element={<PrivateRoute><Account /></PrivateRoute>} />
             <Route path="console-settings" element={<PrivateRoute><ConsoleSettings /></PrivateRoute>} />
             <Route path="my-subscription" element={<PrivateRoute> <Subscription /></PrivateRoute>} />
           </Route>

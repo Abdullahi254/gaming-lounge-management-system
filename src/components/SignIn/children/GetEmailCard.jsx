@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyledBox } from '../../Account/children/Login'
+import { StyledBox } from '../../Settings/Children/Account/children/Login'
 import { Typography, TextField, Button, Alert, Box } from '@mui/material'
 import { useAuth } from '../../../contexts/AuthContext'
 import { styled } from '@mui/material/styles';

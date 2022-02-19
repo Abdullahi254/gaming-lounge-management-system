@@ -11,9 +11,9 @@ import {
     LinearProgress
 } from '@mui/material'
 import { styled } from '@mui/material/styles';
-import testDp from '../../../assets/imgs/placeholder.png'
-import { useAuth } from '../../../contexts/AuthContext';
-import { storage } from '../../../firebase/firebase'
+import testDp from '../../../../../assets/imgs/placeholder.png'
+import { useAuth } from '../../../../../contexts/AuthContext'
+import { storage } from '../../../../../firebase/firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
 const StyledBox = styled(Box)(({ theme }) => ({

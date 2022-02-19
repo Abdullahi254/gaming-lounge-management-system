@@ -14,7 +14,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import MobileDatePicker from '@mui/lab/MobileDatePicker';
-import { ExpandMore } from '../../Account/children/EmailPasswordCard';
+import { ExpandMore } from '../../Settings/Children/Account/children/EmailPasswordCard';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     padding: 20,

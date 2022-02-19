@@ -3,8 +3,8 @@ import { styled } from '@mui/material/styles';
 import { Box, Typography, TextField, InputAdornment, IconButton, Button } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import BackDrop from '../../BackDrop/BackDrop'
-import { useAuth } from '../../../contexts/AuthContext';
+import BackDrop from '../../../../BackDrop/BackDrop'
+import { useAuth } from '../../../../../contexts/AuthContext';
 
 export const StyledBox = styled(Box)(({ theme }) => ({
     background: theme.palette.background.paper,

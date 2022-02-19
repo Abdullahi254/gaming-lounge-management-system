@@ -1,6 +1,6 @@
 import React from 'react'
-import {StyledContainer} from '../Settings/Children/ConsoleSettings/ConsoleSettings';
-import SubscriptionCard from './SubscriptionCard';
+import {StyledContainer} from '../ConsoleSettings/ConsoleSettings';
+import SubscriptionCard from './Children/SubscriptionCard';
 
 function Subscription() {
   return (
