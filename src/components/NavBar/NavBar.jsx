@@ -17,8 +17,9 @@ import TemporaryDrawer from './TemporaryDrawer/TemporaryDrawer'
 import CustomLink from './CustomLink/CustomLink';
 import { styled, } from '@mui/material/styles';
 import { useNavigate, Outlet, useMatch, useResolvedPath } from 'react-router-dom';
-import { projectFireStore as db } from '../../firebase/firebase';
-import { useAuth } from '../../contexts/AuthContext'
+import { projectFireStore as db, functions } from '../../firebase/firebase';
+import { useAuth } from '../../contexts/AuthContext';
+import { httpsCallable } from "firebase/functions"
 import Notification from './Notification/Notification';
 import Footer from '../Footer/Footer'
 
@@ -31,13 +32,10 @@ const StyledImg = styled('img')(({ theme }) => ({
     filter: theme.palette.mode === 'light' ? 'invert(100%)' : 'invert(20%)'
 }))
 
-
-const NavBar = ({ email, isDarkMode }) => {
-
+const NavBar = ({ email }) => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElNotification, setAnchorNotification] = React.useState(null)
     const [statements, setStatements] = React.useState([])
-    const [darkmode, setDarkmode] = React.useState(false)
     const { currentUser, logout } = useAuth();
 
     let resolved = useResolvedPath('dashboard');
@@ -103,37 +101,20 @@ const NavBar = ({ email, isDarkMode }) => {
     }, [currentUser])
 
     const toogleTheme = () => {
-        setDarkmode(prev => {
-            isDarkMode(!prev)
-            db.collection('users').doc(`${currentUser.uid}`).update({
-                darkmode: !prev
-            })
-                .then(() => {
-                    console.log("Document successfully written!");
-                })
-                .catch((error) => {
-                    console.error("Error writing document: ", error);
-                });
-            return !prev
-        })
+        const toogleTheme = httpsCallable(functions, 'toogleTheme')
+        const currentMode = currentUser.darkMode
+        if (currentMode !== undefined) {
+            toogleTheme({ darkMode: !currentMode }).then(() => {
+                console.log("mode changed")
+            }).catch(() => console.log("error changing mode"))
+        } else {
+            toogleTheme({ darkMode: true }).then(() => {
+                console.log("mode changed")
+            }).catch(() => console.log("error changing mode"))
+        }
     }
 
-    React.useEffect(() => {
-        const fetchTheme = async () => {
-            const UserRef = db.collection('users').doc(`${currentUser.uid}`);
-            const doc = await UserRef.get();
-            const mode = doc.data().darkmode
-            if (mode === true || mode === false) {
-                isDarkMode(mode)
-                setDarkmode(mode)
-                console.log('document exists')
-            } else {
-                console.log('No such field in document!');
-            }
-        }
-        fetchTheme()
-        return () => setDarkmode(false)
-    }, [currentUser, isDarkMode])
+
     return (
         <>
             <AppBar position="static" sx={{ background: (theme) => theme.palette.background.paper }}>
@@ -286,7 +267,10 @@ const NavBar = ({ email, isDarkMode }) => {
                                         <AppearanceIcon />
                                     </ListItemIcon>
                                     <ListItemText primary="Appearance" />
-                                    <Switch checked={darkmode} onChange={toogleTheme} />
+                                    <Switch
+                                        checked={currentUser.darkMode === undefined ? false: currentUser.darkMode}
+                                        onChange={toogleTheme}
+                                    />
                                 </ListItem>
                                 <Divider />
                                 <ListItem button onClick={logOutHandler}>

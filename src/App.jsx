@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { grey, } from '@mui/material/colors';
 import NavBar from "./components/NavBar/NavBar";
@@ -66,8 +66,8 @@ function PrivateRoute({ children }) {
 }
 
 function App() {
-  const [darkmode, setDarkmode] = useState(false)
   const { currentUser } = useAuth();
+  const darkmode = currentUser.darkMode === (null || undefined) ? false : currentUser.darkMode
   const darkModeTheme = createTheme(getDesignTokens(darkmode ? 'dark' : 'light'));
   return (
     <ThemeProvider theme={darkModeTheme}>
@@ -76,7 +76,7 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/"
           element={currentUser ?
-            <NavBar email={currentUser.email} isDarkMode={(mode) => setDarkmode(mode)} /> :
+            <NavBar email={currentUser.email} /> :
             <Navigate to="/login" />
           }>
           <Route index element={<Navigate to="dashboard" />} />
@@ -86,7 +86,7 @@ function App() {
           <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
           <Route path="settings" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Navigate to="console-settings" />} />
-            <Route path="my-account"element={<PrivateRoute><Account /></PrivateRoute>} />
+            <Route path="my-account" element={<PrivateRoute><Account /></PrivateRoute>} />
             <Route path="console-settings" element={<PrivateRoute><ConsoleSettings /></PrivateRoute>} />
             <Route path="my-subscription" element={<PrivateRoute> <Subscription /></PrivateRoute>} />
           </Route>

@@ -1,14 +1,19 @@
 const functions = require("firebase-functions");
-const admin = require("firebase-admin");
+const {getAuth} = require("firebase-admin/auth");
+const {getDatabase} = require("firebase-admin/database");
+const {initializeApp} = require("firebase-admin/app");
+const {getFirestore} = require("firebase-admin/firestore");
 const cors = require("cors");
 const express = require("express");
-admin.initializeApp();
+initializeApp();
 const app = express();
 
 // middleware
 app.use(express.json());
 app.use(cors());
 
+// getting db ref
+const db = getFirestore();
 
 app.post("/lipanamobile/:uid", (req, res) => {
   console.log(`requested from user ${req.params.uid}`);
@@ -27,7 +32,7 @@ app.post("/lipanamobile/:uid", (req, res) => {
       viewed: false,
       requestId: req.body.Body.stkCallback.MerchantRequestID,
     };
-    admin.firestore().collection("users").doc(req.params.uid).
+    db.collection("users").doc(req.params.uid).
         collection("statements").add(statement).then(()=>{
           console.log("statement added to db");
           console.log(JSON.stringify(statement));
@@ -48,3 +53,21 @@ app.post("/lipanamobile/:uid", (req, res) => {
 );
 
 exports.app = functions.https.onRequest(app);
+
+exports.toogleTheme = functions.region("us-central1").
+    https.onCall((data, context)=>{
+      const darkMode = data.darkMode;
+      const uid = context.auth.uid;
+      const customClaims = {
+        darkMode,
+      };
+      getAuth().setCustomUserClaims(uid, customClaims).then(()=>{
+        console.log("custom claim changed successfully for user: ", uid);
+        const metadataRef = getDatabase().ref("metadata/" + uid);
+        metadataRef.set({refreshTime: new Date().getTime()}).then(()=>{
+          console.log("Token refreshed");
+        }).catch(()=>console.log("Token could not be refreshed"));
+      }).catch(()=>{
+        console.log("Error changing custom claim for user: ", uid);
+      });
+    });

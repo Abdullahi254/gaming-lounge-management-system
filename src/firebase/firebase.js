@@ -3,7 +3,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import {getAuth} from 'firebase/auth'
 import { getStorage } from "firebase/storage";
-
+import { getFunctions} from "firebase/functions";
 const app = firebase.initializeApp({
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTHDOMAIN,
@@ -16,5 +16,6 @@ const app = firebase.initializeApp({
 export const projectFireStore = firebase.firestore()
 export const auth = getAuth()
 export const storage = getStorage(app)
+export const functions = getFunctions(app)
 export default app
 
