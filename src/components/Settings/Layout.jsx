@@ -48,6 +48,7 @@ function Item({ children, to, ...props }) {
 
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
+    justifyContent:'space-around',
     [theme.breakpoints.down('md')]: {
         flexDirection: 'column',
     }
