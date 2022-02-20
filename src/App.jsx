@@ -66,9 +66,9 @@ function PrivateRoute({ children }) {
 }
 
 function App() {
+  const [darkmode, setDarkmode] = React.useState(true)
   const { currentUser } = useAuth();
-  const darkmode = currentUser.darkMode === (null || undefined) ? false : currentUser.darkMode
-  const darkModeTheme = createTheme(getDesignTokens(darkmode ? 'dark' : 'light'));
+  const darkModeTheme = createTheme(getDesignTokens(darkmode ? 'dark': 'light'));
   return (
     <ThemeProvider theme={darkModeTheme}>
       <CssBaseline />
@@ -76,7 +76,7 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/"
           element={currentUser ?
-            <NavBar email={currentUser.email} /> :
+            <NavBar email={currentUser.email} triggerThemeChange={(isdark)=>setDarkmode(isdark)} /> :
             <Navigate to="/login" />
           }>
           <Route index element={<Navigate to="dashboard" />} />
