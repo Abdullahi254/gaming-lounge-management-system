@@ -1,6 +1,4 @@
 const functions = require("firebase-functions");
-const {getAuth} = require("firebase-admin/auth");
-const {getDatabase} = require("firebase-admin/database");
 const {initializeApp} = require("firebase-admin/app");
 const {getFirestore} = require("firebase-admin/firestore");
 const cors = require("cors");
@@ -54,20 +52,3 @@ app.post("/lipanamobile/:uid", (req, res) => {
 
 exports.app = functions.https.onRequest(app);
 
-exports.toogleTheme = functions.region("us-central1").
-    https.onCall((data, context)=>{
-      const darkMode = data.darkMode;
-      const uid = context.auth.uid;
-      const customClaims = {
-        darkMode,
-      };
-      getAuth().setCustomUserClaims(uid, customClaims).then(()=>{
-        console.log("custom claim changed successfully for user: ", uid);
-        const metadataRef = getDatabase().ref("metadata/" + uid);
-        metadataRef.set({refreshTime: new Date().getTime()}).then(()=>{
-          console.log("Token refreshed");
-        }).catch(()=>console.log("Token could not be refreshed"));
-      }).catch(()=>{
-        console.log("Error changing custom claim for user: ", uid);
-      });
-    });

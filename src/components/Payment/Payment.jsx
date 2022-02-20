@@ -49,7 +49,7 @@ function Payment() {
 
     // generating auth token for safaricom api request
     React.useEffect(() => {
-        const tokenUrl = "/oauth/v1/generate?grant_type=client_credentials"
+        const tokenUrl = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
         const auth = "Basic " + Buffer(process.env.REACT_APP_SAFARICOM_CONSUMER_KEY + ':' + process.env.REACT_APP_SAFARICOM_CONSUMER_SECRET).toString("base64")
         axios({
             method: 'get',
@@ -108,7 +108,7 @@ function Payment() {
             setTimeout(()=>{
                 setLoading(false)
             },60000)
-            const url = "/mpesa/stkpush/v1/processrequest"
+            const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
             const shortCode = process.env.REACT_APP_SAFARICOM_SHORTCODE.toString()
             const passKey = process.env.REACT_APP_SAFARICOM_PASSKEY.toString()
             const event = new Date()

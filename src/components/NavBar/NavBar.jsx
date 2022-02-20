@@ -17,9 +17,8 @@ import TemporaryDrawer from './TemporaryDrawer/TemporaryDrawer'
 import CustomLink from './CustomLink/CustomLink';
 import { styled, } from '@mui/material/styles';
 import { useNavigate, Outlet, useMatch, useResolvedPath } from 'react-router-dom';
-import { projectFireStore as db, functions } from '../../firebase/firebase';
+import { projectFireStore as db} from '../../firebase/firebase';
 import { useAuth } from '../../contexts/AuthContext';
-import { httpsCallable } from "firebase/functions"
 import Notification from './Notification/Notification';
 import Footer from '../Footer/Footer'
 
@@ -32,10 +31,11 @@ const StyledImg = styled('img')(({ theme }) => ({
     filter: theme.palette.mode === 'light' ? 'invert(100%)' : 'invert(20%)'
 }))
 
-const NavBar = ({ email }) => {
+const NavBar = ({ email, triggerThemeChange }) => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElNotification, setAnchorNotification] = React.useState(null)
     const [statements, setStatements] = React.useState([])
+    const [darkmode, setDarkmode] = React.useState(true)
     const { currentUser, logout } = useAuth();
 
     let resolved = useResolvedPath('dashboard');
@@ -101,19 +101,11 @@ const NavBar = ({ email }) => {
     }, [currentUser])
 
     const toogleTheme = () => {
-        const toogleTheme = httpsCallable(functions, 'toogleTheme')
-        const currentMode = currentUser.darkMode
-        if (currentMode !== undefined) {
-            toogleTheme({ darkMode: !currentMode }).then(() => {
-                console.log("mode changed")
-            }).catch(() => console.log("error changing mode"))
-        } else {
-            toogleTheme({ darkMode: true }).then(() => {
-                console.log("mode changed")
-            }).catch(() => console.log("error changing mode"))
-        }
+        setDarkmode(prev=>{
+            triggerThemeChange(!prev)
+            return !prev
+        })
     }
-
 
     return (
         <>
@@ -268,7 +260,7 @@ const NavBar = ({ email }) => {
                                     </ListItemIcon>
                                     <ListItemText primary="Appearance" />
                                     <Switch
-                                        checked={currentUser.darkMode === undefined ? false: currentUser.darkMode}
+                                        checked={darkmode}
                                         onChange={toogleTheme}
                                     />
                                 </ListItem>
