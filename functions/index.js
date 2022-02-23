@@ -1,5 +1,6 @@
 const functions = require("firebase-functions");
 const {initializeApp} = require("firebase-admin/app");
+const {getAuth} = require("firebase-admin/auth");
 const {getFirestore} = require("firebase-admin/firestore");
 const cors = require("cors");
 const express = require("express");
@@ -49,6 +50,20 @@ app.post("/lipanamobile/:uid", (req, res) => {
   }
 }
 );
+
+app.post("/subscribe/:uid", (req, res)=>{
+  const uid = req.params.uid;
+  const customClaim = {
+    premium: req.body.premium,
+  };
+  getAuth().setCustomUserClaims(uid, customClaim).then((response) =>{
+    console.log("user has been made premium");
+    res.send(response).status(200);
+  }).catch((er)=>{
+    console.log("error setting user to premium");
+    res.send(er).status(400);
+  });
+});
 
 exports.app = functions.https.onRequest(app);
 

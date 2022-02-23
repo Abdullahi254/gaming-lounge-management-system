@@ -19,7 +19,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 }))
 
 
-function MpesaComp({ mpesaPrompt, mpesaRef, handleChange, error, requestId, loading, stopLoading, resetRequestId, transactionError, close }) {
+function MpesaComp({ mpesaPrompt, mpesaRef, handleChange, error, requestId, loading, stopLoading, resetRequestId, transactionError, close, info, ...props }) {
     const { currentUser } = useAuth()
     const [success, setSuccess] = React.useState();
     React.useEffect(() => {
@@ -42,9 +42,9 @@ function MpesaComp({ mpesaPrompt, mpesaRef, handleChange, error, requestId, load
         setSuccess()
     }
     return (
-        <StyledBox component="form" onSubmit={mpesaPrompt}>
+        <StyledBox component="form" onSubmit={mpesaPrompt} {...props}>
             <Typography variant="subtitle1" align='center' sx={{ marginBottom: 4 }}>
-                Insert Mpesa Phone Number.
+                {info}
             </Typography>
             {success && <Alert severity="success" sx={{ justifyContent: 'center', width: '100%', marginBottom: 3 }} onClose={closeAlertHandler}>{success}</Alert>}
             {transactionError && <Alert severity="error" sx={{ justifyContent: 'center', width: '100%', marginBottom: 3 }} onClose={close}>{transactionError}</Alert>}
