@@ -19,6 +19,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     padding: 20,
     margin: 10,
+    marginTop:0,
     borderRadius: 20,
     maxHeight: 420
 }))

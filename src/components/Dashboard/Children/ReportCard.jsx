@@ -9,10 +9,9 @@ const StyledBox = styled(Box)(({ theme }) => ({
     background: theme.palette.background.paper,
     padding: 20,
     display: 'flex',
+    margin:10,
+    marginTop:-20,
     marginBottom:10,
-    [theme.breakpoints.down('md')]:{
-        marginTop: -40,
-    },
     borderRadius:'30px',
     flexWrap:'nowrap'
 }))
