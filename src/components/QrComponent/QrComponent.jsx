@@ -22,6 +22,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
 const StyledImage = styled('img')(({ theme }) => ({
     width: '500px',
     borderRadius: '20px',
+    [theme.breakpoints.down('xl')]: {
+        width: '450px',
+        height:'400px'
+    },
     [theme.breakpoints.down('md')]: {
         width: '250px',
         height:'200px'

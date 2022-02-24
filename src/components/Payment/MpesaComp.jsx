@@ -19,13 +19,13 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 }))
 
 
-function MpesaComp({ mpesaPrompt, mpesaRef, handleChange, error, requestId, loading, stopLoading, resetRequestId, transactionError, close, info, ...props }) {
+function MpesaComp({ mpesaPrompt, mpesaRef, handleChange, error, requestId, loading, stopLoading, resetRequestId, transactionError, close, info, collection, ...props }) {
     const { currentUser } = useAuth()
     const [success, setSuccess] = React.useState();
     React.useEffect(() => {
-        function fetchNotifications() {
+        function fetchDoc() {
             //fetching newdata from the database using authenticated user's credentials
-            const query = db.collection(`users/${currentUser.uid}/statements`).where('requestId', '==', requestId)
+            const query = db.collection(`users/${currentUser.uid}/${collection}`).where('requestId', '==', requestId)
             query.onSnapshot(querySnapshot => {
                 if (!querySnapshot.empty) {
                     setSuccess("Payment was successfull")
@@ -34,10 +34,10 @@ function MpesaComp({ mpesaPrompt, mpesaRef, handleChange, error, requestId, load
                 }
             })
         }
-        fetchNotifications()
+        fetchDoc()
         return () => setSuccess()
 
-    }, [currentUser, requestId, stopLoading, resetRequestId])
+    }, [currentUser, requestId, stopLoading, resetRequestId, collection])
     const closeAlertHandler = () => {
         setSuccess()
     }

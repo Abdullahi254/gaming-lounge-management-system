@@ -9,6 +9,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     padding: 20,
     display: 'flex',
     margin: 10,
+    marginTop:0,
     flexWrap: 'wrap'
 }))
 

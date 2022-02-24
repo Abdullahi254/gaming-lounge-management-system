@@ -148,7 +148,7 @@ function Payment() {
                     "PartyA": phone,
                     "PartyB": shortCode,
                     "PhoneNumber": phone,
-                    "CallBackURL": `https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/subscribe/${currentUser.uid}`,
+                    "CallBackURL": `https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/lipanamobile/${currentUser.uid}`,
                     "AccountReference": "Gaming Lounge Payment System",
                     "TransactionDesc": "GAMING SERVICE"
                 }
@@ -252,6 +252,7 @@ function Payment() {
                 transactionError={mpesaError}
                 close={()=>setMpesaError()}
                 info="Insert Mpesa Phone Number."
+                collection="statements"
             />}
             {type === "Cash" &&
                 <CashComp

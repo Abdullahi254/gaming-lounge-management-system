@@ -36,7 +36,7 @@ const StyledLink = styled('a')(() => ({
 const StyledBox = styled(Box)(({ theme }) => ({
     padding: `${theme.spacing(2)} 0`,
     display: 'flex',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('xl')]: {
         display: 'none'
     },
     flexDirection: 'column',

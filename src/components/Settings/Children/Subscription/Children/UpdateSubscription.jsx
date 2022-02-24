@@ -1,45 +1,21 @@
 import React from 'react';
 import { StyledBox, DateContainer as MiniContainer, DateItem as Item } from './SubscriptionCard';
 import { Box, Slider, Typography } from '@mui/material';
-import MpesaComp from '../../../../Payment/MpesaComp';
 import axios from 'axios';
-import {useAuth} from '../../../../../contexts/AuthContext';
-import { Buffer } from 'buffer';
+import { useAuth } from '../../../../../contexts/AuthContext';
+import MpesaComp from '../../../../Payment/MpesaComp';
 
 function UpdateSubscription() {
     const [month, setMonth] = React.useState(1)
     const [price, setPrice] = React.useState(500)
     const [isInvalid, setIsInvalid] = React.useState(true)
-    const [requestId, setRequestId] = React.useState(' ')
     const [loading, setLoading] = React.useState(false)
     const [mpesaError, setMpesaError] = React.useState()
-    const [accessToken, setAccessToken] = React.useState()
+    const [requestId, setRequestId] = React.useState(' ')
 
     const { currentUser } = useAuth()
     const mpesaRef = React.useRef()
 
-    // generating auth token for safaricom api request
-    React.useEffect(() => {
-        const tokenUrl = "/oauth/v1/generate?grant_type=client_credentials"
-        const auth = "Basic " + Buffer(process.env.REACT_APP_SAFARICOM_CONSUMER_KEY + ':' + process.env.REACT_APP_SAFARICOM_CONSUMER_SECRET).toString("base64")
-        axios({
-            method: 'get',
-            url: tokenUrl,
-            headers: {
-                "Authorization": auth
-            }
-        }).then((res) => {
-            console.log('access token aquired')
-            setAccessToken(res.data.access_token)
-        }).catch(er => {
-            setMpesaError('Something went wrong (Token Error)')
-            console.log(er)
-        })
-        return ()=>{
-            setAccessToken()
-            setMpesaError()
-        }
-    }, [])
 
     const handleMpesaPrompt = (e) => {
         e.preventDefault()
@@ -47,62 +23,35 @@ function UpdateSubscription() {
         setRequestId(' ')
         if (!isInvalid) {
             setLoading(true)
-            setTimeout(()=>{
+            setTimeout(() => {
                 setLoading(false)
-            },60000)
-            const url = "/mpesa/stkpush/v1/processrequest"
-            const shortCode = process.env.REACT_APP_SAFARICOM_SHORTCODE.toString()
-            const passKey = process.env.REACT_APP_SAFARICOM_PASSKEY.toString()
-            const event = new Date()
-            const year = event.getFullYear().toString()
-            let month = event.getMonth() + 1
-            month = month.toString()
-            if (month.length < 2) month = '0' + month
-            let date = event.getDate().toString()
-            if (date.length < 2) date = '0' + date
-            let hour = event.getHours().toString()
-            if (hour.length < 2) hour = '0' + hour
-            let minutes = event.getMinutes().toString()
-            if (minutes.length < 2) minutes = '0' + minutes
-            let seconds = event.getSeconds().toString()
-            if (seconds.length < 2) seconds = '0' + seconds
-            const timeStamp = year + month + date + hour + minutes + seconds
-            console.log(timeStamp)
-            const password = Buffer(shortCode + passKey + timeStamp).toString("base64")
-            console.log(password)
-            const amount = price.toString()
-            console.log(amount)
-            const phone = "254" + mpesaRef.current.value.toString()
-            console.log(phone)
+            }, 60000)
             axios({
                 method: 'post',
-                url,
-                headers: {
-                    "Authorization": "Bearer " + accessToken,
-                    "Content-Type": "application/json"
-                },
+                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/subscribe",
                 data: {
-                    "BusinessShortCode": shortCode,
-                    "Password": password,
-                    "Timestamp": timeStamp,
-                    "TransactionType": "CustomerPayBillOnline",
-                    "Amount": amount,
-                    "PartyA": phone,
-                    "PartyB": shortCode,
-                    "PhoneNumber": phone,
-                    "CallBackURL": `https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/subscribe/${currentUser.uid}`,
-                    "AccountReference": "Gaming Lounge Payment System",
-                    "TransactionDesc": "GAMING SERVICE"
+                    email: currentUser.email,
+                    month: month,
+                    phone: mpesaRef.current.value
                 }
             }).then(res => {
+                if (res.data.name === "Error") {
+                    console.log(res)
+                    setMpesaError(res.data.message)
+                    setLoading(false)
+                    return
+                }
                 console.log(res)
-                setRequestId(res.data.MerchantRequestID)
+                setRequestId(res.data.MerchantRequestID);
+
             }).catch(er => {
-                console.log('error sending spt')
+                setMpesaError("Error sending request")
+                setLoading(false)
+                console.log('error:')
                 console.log(er)
-                setMpesaError('something went wrong. Another transaction might be processing!')
             })
         }
+
     }
     function checkValidity(e) {
         let num = e.target.value
@@ -115,15 +64,15 @@ function UpdateSubscription() {
 
     const handleChange = (event, newValue) => {
         if (typeof newValue === 'number') {
-          setMonth(newValue);
-          let price = (newValue * 500)
-          if(newValue !== 1){
-            price = (90/100 * price)
-            setPrice(price)
-          }else setPrice(price)
-          
+            setMonth(newValue);
+            let price = (newValue * 500)
+            if (newValue !== 1) {
+                price = (90 / 100 * price)
+                setPrice(price)
+            } else setPrice(price)
+
         }
-      };
+    };
 
     return (
         <StyledBox>
@@ -160,21 +109,18 @@ function UpdateSubscription() {
                 </Item>
             </MiniContainer>
             <MpesaComp
+                sx={{ width: '100%', padding: 0, boxShadow: 0 }}
                 mpesaRef={mpesaRef}
                 mpesaPrompt={handleMpesaPrompt}
                 handleChange={checkValidity}
                 error={isInvalid}
                 requestId={requestId}
                 loading={loading}
-                stopLoading={()=>setLoading(false)}
-                resetRequestId={()=>setRequestId(' ')}
+                stopLoading={() => setLoading(false)}
+                resetRequestId={() => setRequestId(' ')}
                 transactionError={mpesaError}
-                close={()=>setMpesaError()}
-                sx={{
-                    width:'100%',
-                    padding:0,
-                    boxShadow:0
-                }}
+                close={() => setMpesaError()}
+                collection="subscriptions"
             />
             <Typography variant='caption'>You will get an Mpesa prompt on your phone.</Typography>
         </StyledBox>

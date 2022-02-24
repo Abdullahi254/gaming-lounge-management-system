@@ -16,6 +16,7 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    paddingTop:0,
     margin: 'auto',
     maxWidth: '1200px',
 }))
