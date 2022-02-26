@@ -15,8 +15,85 @@ app.use(cors());
 
 // getting db ref
 const db = getFirestore();
+app.post("/pay-game", (req, resp)=>{
+  const tokenUrl = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
+  const buff = Buffer.from(process.env.SAFARICOM_CONSUMER_KEY + ":" +
+  process.env.SAFARICOM_CONSUMER_SECRET);
+  const auth = "Basic " + buff.toString("base64");
+  axios({
+    method: "get",
+    url: tokenUrl,
+    headers: {
+      "Authorization": auth,
+    },
+  }).then((res) => {
+    console.log("Access Token acquired");
+    const email = req.body.email;
+    getAuth().getUserByEmail(email).then((user)=>{
+      console.log(`${user.uid} found successfully`);
+      const accessToken = res.data.access_token;
+      let amount = req.body.amount;
+      const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
+      const shortCode = process.env.SAFARICOM_SHORTCODE.toString();
+      const passKey = process.env.SAFARICOM_PASSKEY.toString();
+      const event = new Date();
+      const year = event.getFullYear().toString();
+      let month = event.getMonth() + 1;
+      month = month.toString();
+      if (month.length < 2) month = "0" + month;
+      let date = event.getDate().toString();
+      if (date.length < 2) date = "0" + date;
+      let hour = event.getHours().toString();
+      if (hour.length < 2) hour = "0" + hour;
+      let minutes = event.getMinutes().toString();
+      if (minutes.length < 2) minutes = "0" + minutes;
+      let seconds = event.getSeconds().toString();
+      if (seconds.length < 2) seconds = "0" + seconds;
+      const timeStamp = year + month + date + hour + minutes + seconds;
+      const password = Buffer.from(shortCode + passKey + timeStamp).
+          toString("base64");
+      console.log("Amount before rounding", amount);
+      amount = Math.round(amount).toString();
+      console.log("amount after rounding", amount);
+      const phone = "254" + req.body.phone.toString();
+      axios({
+        method: "post",
+        url,
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Content-Type": "application/json",
+        },
+        data: {
+          "BusinessShortCode": shortCode,
+          "Password": password,
+          "Timestamp": timeStamp,
+          "TransactionType": "CustomerPayBillOnline",
+          "Amount": amount,
+          "PartyA": phone,
+          "PartyB": shortCode,
+          "PhoneNumber": phone,
+          "CallBackURL": `https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/lipagame/${user.uid}`,
+          "AccountReference": "AIM LABS KE",
+          "TransactionDesc": "subscription fee",
+        },
+      }).then((res) => {
+        console.log("STP sent to customer");
+        resp.send(res.data);
+      }).catch((er)=>{
+        console.log("STP error");
+        resp.send(er);
+      });
+    }).catch((er)=>{
+      console.log("failed to get user by email");
+      resp.send(er);
+    });
+  }).catch((er) => {
+    console.log("access token not found");
+    resp.send(er);
+  });
+});
 
-app.post("/lipanamobile/:uid", (req, res) => {
+app.post("/lipagame/:uid", (req, res) => {
   console.log(`requested from user ${req.params.uid}`);
   // when payment is successfull
   if (req.body.Body.stkCallback.ResultCode === 0) {
@@ -37,16 +114,17 @@ app.post("/lipanamobile/:uid", (req, res) => {
         collection("statements").add(statement).then(()=>{
           console.log("statement added to db");
           console.log(JSON.stringify(statement));
-          res.send("successful created statement").status(201);
+          res.send("Thank you safaricom");
         }).catch((error)=>{
           console.log("error saving to db");
           console.log(error);
-          res.send("failed to create statement").status(424);
+          res.send("Thank you safaricom");
         });
   } else {
     // when payment failed
-    console.log("payment failed! Transaction cancelled.");
-    res.send("payment failed! Transaction cancelled.").status(499);
+    console.log("payment failed!.");
+    console.log(JSON.stringify(req.body.Body));
+    res.send("THANK YOU SAFARICOM");
   }
 }
 );
@@ -209,5 +287,6 @@ app.post("/lipasubscription/:uid", (req, res) => {
   }
 }
 );
+
 exports.app = functions.https.onRequest(app);
 
