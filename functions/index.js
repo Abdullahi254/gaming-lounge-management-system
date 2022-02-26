@@ -71,7 +71,7 @@ app.post("/subscribe", (req, resp)=>{
       const accessToken = res.data.access_token;
       let amount = subscribtionMonth * 1;
       if (subscribtionMonth>1) {
-        amount = (subscribtionMonth * 500) * 0.9;
+        amount = (subscribtionMonth * 1) * 0.9;
       }
       const url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
       const shortCode = process.env.SAFARICOM_SHORTCODE.toString();
@@ -92,7 +92,9 @@ app.post("/subscribe", (req, resp)=>{
       const timeStamp = year + month + date + hour + minutes + seconds;
       const password = Buffer.from(shortCode + passKey + timeStamp).
           toString("base64");
-      amount = amount.toString();
+      console.log("Amount before rounding", amount);
+      amount = Math.round(amount).toString();
+      console.log("amount after rounding", amount);
       const phone = "254" + req.body.phone.toString();
       axios({
         method: "post",
@@ -136,6 +138,47 @@ app.post("/lipasubscription/:uid", (req, res) => {
   // when payment is successfull
   if (req.body.Body.stkCallback.ResultCode === 0) {
     console.log("payment successfull");
+    getAuth().getUser(req.params.uid).then((userRecord)=>{
+      let amount = req.body.Body.stkCallback.CallbackMetadata.Item[0].Value;
+      if (amount!==1) {
+        amount = amount / 0.9;
+      }
+      const months = amount/1;
+      const subscriptionEnd = userRecord.customClaims["subscriptionEnd"];
+      const subscriptionEndEvent = new Date(subscriptionEnd);
+      let diff = 0;
+      if (subscriptionEnd) {
+        const now = new Date();
+        console.log("The current date and time is", now);
+        console.log("subscription ends in", subscriptionEnd);
+        console.log("subscription ends in(milliseconds)",
+            subscriptionEndEvent.getTime());
+        console.log("now in(milliseconds)", now.getTime());
+        diff = subscriptionEndEvent.getTime() - now.getTime();
+      }
+      if (diff > 1) {
+        const sub = subscriptionEndEvent.getTime();
+        const newDate = new Date(sub);
+        newDate.setMonth(newDate.getMonth() + months);
+        getAuth().setCustomUserClaims(req.params.uid,
+            {subscriptionEnd: newDate.toDateString()}).then(()=>{
+          console.log("subscription expiry date updated");
+        }).catch(()=>{
+          console.log("error updating subscription date");
+        });
+      } else {
+        const newDate = new Date();
+        newDate.setMonth(newDate.getMonth() + months);
+        getAuth().setCustomUserClaims(req.params.uid,
+            {subscriptionEnd: newDate.toDateString()}).then(()=>{
+          console.log("subscription expiry date updated");
+        }).catch(()=>{
+          console.log("error updating subscription date");
+        });
+      }
+    }).catch(()=>{
+      console.log("error fetching premium custom claims");
+    });
     const date = new Date();
     const statement = {
       type: "Mpesa",
@@ -145,22 +188,24 @@ app.post("/lipasubscription/:uid", (req, res) => {
       receiptNumber: req.body.Body.stkCallback.CallbackMetadata.Item[1].Value,
       month: date.getMonth(),
       year: date.getFullYear(),
+      viewed: false,
       requestId: req.body.Body.stkCallback.MerchantRequestID,
     };
     db.collection("users").doc(req.params.uid).
         collection("subscriptions").add(statement).then(()=>{
           console.log("statement added to db");
           console.log(JSON.stringify(statement));
-          res.send("successful created statement").status(201);
+          res.send("THANK YOU SAFARICOM");
         }).catch((error)=>{
           console.log("error saving to db");
           console.log(error);
-          res.send("failed to create statement").status(424);
+          res.send("THANK YOU SAFARICOM");
         });
   } else {
     // when payment failed
-    console.log("payment failed! Transaction cancelled.");
-    res.send("payment failed! Transaction cancelled.").status(499);
+    console.log("payment failed!.");
+    console.log(JSON.stringify(req.body.Body));
+    res.send("THANK YOU SAFARICOM");
   }
 }
 );

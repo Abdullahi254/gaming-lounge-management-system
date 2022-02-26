@@ -7,7 +7,7 @@ import MpesaComp from '../../../../Payment/MpesaComp';
 
 function UpdateSubscription() {
     const [month, setMonth] = React.useState(1)
-    const [price, setPrice] = React.useState(500)
+    const [price, setPrice] = React.useState(1)
     const [isInvalid, setIsInvalid] = React.useState(true)
     const [loading, setLoading] = React.useState(false)
     const [mpesaError, setMpesaError] = React.useState()
@@ -65,7 +65,7 @@ function UpdateSubscription() {
     const handleChange = (event, newValue) => {
         if (typeof newValue === 'number') {
             setMonth(newValue);
-            let price = (newValue * 500)
+            let price = (newValue * 1)
             if (newValue !== 1) {
                 price = (90 / 100 * price)
                 setPrice(price)

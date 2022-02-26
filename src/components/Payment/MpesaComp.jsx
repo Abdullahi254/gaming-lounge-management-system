@@ -31,6 +31,7 @@ function MpesaComp({ mpesaPrompt, mpesaRef, handleChange, error, requestId, load
                     setSuccess("Payment was successfull")
                     stopLoading()
                     resetRequestId()
+                    currentUser.getIdToken(true)
                 }
             })
         }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Typography, Box } from '@mui/material'
 import { styled } from '@mui/material/styles';
+import { useAuth } from '../../../../../contexts/AuthContext';
 export const DateContainer = styled(Box)(({ theme }) => ({
     padding: 10,
     display: 'flex',
@@ -49,6 +50,19 @@ export const StyledBox = styled(Box)(({ theme }) => ({
 }))
 
 function SubscriptionCard() {
+    const { currentUser } = useAuth()
+    const [daysDue, setDaysDue] = React.useState(0)
+    React.useEffect(()=>{
+        currentUser.getIdTokenResult().then((idTokenResult)=>{
+            const subEndClaim = idTokenResult.claims.subscriptionEnd
+            const now = new Date()
+            const endDate = new Date(subEndClaim)
+            const diff = endDate.getTime() - now.getTime()
+            if(diff>0){
+                setDaysDue(Math.round(diff/86400000))
+            }
+        })
+    },[currentUser])
     return (
         <StyledBox >
             <Typography
@@ -58,15 +72,9 @@ function SubscriptionCard() {
                 Subscription Due In
             </Typography>
             <DateContainer>
-                <DateItem>
-                    <Typography variant='h4'>
-                        14
-                    </Typography>
-                    <Typography variant='caption'>Months</Typography>
-                </DateItem>
-                <DateItem>
-                    <Typography variant='h4'>
-                        10
+                <DateItem sx={{width:'70%'}}>
+                    <Typography variant='h2'>
+                        {daysDue}
                     </Typography>
                     <Typography variant='caption'>Days</Typography>
                 </DateItem>
