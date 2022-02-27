@@ -13,7 +13,11 @@ const StyledBox = styled(Box)(({ theme }) => ({
     minHeight: '150px',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30
+    marginTop: 30,
+    [theme.breakpoints.down('xl')]:{
+        marginTop:20,
+        minHeight: '100px',
+    }
 }))
 
 const brands = ["X-Box", "PlayStation"]

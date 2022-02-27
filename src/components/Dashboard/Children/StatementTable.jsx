@@ -97,7 +97,7 @@ function StatementTable() {
                         justifyContent: 'space-around',
                     }}
                 >
-                    <Typography variant='h5' sx={{ marginBottom: 2, textDecoration: 'underline' }}>
+                    <Typography variant='h6' sx={{ marginBottom: 2, textDecoration: 'underline' }}>
                         {!search ? 'Latest Sales.' : 'Selected Date Sales.'}
                     </Typography>
                     <ExpandMore

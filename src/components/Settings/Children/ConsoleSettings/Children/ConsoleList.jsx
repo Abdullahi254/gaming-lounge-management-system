@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { StyledTableContainer } from '../../../../Dashboard/Children/StatementTable';
-import { Table, TableHead, TableRow, TableBody, TableCell, Paper, Button, Typography, Alert } from '@mui/material'
+import { Table, TableHead, TableRow, TableBody, TableCell, Paper, Button, Typography, Alert, TableContainer } from '@mui/material'
 import { projectFireStore as db } from '../../../../../firebase/firebase'
 import { useAuth } from '../../../../../contexts/AuthContext'
 import UpdateConsoleForm from './UpdateConsoleForm';
+import { styled } from '@mui/material/styles';
+
+ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+    padding: 20,
+    margin: 10,
+    marginTop:0,
+    borderRadius: 20,
+    [theme.breakpoints.down('xl')]:{
+        maxHeight:390,
+        marginBottom:0,
+        marginTop:-10
+    }
+}))
+
 function ConsoleList() {
     const [consoles, setConsoles] = useState([])
     const { currentUser } = useAuth()
@@ -71,7 +84,7 @@ function ConsoleList() {
                 price={selectedPrice}
                 id={selectedConsoleId}
             />
-            <StyledTableContainer component={Paper} sx={{ maxHeight: 500, maxWidth:'1200px' }}>
+            <StyledTableContainer component={Paper}>
                 <Typography variant='h6' align='center' sx={{ marginBottom: 1, textDecoration: 'underline' }}>
                     Console List.
                 </Typography>

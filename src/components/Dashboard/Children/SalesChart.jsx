@@ -17,9 +17,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
     flexWrap: 'nowrap',
     width: '650px',
     height: '400px',
+    [theme.breakpoints.down('xl')]: {
+        height: '300px',
+        width:'450px'
+    },
     [theme.breakpoints.down('md')]: {
         height: '300px'
-    }
+    },
 }))
 
 function SalesChart() {

@@ -24,12 +24,48 @@ const StyledBox = styled(Box)(({ theme }) => ({
     borderRadius: '20px',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     boxShadow: 'rgb(0, 0, 0) 0px 20px 30px -10px',
-    width:'580px',
-    [theme.breakpoints.down('lg')]:{
-        width:'auto'
+    width: '550px',
+    [theme.breakpoints.down('xl')]: {
+        width: '450px'
+    },
+    [theme.breakpoints.down('lg')]: {
+        width: 'auto'
+    },
+    [theme.breakpoints.only('lg')]: {
+        marginTop:-10
     }
+}))
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    width: '50%',
+    [theme.breakpoints.down('lg')]: {
+        width: '100%',
+        marginBottom:10,
+    },
+    borderRadius: 10,
+}))
+const StyledNameBox = styled(Box)(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '40%',
+    [theme.breakpoints.down('lg')]:{
+    width: '100%'
+},
+}))
+
+const StyledCardMedia = styled(CardMedia)(({ theme }) => ({
+    height: '200px',
+    [theme.breakpoints.down('xl')]: {
+        height: '150px',
+    },
+    [theme.breakpoints.down('lg')]: {
+        height: '180px'
+    },
+    borderRadius: 10
 }))
 
 function LinearProgressWithLabel(props) {
@@ -49,22 +85,18 @@ function LinearProgressWithLabel(props) {
 
 function ImgMediaCard({ uploadImgHandler, newDp, progress }) {
     return (
-        <Card sx={{ maxWidth: 200, margin: '10px', padding: '20px', borderRadius: '10px' }}>
-            <CardMedia
+        <StyledCard>
+            <StyledCardMedia
                 component="img"
                 alt="Profile pic"
-                height="120"
                 image={newDp ? newDp : testDp}
-                sx={{
-                    borderRadius: '10px'
-                }}
             />
             <CardActions sx={{ display: 'flex', flexDirection: 'column' }}>
                 <label htmlFor="icon-button-file">
                     <Input
                         inputProps={
                             {
-                                accept:".jpg, .jpeg, .png"
+                                accept: ".jpg, .jpeg, .png"
                             }
                         }
                         id="icon-button-file"
@@ -87,7 +119,7 @@ function ImgMediaCard({ uploadImgHandler, newDp, progress }) {
                     </Box>
                 }
             </CardActions>
-        </Card>
+        </StyledCard>
     );
 }
 
@@ -186,15 +218,7 @@ function Dp() {
                 </Alert>
             }
             <ImgMediaCard uploadImgHandler={imgUploadHandler} newDp={dpUrl} progress={progress} />
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    width: '250px'
-                }}
-            >
+            <StyledNameBox>
                 {
                     showTextfield ?
                         <TextField
@@ -233,7 +257,7 @@ function Dp() {
 
                 }
 
-            </Box>
+            </StyledNameBox>
         </StyledBox>
     )
 }

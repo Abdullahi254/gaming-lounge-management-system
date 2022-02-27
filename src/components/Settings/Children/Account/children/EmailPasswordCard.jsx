@@ -18,12 +18,17 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useAuth } from '../../../../../contexts/AuthContext'
 import Login from './Login';
 
-export const StyledBox = styled(Box)(({ theme }) => ({
+ const StyledBox = styled(Box)(({ theme }) => ({
     background: theme.palette.background.paper,
     padding: 20,
     display: 'flex',
     flexDirection: 'column',
     margin: 10,
+    [theme.breakpoints.only('lg')]: {
+        padding:10,
+        marginTop:0,
+        marginBottom:0
+    },
     borderRadius: '20px',
     flexWrap: 'wrap',
     boxShadow: 'rgb(0, 0, 0) 0px 20px 30px -10px',
@@ -188,18 +193,14 @@ function EmailPasswordCard() {
                 <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px', color:(theme)=>theme.palette.error.light }}>Not Verified.</Typography>:
                 <Typography variant='caption' gutterBottom sx={{ marginBottom: '15px', color:(theme)=>theme.palette.success.light }}>Verified.</Typography>
             }
-            
-            <Typography variant='subtitle2' gutterBottom sx={{ marginBottom: '15px' }}>
-                To update your email, you might need to login again with your current credentials.
-            </Typography>
-
+        
             <Typography variant='h6' gutterBottom sx={{ textDecoration: 'underline' }}>Password.</Typography>
             <Typography variant='h6' sx={{ fontWeight: 'bold' }}>******</Typography>
             <Typography sx={{ color: 'gray', cursor: 'not-allowed' }}>
                 <VisibilityIcon />
             </Typography>
             <Typography variant='subtitle2' gutterBottom sx={{ marginBottom: '15px' }}>
-                To update your password, you might need to login again with your current credentials.
+                To update your info, you might need to login again with your current credentials.
             </Typography>
 
             <Typography component='div' sx={{ display: 'flex', justifyContent: 'flex-end' }}>

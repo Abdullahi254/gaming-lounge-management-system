@@ -13,7 +13,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
     marginTop:-20,
     marginBottom:10,
     borderRadius:'30px',
-    flexWrap:'nowrap'
+    flexWrap:'nowrap',
+    [theme.breakpoints.down('xl')]: {
+        width:'350px'
+    },
 }))
 
 const StyledDiv = styled('div')(({ theme }) => ({
@@ -26,14 +29,21 @@ const StyledDiv = styled('div')(({ theme }) => ({
 
 const StyledImg = styled('img')(({ theme }) => ({
     height:'200px',
-    width:'200px'
+    width:'200px',
+    [theme.breakpoints.down('xl')]: {
+        width:'150px',
+        height:'150px'
+    },
 }))
 
 const StyledText = styled(Typography)(({ theme }) => ({
     fontSize:'16px',
     fontWeight:'bold',
     margin:'5px 0 ',
-    [theme.breakpoints.down('sm')]:{
+    [theme.breakpoints.down('xl')]:{
+        fontSize:'15px'
+    },
+    [theme.breakpoints.down('md')]:{
         fontSize:'14px'
     }
 }))

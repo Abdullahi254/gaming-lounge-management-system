@@ -15,10 +15,10 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
         width: '100%',
 
     },
-    [theme.breakpoints.up('xl')]: {
+    [theme.breakpoints.only('xl')]: {
         width: '60%',
 
-    }
+    },
 }))
 
 function ConsoleSettings() {
