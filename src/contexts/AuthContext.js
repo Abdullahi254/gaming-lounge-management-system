@@ -70,6 +70,21 @@ export function AuthProvider({ children }) {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user)
             setLoading(false)
+            user.getIdTokenResult().then(idTokenResult=>{
+                const last = new Date(idTokenResult.claims.auth_time * 1000);
+                console.log("Last log in ",last.toLocaleString())
+                const now = new Date()
+                const diff = now.getTime() - last.getTime()
+                const sessionDuration = (1000 * 60 * 60 * 8)
+                console.log("logged in for", Math.round(diff/(1000*60)), "mins")
+                if(diff >= sessionDuration ){
+                    auth.signOut()
+                }else{
+                    setTimeout(()=>{
+                        auth.signOut()
+                    }, (sessionDuration - diff))
+                }
+            })
         })
 
         return unsubscribe

@@ -10,7 +10,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     alignItems: 'center',
     padding: 20,
     margin: 'auto',
-    marginTop: 30,
+    marginTop: 10,
     background: theme.palette.background.paper,
     borderRadius: '20px',
     width: '80%',

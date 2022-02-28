@@ -9,7 +9,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Tooltip, IconButton } from '@mui/material';
 import SalesForm from './Children/SalesForm';
 import VerificationCard from './Children/VerificationCard';
-
+import SubscriptionAlert from './Children/SubscriptionAlert';
 export const StyledContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexWrap: 'wrap',
@@ -23,7 +23,6 @@ export const StyledContainer = styled(Box)(({ theme }) => ({
 
 function Dashbord() {
     const [open, setOpen] = React.useState(false);
-
     const handleClose = () => {
         setOpen(false);
     };
@@ -31,9 +30,9 @@ function Dashbord() {
     const handleToggle = () => {
         setOpen(!open);
     };
-
     return (
         <StyledContainer >
+            <SubscriptionAlert/>
             <VerificationCard />
             <ReportCard />
             <SalesChart />

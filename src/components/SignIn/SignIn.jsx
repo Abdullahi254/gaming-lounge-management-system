@@ -13,7 +13,7 @@ import Container from '@mui/material/Container';
 import { Alert, AlertTitle } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
-
+import axios from 'axios';
 export default function SignIn() {
     const [error, setError] = useState('')
     const { currentUser, login } = useAuth()
@@ -26,8 +26,20 @@ export default function SignIn() {
         // const from = location.state.from.pathname || "/"
         const from = "/"
         const data = new FormData(event.currentTarget);
-        login(data.get('email'), data.get('password')).then(res => {
+        login(data.get('email'), data.get('password')).then(resp => {
             console.log('logged in successfully')
+            axios({
+                method: 'post',
+                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/check-membership",
+                data: {
+                    email: resp.user.email,
+                }
+            }).then(res => {
+                console.log(res.data)
+                resp.user.getIdToken(true)
+            }).catch(er => {
+                console.log(er)
+            })
             navigate(from, { replace: true });
         }).catch(er => {
             setError("Error logging in! Check email or password.")

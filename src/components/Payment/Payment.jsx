@@ -14,10 +14,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    padding: 10,
     maxWidth: '800px',
     margin: 'auto',
-    marginTop: 5,
+    marginTop: 0,
     borderRadius: '20px'
 }))
 

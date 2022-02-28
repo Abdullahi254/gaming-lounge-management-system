@@ -55,6 +55,8 @@ function SubscriptionCard() {
     React.useEffect(()=>{
         currentUser.getIdTokenResult().then((idTokenResult)=>{
             const subEndClaim = idTokenResult.claims.subscriptionEnd
+            console.log("subscription ends in: ", subEndClaim)
+            console.log("is user premium: ", idTokenResult.claims.premium)
             const now = new Date()
             const endDate = new Date(subEndClaim)
             const diff = endDate.getTime() - now.getTime()

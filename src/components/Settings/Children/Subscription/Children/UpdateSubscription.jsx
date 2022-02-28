@@ -94,6 +94,7 @@ function UpdateSubscription() {
                     onChange={handleChange}
                 />
             </Box>
+            <Typography variant='caption'>(Interact with slider)</Typography>
             <MiniContainer>
                 <Item sx={{ background: (theme) => theme.palette.background.paper }}>
                     <Typography variant='h4'>
