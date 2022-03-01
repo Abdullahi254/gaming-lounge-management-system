@@ -17,7 +17,7 @@ function SubscriptionCard() {
         setPremeium(premiumClaim)
     })
     return (
-        <StyledBox>
+        <StyledBox sx={{display:premium && 'none'}}>
             {
                 !premium &&
                 <Alert

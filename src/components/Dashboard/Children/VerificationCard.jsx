@@ -17,7 +17,7 @@ function VerificationCard() {
         })
     }
     return (
-        <StyledBox>
+        <StyledBox sx={{display:currentUser.emailVerified && 'none'}}>
             {
                 !currentUser.emailVerified && !clicked &&
                 <Alert

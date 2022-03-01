@@ -238,8 +238,11 @@ app.post("/lipasubscription/:uid", (req, res) => {
         const sub = subscriptionEndEvent.getTime();
         const newDate = new Date(sub);
         newDate.setMonth(newDate.getMonth() + months);
-        getAuth().setCustomUserClaims(req.params.uid,
-            {subscriptionEnd: newDate.toDateString()}).then(()=>{
+        const customClaims = {
+          subscriptionEnd: newDate.toDateString(),
+          premium: true,
+        };
+        getAuth().setCustomUserClaims(req.params.uid, customClaims).then(()=>{
           console.log("subscription expiry date updated");
         }).catch(()=>{
           console.log("error updating subscription date");
@@ -247,8 +250,11 @@ app.post("/lipasubscription/:uid", (req, res) => {
       } else {
         const newDate = new Date();
         newDate.setMonth(newDate.getMonth() + months);
-        getAuth().setCustomUserClaims(req.params.uid,
-            {subscriptionEnd: newDate.toDateString()}).then(()=>{
+        const customClaims = {
+          subscriptionEnd: newDate.toDateString(),
+          premium: true,
+        };
+        getAuth().setCustomUserClaims(req.params.uid, customClaims).then(()=>{
           console.log("subscription expiry date updated");
         }).catch(()=>{
           console.log("error updating subscription date");
@@ -298,9 +304,11 @@ app.post("/check-membership", (req, res)=>{
     const diff = endDate.getTime() - now.getTime();
     console.log("days due", Math.round(diff/86400000));
     if (diff > 0) {
-      getAuth().setCustomUserClaims(user.uid, {
+      const customClaims = {
+        subscriptionEnd: user.customClaims["subscriptionEnd"],
         premium: true,
-      }).then(()=>{
+      };
+      getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
         console.log("user has become or retained premium membership",
             user.email);
         res.send("successfully made or retained user's premium membership");
@@ -311,9 +319,11 @@ app.post("/check-membership", (req, res)=>{
         throw Error("error making or sustaining user premium membership");
       });
     } else {
-      getAuth().setCustomUserClaims(user.uid, {
+      const customClaims = {
+        subscriptionEnd: user.customClaims["subscriptionEnd"],
         premium: false,
-      }).then(()=>{
+      };
+      getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
         console.log("user subscription has ended", user.email);
         res.send("successfully usubscribed user");
       }).catch((er)=>{
@@ -322,6 +332,28 @@ app.post("/check-membership", (req, res)=>{
         throw Error("error usubscribing user");
       });
     }
+  }).catch((er)=>{
+    console.log("error fetching user by mail");
+    console.log(JSON.stringify(er));
+    throw Error("error fetching user by mail");
+  });
+});
+
+app.post("/unsubscribe/:email", (req, res)=>{
+  const email = req.params.email;
+  getAuth().getUserByEmail((email)).then((user)=>{
+    const customClaims = {
+      subscriptionEnd: undefined,
+      premium: false,
+    };
+    getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
+      console.log("user subscription has ended", user.email);
+      res.send("successfully usubscribed user");
+    }).catch((er)=>{
+      console.log("error usubscribing user", user.email);
+      console.log(JSON.stringify(er));
+      throw Error("error usubscribing user");
+    });
   }).catch((er)=>{
     console.log("error fetching user by mail");
     console.log(JSON.stringify(er));

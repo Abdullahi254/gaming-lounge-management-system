@@ -11,18 +11,19 @@ const StyledBox = styled(Box)(({ theme }) => ({
     padding: 20,
     display: 'flex',
     margin: 10,
-    marginTop:10,
     marginBottom:0,
+    marginTop:20,
     borderRadius: '30px',
     flexWrap: 'nowrap',
     width: '650px',
     height: '400px',
     [theme.breakpoints.down('xl')]: {
         height: '300px',
-        width:'450px'
+        width:'450px',
     },
     [theme.breakpoints.down('md')]: {
-        height: '300px'
+        height: '300px',
+        marginTop:0,
     },
 }))
 

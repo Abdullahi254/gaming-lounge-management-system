@@ -10,7 +10,6 @@ const StyledBox = styled(Box)(({ theme }) => ({
     padding: 20,
     display: 'flex',
     margin:10,
-    marginTop:-20,
     marginBottom:10,
     borderRadius:'30px',
     flexWrap:'nowrap',
