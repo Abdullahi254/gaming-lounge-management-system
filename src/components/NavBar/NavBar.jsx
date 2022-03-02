@@ -16,11 +16,11 @@ import { AccountBox, Settings, Logout, DarkMode as AppearanceIcon } from '@mui/i
 import TemporaryDrawer from './TemporaryDrawer/TemporaryDrawer'
 import CustomLink from './CustomLink/CustomLink';
 import { styled, } from '@mui/material/styles';
-import { useNavigate, Outlet, useMatch, useResolvedPath } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 import { projectFireStore as db} from '../../firebase/firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import Notification from './Notification/Notification';
-import Footer from '../Footer/Footer'
+// import Footer from '../Footer/Footer'
 
 const StyledImg = styled('img')(({ theme }) => ({
     height: theme.spacing(7),
@@ -38,8 +38,8 @@ const NavBar = ({ email, triggerThemeChange }) => {
     const [darkmode, setDarkmode] = React.useState(true)
     const { currentUser, logout } = useAuth();
 
-    let resolved = useResolvedPath('dashboard');
-    let match = useMatch({ path: resolved.pathname, end: true });
+    // let resolved = useResolvedPath('dashboard');
+    // let match = useMatch({ path: resolved.pathname, end: true });
     const navigate = useNavigate()
 
     const handleOpenUserMenu = (event) => {
@@ -278,7 +278,7 @@ const NavBar = ({ email, triggerThemeChange }) => {
             </AppBar>
 
             <Outlet />
-            {!match && <Footer />}
+            {/* {!match && <Footer />} */}
         </>
     );
 };

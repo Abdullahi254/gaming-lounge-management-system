@@ -24,10 +24,17 @@ import Login from './Login';
     display: 'flex',
     flexDirection: 'column',
     margin: 10,
+    width:'550px',
+    [theme.breakpoints.down('xl')]: {
+        width: '500px'
+    },
     [theme.breakpoints.only('lg')]: {
         padding:10,
         marginTop:0,
-        marginBottom:0
+        marginBottom:0,
+    },
+    [theme.breakpoints.down('lg')]: {
+        width: 'auto'
     },
     borderRadius: '20px',
     flexWrap: 'wrap',

@@ -24,7 +24,7 @@ function ActiveConsoles() {
                 setConsoles(querySnapshot.docs.map(doc => doc.data()))
                 setLoading(false)
             }, err => {
-                setError('Something went wrong fetching your consoles!')
+                setError('Something went wrong fetching your consoles-- Check subscription!')
                 setLoading(false)
             })
         }

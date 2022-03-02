@@ -42,8 +42,10 @@ function SalesForm({ open, handleClose }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
+        setSuccess()
+        setError()
         try {
-            if (!fromError || !mpesaRefError) {
+            if (!fromError && !mpesaRefError) {
                 const event = new Date()
                 const month = event.getMonth()
                 const year = event.getFullYear()

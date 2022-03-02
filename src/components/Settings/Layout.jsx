@@ -9,12 +9,12 @@ import {
 import { styled } from '@mui/material/styles';
 import { AccountBox as AccountBoxIcon, Gamepad, Unsubscribe as SubscribeIcon } from '@mui/icons-material'
 import { Outlet, useResolvedPath, useMatch, useNavigate } from 'react-router-dom'
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 
 const SideNav = styled(List)(({ theme }) => ({
     display: 'flex',
     flexWrap:'wrap',
     flexDirection: 'column',
-    justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
     width: '30%',
@@ -76,6 +76,12 @@ function Settings() {
                         <SubscribeIcon />
                     </ListItemIcon>
                     <ListItemText primary={"My Subscription"} />
+                </Item>
+                <Item button to="mpesa-integration" onClick={() => navigate("mpesa-integration")}>
+                    <ListItemIcon>
+                        <PointOfSaleIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary={"Mpesa Integration"} />
                 </Item>
             </SideNav>
             <Outlet />

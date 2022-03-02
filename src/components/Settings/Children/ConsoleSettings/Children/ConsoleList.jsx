@@ -42,7 +42,7 @@ function ConsoleList() {
                 })
                 setConsoles(consoleList)
             }, err => {
-                setErrorMessage('Something went wrong fetching your consoles!')
+                setErrorMessage('Something went wrong fetching your consoles--check subscription!')
             })
         }
         getConsoles()

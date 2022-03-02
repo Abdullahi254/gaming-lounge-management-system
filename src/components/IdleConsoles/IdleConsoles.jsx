@@ -15,7 +15,7 @@ function IdleConsoles() {
                 setConsoles(querySnapshot.docs.map(doc => doc.data()))
                 setLoading(false)
             }, er => {
-                setError("Error fetching Idle consoles!")
+                setError("Something went wrong fetching idle consoles-- Check subscription!")
                 setLoading(false)
             })
         }

@@ -7,7 +7,7 @@ import logo from '../../../assets/imgs/logo.png'
 
 const StyledImg = styled('img')(({ theme }) => ({
     height: 100,
-    width: 150,
+    width: 134,
     borderRadius: '10px',
     filter: theme.palette.mode === 'light' ? 'invert(100%)' : 'invert(20%)',
     marginBottom:20

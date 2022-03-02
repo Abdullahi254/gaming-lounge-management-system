@@ -339,8 +339,8 @@ app.post("/check-membership", (req, res)=>{
   });
 });
 
-app.post("/unsubscribe/:email", (req, res)=>{
-  const email = req.params.email;
+app.post("/unsubscribe", (req, res)=>{
+  const email = req.body.email;
   getAuth().getUserByEmail((email)).then((user)=>{
     const customClaims = {
       subscriptionEnd: undefined,
@@ -353,6 +353,30 @@ app.post("/unsubscribe/:email", (req, res)=>{
       console.log("error usubscribing user", user.email);
       console.log(JSON.stringify(er));
       throw Error("error usubscribing user");
+    });
+  }).catch((er)=>{
+    console.log("error fetching user by mail");
+    console.log(JSON.stringify(er));
+    throw Error("error fetching user by mail");
+  });
+});
+
+app.post("/subscribe-one-day", (req, res)=>{
+  const email = req.body.email;
+  getAuth().getUserByEmail((email)).then((user)=>{
+    const now = new Date();
+    const subEnd = new Date(now.getTime() + (1000 * 60 * 60 * 24));
+    const customClaims = {
+      subscriptionEnd: subEnd.toDateString(),
+      premium: true,
+    };
+    getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
+      console.log("one minute subscription started", user.email);
+      res.send("successfully subscribed user");
+    }).catch((er)=>{
+      console.log("error subscribing user", user.email);
+      console.log(JSON.stringify(er));
+      throw Error("error subscribing user");
     });
   }).catch((er)=>{
     console.log("error fetching user by mail");

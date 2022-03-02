@@ -28,13 +28,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
     boxShadow: 'rgb(0, 0, 0) 0px 20px 30px -10px',
     width: '550px',
     [theme.breakpoints.down('xl')]: {
-        width: '450px'
+        width: '500px'
     },
     [theme.breakpoints.down('lg')]: {
         width: 'auto'
     },
     [theme.breakpoints.only('lg')]: {
-        marginTop:-10
+        marginTop:0
     }
 }))
 
