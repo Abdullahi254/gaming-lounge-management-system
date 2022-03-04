@@ -1,8 +1,10 @@
 import React from 'react';
-import { Paper, Typography } from '@mui/material';
+import { Paper} from '@mui/material';
 import { styled } from '@mui/material/styles';
+import SaleNotification from './SaleNotification';
+import SubscriptionNotification from './SubscriptionNotification';
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
+export const StyledPaper = styled(Paper)(({ theme }) => ({
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
@@ -11,11 +13,24 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
     margin: 2
 }))
 
-function Notification({ amount, name, date }) {
+function Notification({ sub, sale, name,amount,date }) {
     return (
         <StyledPaper  variant="outlined">
-            Received&nbsp;<Typography sx={{color:'#d32f2f'}}>KSH{amount.toFixed(2)}</Typography>
-            &nbsp;From {name} On&nbsp;<Typography sx={{color:'#d32f2f'}}>{date}.</Typography>
+            {
+                sale &&
+                <SaleNotification
+                    name={name}
+                    amount={amount}
+                    date={date}
+                />
+            }
+
+            {
+                sub && <SubscriptionNotification
+                    amount={amount}
+                    date={date}
+                />
+            }
         </StyledPaper>
     )
 }

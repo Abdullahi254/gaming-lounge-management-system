@@ -17,9 +17,10 @@ import TemporaryDrawer from './TemporaryDrawer/TemporaryDrawer'
 import CustomLink from './CustomLink/CustomLink';
 import { styled, } from '@mui/material/styles';
 import { useNavigate, Outlet } from 'react-router-dom';
-import { projectFireStore as db} from '../../firebase/firebase';
+import { projectFireStore as db } from '../../firebase/firebase';
 import { useAuth } from '../../contexts/AuthContext';
 import Notification from './Notification/Notification';
+import Nonotification from './Notification/Nonotification';
 // import Footer from '../Footer/Footer'
 
 const StyledImg = styled('img')(({ theme }) => ({
@@ -35,6 +36,7 @@ const NavBar = ({ email, triggerThemeChange }) => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const [anchorElNotification, setAnchorNotification] = React.useState(null)
     const [statements, setStatements] = React.useState([])
+    const [subs, setSub] = React.useState([])
     const [darkmode, setDarkmode] = React.useState(true)
     const { currentUser, logout } = useAuth();
 
@@ -59,11 +61,15 @@ const NavBar = ({ email, triggerThemeChange }) => {
     const handleCloseNotificationMenu = async () => {
         setAnchorNotification(null);
         try {
-            const consoleRef = await db.collection(`users/${currentUser.uid}/statements`).where('viewed', '==', false).get()
-            consoleRef.forEach((doc) => doc.ref.update({
+            const subRef = await db.collection(`users/${currentUser.uid}/subscriptions`).where('viewed', '==', false).get()
+            subRef.forEach((doc) => doc.ref.update({
                 viewed: true
             }))
-
+            
+            const statementRef = await db.collection(`users/${currentUser.uid}/statements`).where('viewed', '==', false).get()
+            statementRef.forEach((doc) => doc.ref.update({
+                viewed: true
+            }))
         } catch (error) {
             console.log(error)
         }
@@ -89,19 +95,32 @@ const NavBar = ({ email, triggerThemeChange }) => {
     }
 
     React.useEffect(() => {
-        function fetchNotifications() {
+        function fetchSalesNotifications() {
             //fetching notifications from the database using authenticated user's credentials
             const query = db.collection(`users/${currentUser.uid}/statements`).where('viewed', '==', false)
             query.onSnapshot(querySnapshot => {
                 setStatements(querySnapshot.docs.map(doc => doc.data()))
             })
         }
-        fetchNotifications()
-        return () => setStatements([])
+        function fetchSubNotifications() {
+            //fetching notifications from the database using authenticated user's credentials
+            const query = db.collection(`users/${currentUser.uid}/subscriptions`).where('viewed', '==', false)
+            query.onSnapshot(querySnapshot => {
+                setSub(querySnapshot.docs.map(doc => doc.data()))
+            })
+        }
+
+        fetchSubNotifications()
+        fetchSalesNotifications()
+
+        return () => {
+            setStatements([])
+            setSub([])
+        }
     }, [currentUser])
 
     const toogleTheme = () => {
-        setDarkmode(prev=>{
+        setDarkmode(prev => {
             triggerThemeChange(!prev)
             return !prev
         })
@@ -151,7 +170,7 @@ const NavBar = ({ email, triggerThemeChange }) => {
                                     size='small'
                                     onClick={handleOpenNotificationMenu}
                                 >
-                                    <Badge badgeContent={statements.length} color="error" >
+                                    <Badge badgeContent={(statements.length + subs.length)} color="error" >
                                         <NotificationsIcon
                                             sx={{
                                                 fontSize: { xs: '24px', sm: '26px', md: '28px' },
@@ -177,31 +196,36 @@ const NavBar = ({ email, triggerThemeChange }) => {
                                 open={Boolean(anchorElNotification)}
                                 onClose={handleCloseNotificationMenu}
                             >
-                                {statements.length > 0 ?
+                                {
+                                    statements.length > 0 &&
                                     statements.map((item, index) => {
                                         return (
                                             <Notification
+                                                sale={true}
                                                 key={index}
                                                 amount={item.amount}
                                                 name={item.from}
                                                 date={item.date.toDate().toString().split(' G')[0]}
                                             />
                                         )
-                                    }) :
-                                    <Typography
-                                        sx={{
-                                            width: '200px',
-                                            height: '100px',
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'flex-end',
-                                            alignItems: 'center',
-                                            padding: '10px'
-                                        }}
-                                        component='div'
-                                    >
-                                        <Typography>No notifications!</Typography>
-                                    </Typography>
+                                    })
+                                }
+                                {
+                                    subs.length > 0 &&
+                                    subs.map((item, index) => {
+                                        return (
+                                            <Notification
+                                                sub={true}
+                                                key={index}
+                                                amount={item.amount}
+                                                date={item.date.toDate().toString().split(' G')[0]}
+                                            />
+                                        )
+                                    })
+                                }
+
+                                {
+                                    (statements.length <= 0) && (subs.length <= 0) && <Nonotification />
                                 }
                             </Menu>
                             <Tooltip title="Open settings">
