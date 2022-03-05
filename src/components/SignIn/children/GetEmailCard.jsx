@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyledBox } from '../../Settings/Children/Account/children/Login'
-import { Typography, TextField, Button, Alert, Box } from '@mui/material'
+import { Typography, TextField, Button, Alert, Box, CircularProgress as Spinner } from '@mui/material'
 import { useAuth } from '../../../contexts/AuthContext'
 import { styled } from '@mui/material/styles';
 import logo from '../../../assets/imgs/logo.png'
@@ -10,7 +10,7 @@ const StyledImg = styled('img')(({ theme }) => ({
     width: 134,
     borderRadius: '10px',
     filter: theme.palette.mode === 'light' ? 'invert(100%)' : 'invert(20%)',
-    marginBottom:20
+    marginBottom: 20
 }))
 
 function GetEmailCard() {
@@ -18,13 +18,17 @@ function GetEmailCard() {
     const emailRef = React.useRef()
     const [success, setSuccess] = React.useState()
     const [error, setError] = React.useState()
+    const [loading, setLoading] = React.useState(false)
     const submitHandler = (e) => {
         e.preventDefault()
+        setLoading(true)
         setSuccess()
         setError()
         passwordResetByMail(emailRef.current.value).then(() => {
+            setLoading(false)
             setSuccess('A link has been sent to your email inbox')
         }).catch(er => {
+            setLoading(false)
             setError('Error sending link--check inserted email address')
         })
     }
@@ -53,9 +57,12 @@ function GetEmailCard() {
                     transform: 'translateX(0%)',
                 }}
             >
+                {
+                    loading && <Spinner />
+                }
                 {error && <Alert severity="error" sx={{ justifyContent: 'center', width: '100%', marginBottom: '10px' }}>{error}</Alert>}
                 {success && <Alert severity="success" sx={{ justifyContent: 'center', width: '100%', marginBottom: '10px' }}>{success}</Alert>}
-                <Typography variant='h6' gutterBottom sx={{marginBottom:5, textDecoration:'underline'}}>Recover Password</Typography>
+                <Typography variant='h6' gutterBottom sx={{ marginBottom: 5, textDecoration: 'underline' }}>Recover Password</Typography>
                 <Typography>
                     Insert Email.
                 </Typography>

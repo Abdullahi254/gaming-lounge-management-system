@@ -361,11 +361,12 @@ app.post("/unsubscribe", (req, res)=>{
   });
 });
 
-app.post("/subscribe-one-day", (req, res)=>{
+app.post("/subscribe-specify-days", (req, res)=>{
   const email = req.body.email;
+  const days = req.body.days;
   getAuth().getUserByEmail((email)).then((user)=>{
     const now = new Date();
-    const subEnd = new Date(now.getTime() + (1000 * 60 * 60 * 24));
+    const subEnd = new Date(now.getTime() + (1000 * 60 * 60 * 24 * days));
     const customClaims = {
       subscriptionEnd: subEnd.toDateString(),
       premium: true,
@@ -387,3 +388,14 @@ app.post("/subscribe-one-day", (req, res)=>{
 
 exports.app = functions.https.onRequest(app);
 
+exports.sendWelcomeEmail = functions.auth.user().onCreate((user)=>{
+  getAuth().setCustomUserClaims(user.uid, {
+    subscriptionEnd: undefined,
+    premium: false,
+  }).then(()=>{
+    console.log("new user created: ", user.email);
+  }).catch((er)=>{
+    console.log("error setting custom claim for new user");
+    console.log(JSON.stringify(er));
+  });
+});

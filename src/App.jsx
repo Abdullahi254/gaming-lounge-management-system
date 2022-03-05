@@ -6,6 +6,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ActiveConsoles from './components/ActiveConsoles/ActiveConsoles';
 import { useAuth } from './contexts/AuthContext';
 import SignIn from './components/SignIn/SignIn';
+import SignUp from './components/SignUp/SignUp';
 import { CssBaseline } from '@mui/material';
 import IdleConsoles from './components/IdleConsoles/IdleConsoles';
 import Dashbord from './components/Dashboard/Dashbord';
@@ -74,6 +75,7 @@ function App() {
       <CssBaseline />
       <Routes>
         <Route path="/login" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp/>} />
         <Route path="/"
           element={currentUser ?
             <NavBar email={currentUser.email} triggerThemeChange={(isdark)=>setDarkmode(isdark)} /> :
