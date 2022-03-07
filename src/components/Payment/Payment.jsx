@@ -7,7 +7,8 @@ import CashComp from './CashComp';
 import { useParams } from 'react-router-dom';
 import { projectFireStore as db } from '../../firebase/firebase';
 import { useAuth } from '../../contexts/AuthContext';
-import axios from 'axios'
+import axios from 'axios';
+import NotFound from '../404/NotFound'
 const StyledBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -23,6 +24,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 
 function Payment() {
+    const [hasSubed, setHasSubed] = React.useState(false)
     const [type, setType] = React.useState('Mpesa');
     const [total, setTotal] = React.useState(0);
     const [showText, setShowText] = React.useState(true)
@@ -42,8 +44,15 @@ function Payment() {
     React.useEffect(() => {
         const minutes = time / 60000
         setTotal(Math.round(minutes * price))
-        return ()=>setTotal()
+        return () => setTotal()
     }, [time, price])
+
+    React.useEffect(() => {
+        currentUser.getIdTokenResult().then((idTokenResult) => {
+            setHasSubed(idTokenResult.claims.premium)
+        })
+        return () => setHasSubed(false)
+    }, [currentUser])
 
     const handleChange = (value) => {
         setType(value)
@@ -137,80 +146,86 @@ function Payment() {
     }
 
     return (
-        <StyledBox>
-            <Typography variant='h5' align='center' my={2}>
-                Amount Totals To:
-            </Typography>
-            <Typography
-                variant='h3'
-                align='center'
-                gutterBottom
-                sx={
-                    {
-                        cursor: 'pointer',
-                        display: showText ? 'block' : 'none'
-                    }
-                }
-                onClick={toogledit}
-            >
-                KSH.{total.toFixed(2)}
-            </Typography>
-            <TextField
-                id="outlined-amount"
-                label="Edit Amount"
-                variant="standard"
-                defaultValue={Math.round((time / 60000) * price)}
-                type="number"
-                inputRef={amountRef}
-                sx={{
-                    display: !showText ? 'block' : 'none',
-                    marginRight: 1,
-                    my: 1
-                }}
-                inputProps={{
-                    style: {
-                        fontSize: '20px',
-                        fontWeight: 'bold',
-                    },
-                    onBlurCapture: saveAmount,
-                    onKeyPress: (e) => {
-                        if (e.key === "Enter") {
-                            setShowText(true)
+        <>
+            {
+                hasSubed ? <StyledBox>
+                    <Typography variant='h5' align='center' my={2}>
+                        Amount Totals To:
+                    </Typography>
+                    <Typography
+                        variant='h3'
+                        align='center'
+                        gutterBottom
+                        sx={
+                            {
+                                cursor: 'pointer',
+                                display: showText ? 'block' : 'none'
+                            }
                         }
-                    }
-                }}
+                        onClick={toogledit}
+                    >
+                        KSH.{total.toFixed(2)}
+                    </Typography>
+                    <TextField
+                        id="outlined-amount"
+                        label="Edit Amount"
+                        variant="standard"
+                        defaultValue={Math.round((time / 60000) * price)}
+                        type="number"
+                        inputRef={amountRef}
+                        sx={{
+                            display: !showText ? 'block' : 'none',
+                            marginRight: 1,
+                            my: 1
+                        }}
+                        inputProps={{
+                            style: {
+                                fontSize: '20px',
+                                fontWeight: 'bold',
+                            },
+                            onBlurCapture: saveAmount,
+                            onKeyPress: (e) => {
+                                if (e.key === "Enter") {
+                                    setShowText(true)
+                                }
+                            }
+                        }}
 
 
-            />
+                    />
 
-            <SelectComp
-                type={type}
-                handleSelectChange={(value) => handleChange(value)}
-            />
+                    <SelectComp
+                        type={type}
+                        handleSelectChange={(value) => handleChange(value)}
+                    />
 
-            {type === "Mpesa" && <MpesaComp
-                mpesaRef={mpesaRef}
-                mpesaPrompt={handleMpesaPrompt}
-                handleChange={checkValidity}
-                error={isInvalid}
-                requestId={requestId}
-                loading={loading}
-                stopLoading={()=>setLoading(false)}
-                resetRequestId={()=>setRequestId(' ')}
-                transactionError={mpesaError}
-                close={()=>setMpesaError()}
-                info="Insert Mpesa Phone Number."
-                collection="statements"
-            />}
-            {type === "Cash" &&
-                <CashComp
-                    amount={total.toFixed(2)}
-                    cashSale={handleCashSale}
-                    success={success}
-                    error={error}
-                    close={resetSuccessErrorStates}
-                />}
-        </StyledBox>
+                    {type === "Mpesa" && <MpesaComp
+                        mpesaRef={mpesaRef}
+                        mpesaPrompt={handleMpesaPrompt}
+                        handleChange={checkValidity}
+                        error={isInvalid}
+                        requestId={requestId}
+                        loading={loading}
+                        stopLoading={() => setLoading(false)}
+                        resetRequestId={() => setRequestId(' ')}
+                        transactionError={mpesaError}
+                        close={() => setMpesaError()}
+                        info="Insert Mpesa Phone Number."
+                        collection="statements"
+                    />}
+                    {type === "Cash" &&
+                        <CashComp
+                            amount={total.toFixed(2)}
+                            cashSale={handleCashSale}
+                            success={success}
+                            error={error}
+                            close={resetSuccessErrorStates}
+                        />}
+                </StyledBox> :
+                    <NotFound />
+            }
+        </>
+
     )
 }
 
