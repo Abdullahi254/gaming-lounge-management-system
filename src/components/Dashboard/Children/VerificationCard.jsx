@@ -24,7 +24,7 @@ function VerificationCard() {
                     sx={{ width: '100%', justifyContent: 'center' }}
                     severity="error"
                 >
-                    Please verify your email address --
+                    Verify account to get max features --
                     <span
                         style={{ textDecoration: 'underline', cursor: 'pointer' }}
                         onClick={sendEmailHandler}

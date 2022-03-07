@@ -36,7 +36,7 @@ export default function SignIn() {
             setLoading(false)
             axios({
                 method: 'post',
-                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/check-membership",
+                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/api/membership/check-membership",
                 data: {
                     email: resp.user.email,
                 }

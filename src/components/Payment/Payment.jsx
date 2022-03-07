@@ -31,7 +31,7 @@ function Payment() {
     const [success, setSuccess] = React.useState()
     const [error, setError] = React.useState()
     const [isInvalid, setIsInvalid] = React.useState(true)
-    const [requestId, setRequestId] = React.useState(' ')
+    const [checkoutId, setCheckoutId] = React.useState(' ')
     const [loading, setLoading] = React.useState(false)
     const [mpesaError, setMpesaError] = React.useState()
     const { time, price } = useParams()
@@ -86,7 +86,7 @@ function Payment() {
     const handleMpesaPrompt = (e) => {
         e.preventDefault()
         setMpesaError()
-        setRequestId(' ')
+        setCheckoutId(' ')
         if (!isInvalid) {
             setLoading(true)
             setTimeout(() => {
@@ -94,7 +94,7 @@ function Payment() {
             }, 60000)
             axios({
                 method: 'post',
-                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/pay-game",
+                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/api/game/pay",
                 data: {
                     email: currentUser.email,
                     amount: total,
@@ -108,7 +108,7 @@ function Payment() {
                     return
                 }
                 console.log(res)
-                setRequestId(res.data.MerchantRequestID);
+                setCheckoutId(res.data.MerchantRequestID);
 
             }).catch(er => {
                 setMpesaError("Error sending request")
@@ -204,10 +204,10 @@ function Payment() {
                         mpesaPrompt={handleMpesaPrompt}
                         handleChange={checkValidity}
                         error={isInvalid}
-                        requestId={requestId}
+                        checkoutId={checkoutId}
                         loading={loading}
                         stopLoading={() => setLoading(false)}
-                        resetRequestId={() => setRequestId(' ')}
+                        resetCheckoutId={() => setCheckoutId(' ')}
                         transactionError={mpesaError}
                         close={() => setMpesaError()}
                         info="Insert Mpesa Phone Number."

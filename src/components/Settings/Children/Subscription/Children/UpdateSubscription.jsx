@@ -11,7 +11,7 @@ function UpdateSubscription() {
     const [isInvalid, setIsInvalid] = React.useState(true)
     const [loading, setLoading] = React.useState(false)
     const [mpesaError, setMpesaError] = React.useState()
-    const [requestId, setRequestId] = React.useState(' ')
+    const [checkoutId, setCheckoutId] = React.useState(' ')
 
     const { currentUser } = useAuth()
     const mpesaRef = React.useRef()
@@ -20,7 +20,7 @@ function UpdateSubscription() {
     const handleMpesaPrompt = (e) => {
         e.preventDefault()
         setMpesaError()
-        setRequestId(' ')
+        setCheckoutId(' ')
         if (!isInvalid) {
             setLoading(true)
             setTimeout(() => {
@@ -28,7 +28,7 @@ function UpdateSubscription() {
             }, 60000)
             axios({
                 method: 'post',
-                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/subscribe",
+                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/api/subscribe",
                 data: {
                     email: currentUser.email,
                     month: month,
@@ -42,7 +42,7 @@ function UpdateSubscription() {
                     return
                 }
                 console.log(res)
-                setRequestId(res.data.MerchantRequestID);
+                setCheckoutId(res.data.MerchantRequestID);
 
             }).catch(er => {
                 setMpesaError("Error sending request")
@@ -115,10 +115,10 @@ function UpdateSubscription() {
                 mpesaPrompt={handleMpesaPrompt}
                 handleChange={checkValidity}
                 error={isInvalid}
-                requestId={requestId}
+                checkoutId={checkoutId}
                 loading={loading}
                 stopLoading={() => setLoading(false)}
-                resetRequestId={() => setRequestId(' ')}
+                resetRequestId={() => setCheckoutId(' ')}
                 transactionError={mpesaError}
                 close={() => setMpesaError()}
                 collection="subscriptions"
