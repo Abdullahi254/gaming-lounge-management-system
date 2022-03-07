@@ -42,7 +42,7 @@ function UpdateSubscription() {
                     return
                 }
                 console.log(res)
-                setCheckoutId(res.data.MerchantRequestID);
+                setCheckoutId(res.data.CheckoutRequestID);
 
             }).catch(er => {
                 setMpesaError("Error sending request")
@@ -118,7 +118,7 @@ function UpdateSubscription() {
                 checkoutId={checkoutId}
                 loading={loading}
                 stopLoading={() => setLoading(false)}
-                resetRequestId={() => setCheckoutId(' ')}
+                resetCheckoutId={() => setCheckoutId(' ')}
                 transactionError={mpesaError}
                 close={() => setMpesaError()}
                 collection="subscriptions"

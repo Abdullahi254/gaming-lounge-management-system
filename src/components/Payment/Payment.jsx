@@ -108,7 +108,7 @@ function Payment() {
                     return
                 }
                 console.log(res)
-                setCheckoutId(res.data.MerchantRequestID);
+                setCheckoutId(res.data.CheckoutRequestID);
 
             }).catch(er => {
                 setMpesaError("Error sending request")
