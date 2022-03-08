@@ -11,9 +11,11 @@ router.post("/check-membership", (req, res)=>{
     const diff = endDate.getTime() - now.getTime();
     console.log("days due", Math.round(diff/86400000));
     if (diff > 0) {
+      const admin = user.customClaims["admin"];
       const customClaims = {
         subscriptionEnd: user.customClaims["subscriptionEnd"],
         premium: true,
+        admin: admin,
       };
       getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
         console.log("user has become or retained premium membership",
@@ -26,9 +28,11 @@ router.post("/check-membership", (req, res)=>{
         throw Error("error making or sustaining user premium membership");
       });
     } else {
+      const admin = user.customClaims["admin"];
       const customClaims = {
         subscriptionEnd: user.customClaims["subscriptionEnd"],
         premium: false,
+        admin: admin,
       };
       getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
         console.log("user subscription has ended", user.email);

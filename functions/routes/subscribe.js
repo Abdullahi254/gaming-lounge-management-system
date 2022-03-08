@@ -114,9 +114,11 @@ router.post("/save-receipt/:uid", (req, res) => {
         const sub = subscriptionEndEvent.getTime();
         const newDate = new Date(sub);
         newDate.setMonth(newDate.getMonth() + months);
+        const admin = userRecord.customClaims["admin"];
         const customClaims = {
           subscriptionEnd: newDate.toDateString(),
           premium: true,
+          admin: admin,
         };
         getAuth().setCustomUserClaims(req.params.uid, customClaims).then(()=>{
           console.log("subscription expiry date updated");
@@ -126,9 +128,11 @@ router.post("/save-receipt/:uid", (req, res) => {
       } else {
         const newDate = new Date();
         newDate.setMonth(newDate.getMonth() + months);
+        const admin = userRecord.customClaims["admin"];
         const customClaims = {
           subscriptionEnd: newDate.toDateString(),
           premium: true,
+          admin: admin,
         };
         getAuth().setCustomUserClaims(req.params.uid, customClaims).then(()=>{
           console.log("subscription expiry date updated");
