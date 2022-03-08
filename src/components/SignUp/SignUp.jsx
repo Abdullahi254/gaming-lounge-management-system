@@ -43,7 +43,7 @@ export default function SignUp() {
                 navigate("/", { replace: true });
             }).catch(er => {
                 setLoading(false)
-                setError("Error signing up! Contact admin.")
+                setError(`Error signing up! ${er.code}`)
                 console.log(er)
             })
         } else {

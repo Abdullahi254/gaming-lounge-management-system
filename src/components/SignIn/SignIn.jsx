@@ -48,7 +48,8 @@ export default function SignIn() {
             })
             navigate(from, { replace: true });
         }).catch(er => {
-            setError("Error logging in! Check email or password.")
+            console.log(er)
+            setError(`Error logging in! ${er.code}`)
             setLoading(false)
         })
     };
