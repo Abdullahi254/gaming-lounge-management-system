@@ -23,7 +23,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
     },
     [theme.breakpoints.down('md')]: {
         height: '300px',
-        marginTop:0,
+        marginTop:20,
     },
 }))
 

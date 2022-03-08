@@ -19,6 +19,7 @@ import GetEmailCard from './components/SignIn/children/GetEmailCard';
 import ConsoleSettings from './components/Settings/Children/ConsoleSettings/ConsoleSettings';
 import Subscription from './components/Settings/Children/Subscription/Subscription'
 import MpesaIntegration from './components/Settings/Children/MpesaIntegration/MpesaIntegration'
+import Admin from './components/Admin/Admin';
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -86,6 +87,7 @@ function App() {
           <Route path="activeconsoles/payment/:time/:price" element={<PrivateRoute><Payment /></PrivateRoute>} />
           <Route path="idleconsoles" element={<PrivateRoute><IdleConsoles /></PrivateRoute>} />
           <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
+          <Route path="admin-page" element={<PrivateRoute><Admin/></PrivateRoute>} />
           <Route path="settings" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Navigate to="console-settings" />} />
             <Route path="my-account" element={<PrivateRoute><Account /></PrivateRoute>} />
