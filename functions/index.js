@@ -11,7 +11,6 @@ const app = express();
 const gameRoute = require("./routes/game");
 const subRoute = require("./routes/subscribe");
 const membership = require("./routes/membership");
-const admin = require("./routes/admin");
 
 // middleware
 app.use(express.json());
@@ -19,7 +18,6 @@ app.use(cors());
 app.use("/api/game", gameRoute);
 app.use("/api/subscribe", subRoute);
 app.use("/api/membership", membership);
-app.use("/api/admin", admin);
 
 exports.app = functions.https.onRequest(app);
 
@@ -34,3 +32,103 @@ exports.sendWelcomeEmail = functions.auth.user().onCreate((user)=>{
     console.log(JSON.stringify(er));
   });
 });
+
+exports.addAdminRole = functions.https.onCall((data, context)=>{
+  const email = data.email;
+  if (context.auth.token.admin === true) {
+    getAuth().getUserByEmail((email)).then((user)=>{
+      const subscriptionEnd = user.customClaims["subscriptionEnd"];
+      const premium = user.customClaims["premium"];
+      const customClaims = {
+        subscriptionEnd: subscriptionEnd,
+        premium: premium,
+        admin: true,
+      };
+      getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
+        console.log("user has become admin", user.email);
+        return {
+          message: `success ${user.email} has been made an admin`,
+        };
+      }).catch((er)=>{
+        console.log("error making user admin", user.email);
+        console.log(JSON.stringify(er));
+        throw new functions.https.HttpsError("Error making user admin.");
+      });
+    }).catch((er)=>{
+      console.log("error fetching user by mail");
+      console.log(JSON.stringify(er));
+      throw new functions.https.HttpsError("invalid-argument",
+          "The function must be called with " +
+            "one arguments 'Email' containing the email to unsubscribe");
+    });
+  } else {
+    throw new functions.https.HttpsError("failed-precondition",
+        "The function must be called " + "by an Administrator.");
+  }
+});
+
+exports.unsubScribeUser = functions.https.onCall((data, context)=>{
+  if (context.auth.token.admin === true) {
+    const email = data.email;
+    getAuth().getUserByEmail((email)).then((user)=>{
+      const admin = user.customClaims["admin"];
+      const customClaims = {
+        subscriptionEnd: undefined,
+        premium: false,
+        admin: admin,
+      };
+      getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
+        console.log("user subscription has ended", user.email);
+        return {message: "successfully usubscribed user"};
+      }).catch((er)=>{
+        console.log("error unsubscribing user", user.email);
+        console.log(JSON.stringify(er));
+        throw new functions.https.HttpsError("Error unsubscribing user.");
+      });
+    }).catch((er)=>{
+      console.log("error fetching user by mail");
+      console.log(JSON.stringify(er));
+      throw new functions.https.HttpsError("invalid-argument",
+          "The function must be called with " +
+            "one arguments 'Email' containing the email to unsubscribe");
+    });
+  } else {
+    throw new functions.https.HttpsError("failed-precondition",
+        "The function must be called " + "by an Administrator.");
+  }
+});
+
+exports.updateSubscription = functions.https.onCall((data, context)=>{
+  if (context.auth.token.admin === true) {
+    const email = data.email;
+    const days = data.days;
+    getAuth().getUserByEmail((email)).then((user)=>{
+      const now = new Date();
+      const subEnd = new Date(now.getTime() + (1000 * 60 * 60 * 24 * days));
+      const admin = user.customClaims["admin"];
+      const customClaims = {
+        subscriptionEnd: subEnd.toDateString(),
+        premium: true,
+        admin: admin,
+      };
+      getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
+        console.log(`${days} subscription started`, user.email);
+        return {message: "successfully subscribed user"};
+      }).catch((er)=>{
+        console.log("error subscribing user", user.email);
+        console.log(JSON.stringify(er));
+        throw new functions.https.HttpsError("Error subscribing user.");
+      });
+    }).catch((er)=>{
+      console.log("error fetching user by mail");
+      console.log(JSON.stringify(er));
+      throw new functions.https.HttpsError("invalid-argument",
+          "The function must be called with " +
+            "one arguments 'Email' containing the email to unsubscribe");
+    });
+  } else {
+    throw new functions.https.HttpsError("failed-precondition",
+        "The function must be called " + "by an Administrator.");
+  }
+});
+
