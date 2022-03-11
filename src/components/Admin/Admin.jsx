@@ -35,6 +35,8 @@ function Admin() {
 
     const makeAdminHandler = (email) => {
         setLoading(true)
+        setError()
+        setSuccess()
         const addAdminRole = httpsCallable(functions, "addAdminRole")
         addAdminRole({ email }).then(res => {
             setLoading(false)
@@ -43,11 +45,13 @@ function Admin() {
         }).catch(er => {
             setLoading(false)
             console.log(er)
-            setError("error")
+            setError(er.code)
         })
     }
     const subscriptionHandler = (email, days) => {
         setLoading(true)
+        setError()
+        setSuccess()
         const updateSubscription = httpsCallable(functions, "updateSubscription")
         updateSubscription({ email, days }).then(res => {
             setLoading(false)
@@ -56,11 +60,13 @@ function Admin() {
         }).catch(er => {
             setLoading(false)
             console.log(er)
-            setError("error")
+            setError(er.code)
         })
     }
     const unSubhandler = (email) => {
         setLoading(true)
+        setError()
+        setSuccess()
         const unsubScribeUser = httpsCallable(functions, "unsubScribeUser")
         unsubScribeUser({ email }).then(res => {
             setLoading(false)
@@ -68,8 +74,8 @@ function Admin() {
             setSuccess(`${email} unsubscribed successfully`)
         }).catch(er => {
             setLoading(false)
-            console.log(er)
-            setError("error")
+            console.log(er.code)
+            setError(er.code)
         })
     }
     const closeAlertHandler = () => {
@@ -86,22 +92,24 @@ function Admin() {
                     {success && <Alert severity="success" sx={{ justifyContent: 'center', width: '100%', marginBottom: 2 }} onClose={closeAlertHandler}>{success}</Alert>}
                     {error && <Alert severity="error" sx={{ justifyContent: 'center', width: '100%', marginBottom: 2 }} onClose={closeAlertHandler}>{error}</Alert>}
                     <CustomAdminForm
-                        label="Make Admin"
+                        label="Make Admin(Insert Email)"
                         submit={(email) => makeAdminHandler(email)}
                     />
                     <CustomAdminForm
-                        label="Increase Subscription"
+                        label="Increase Subscription(Insert Email)"
                         days
                         submit={(email, days) => subscriptionHandler(email, days)}
                     />
                     <CustomAdminForm
-                        label="Unsubscribe User"
+                        label="Unsubscribe User(Insert Email)"
                         submit={(email) => unSubhandler(email)}
                     />
 
                 </StyledContainer> :
-                <NotFound/>
+                    <NotFound />
             }
+
+
         </>
 
     )

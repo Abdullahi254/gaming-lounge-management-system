@@ -1,0 +1,13 @@
+[debug] [2022-03-11T20:07:10.035Z] ----------------------------------------------------------------------
+[debug] [2022-03-11T20:07:10.037Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\abdus\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2022-03-11T20:07:10.038Z] CLI Version:   10.2.2
+[debug] [2022-03-11T20:07:10.038Z] Platform:      win32
+[debug] [2022-03-11T20:07:10.038Z] Node Version:  v16.13.1
+[debug] [2022-03-11T20:07:10.039Z] Time:          Fri Mar 11 2022 23:07:10 GMT+0300 (East Africa Time)
+[debug] [2022-03-11T20:07:10.039Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-03-11T20:07:10.107Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-03-11T20:07:10.108Z] > authorizing via signed-in user (abdush504@gmail.com)
+[debug] [2022-03-11T20:07:10.108Z] [iam] checking project gaming-payment-system-dev for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2022-03-11T20:07:10.110Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/gaming-payment-system-dev:testIamPermissions [none]
+[debug] [2022-03-11T20:07:10.110Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/gaming-payment-system-dev:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}

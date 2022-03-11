@@ -101,20 +101,13 @@ function Payment() {
                     phone: mpesaRef.current.value
                 }
             }).then(res => {
-                if (res.data.name === "Error") {
-                    console.log(res)
-                    setMpesaError(res.data.message)
-                    setLoading(false)
-                    return
-                }
                 console.log(res)
                 setCheckoutId(res.data.CheckoutRequestID);
 
             }).catch(er => {
-                setMpesaError("Error sending request")
+                setMpesaError("Error sending request! Try again later.")
                 setLoading(false)
-                console.log('error:')
-                console.log(er)
+                console.log(JSON.stringify(er))
             })
         }
 

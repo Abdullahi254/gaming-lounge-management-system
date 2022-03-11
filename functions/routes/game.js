@@ -71,15 +71,15 @@ router.post("/pay", (req, resp)=>{
         resp.send(res.data);
       }).catch((er)=>{
         console.log("STP error");
-        resp.send(er);
+        resp.status(500).send(er);
       });
     }).catch((er)=>{
       console.log("failed to get user by email");
-      resp.send(er);
+      resp.status(500).send(er);
     });
   }).catch((er) => {
     console.log("access token not found");
-    resp.send(er);
+    resp.status(500).send(er);
   });
 });
 

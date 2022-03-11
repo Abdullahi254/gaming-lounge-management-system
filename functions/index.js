@@ -49,20 +49,17 @@ exports.addAdminRole = functions.https.onCall((data, context)=>{
         return {
           message: `success ${user.email} has been made an admin`,
         };
-      }).catch((er)=>{
-        console.log("error making user admin", user.email);
-        console.log(JSON.stringify(er));
-        throw new functions.https.HttpsError("Error making user admin.");
+      }).catch(()=>{
+        throw new functions.https.HttpsError("internal",
+            "Error making user admin.");
       });
-    }).catch((er)=>{
-      console.log("error fetching user by mail");
-      console.log(JSON.stringify(er));
+    }).catch(()=>{
       throw new functions.https.HttpsError("invalid-argument",
           "The function must be called with " +
             "one arguments 'Email' containing the email to unsubscribe");
     });
   } else {
-    throw new functions.https.HttpsError("failed-precondition",
+    throw new functions.https.HttpsError("permission-denied",
         "The function must be called " + "by an Administrator.");
   }
 });
@@ -80,20 +77,17 @@ exports.unsubScribeUser = functions.https.onCall((data, context)=>{
       getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
         console.log("user subscription has ended", user.email);
         return {message: "successfully usubscribed user"};
-      }).catch((er)=>{
-        console.log("error unsubscribing user", user.email);
-        console.log(JSON.stringify(er));
-        throw new functions.https.HttpsError("Error unsubscribing user.");
+      }).catch(()=>{
+        throw new functions.https.HttpsError("internal",
+            "Error unsubscribing user.");
       });
-    }).catch((er)=>{
-      console.log("error fetching user by mail");
-      console.log(JSON.stringify(er));
+    }).catch(()=>{
       throw new functions.https.HttpsError("invalid-argument",
           "The function must be called with " +
             "one arguments 'Email' containing the email to unsubscribe");
     });
   } else {
-    throw new functions.https.HttpsError("failed-precondition",
+    throw new functions.https.HttpsError("permission-denied",
         "The function must be called " + "by an Administrator.");
   }
 });
@@ -114,20 +108,17 @@ exports.updateSubscription = functions.https.onCall((data, context)=>{
       getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
         console.log(`${days} subscription started`, user.email);
         return {message: "successfully subscribed user"};
-      }).catch((er)=>{
-        console.log("error subscribing user", user.email);
-        console.log(JSON.stringify(er));
-        throw new functions.https.HttpsError("Error subscribing user.");
+      }).catch(()=>{
+        throw new functions.https.HttpsError("internal",
+            "Error subscribing user.");
       });
-    }).catch((er)=>{
-      console.log("error fetching user by mail");
-      console.log(JSON.stringify(er));
+    }).catch(()=>{
       throw new functions.https.HttpsError("invalid-argument",
           "The function must be called with " +
             "one arguments 'Email' containing the email to unsubscribe");
     });
   } else {
-    throw new functions.https.HttpsError("failed-precondition",
+    throw new functions.https.HttpsError("permission-denied",
         "The function must be called " + "by an Administrator.");
   }
 });

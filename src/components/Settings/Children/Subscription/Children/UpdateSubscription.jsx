@@ -35,12 +35,6 @@ function UpdateSubscription() {
                     phone: mpesaRef.current.value
                 }
             }).then(res => {
-                if (res.data.name === "Error") {
-                    console.log(res)
-                    setMpesaError(res.data.message)
-                    setLoading(false)
-                    return
-                }
                 console.log(res)
                 setCheckoutId(res.data.CheckoutRequestID);
 

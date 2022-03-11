@@ -18,7 +18,7 @@ function CustomAdminForm({ submit, label, days }) {
             component="form"
             sx={{
                 width: '100%',
-                margin: 10,
+                margin: 8,
                 display: 'flex',
                 justifyContent: 'space-between',
             }}
