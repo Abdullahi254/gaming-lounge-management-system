@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const {initializeApp} = require("firebase-admin/app");
 const {getAuth} = require("firebase-admin/auth");
+const {getFirestore} = require("firebase-admin/firestore");
 const cors = require("cors");
 const express = require("express");
 
@@ -18,6 +19,9 @@ app.use(cors());
 app.use("/api/game", gameRoute);
 app.use("/api/subscribe", subRoute);
 app.use("/api/membership", membership);
+
+// getting db ref
+const db = getFirestore();
 
 exports.app = functions.https.onRequest(app);
 
@@ -112,6 +116,39 @@ exports.updateSubscription = functions.https.onCall((data, context)=>{
         throw new functions.https.HttpsError("internal",
             "Error subscribing user.");
       });
+    }).catch(()=>{
+      throw new functions.https.HttpsError("invalid-argument",
+          "The function must be called with " +
+            "one arguments 'Email' containing the email to unsubscribe");
+    });
+  } else {
+    throw new functions.https.HttpsError("permission-denied",
+        "The function must be called " + "by an Administrator.");
+  }
+});
+
+exports.addDarajaDetails = functions.https.onCall((data, context)=>{
+  if (context.auth.token.admin === true) {
+    const email = data.email;
+    const consumerKey = data.consumerKey;
+    const consumerSecret = data.consumerSecret;
+    const passkey = data.passkey;
+    const shortCode = data.shortCode;
+    getAuth().getUserByEmail((email)).then((user)=>{
+      db.collection("users").
+          doc(user.uid).collection("daraja").doc("darajaKeys")
+          .set({
+            consumerKey,
+            consumerSecret,
+            passkey,
+            shortCode,
+          }).then(()=>{
+            console.log("API keys added successfully");
+            return {message: "API keys added successfully"};
+          }).catch(()=>{
+            throw new functions.https.HttpsError("internal",
+                "Could not add Api keys.");
+          });
     }).catch(()=>{
       throw new functions.https.HttpsError("invalid-argument",
           "The function must be called with " +

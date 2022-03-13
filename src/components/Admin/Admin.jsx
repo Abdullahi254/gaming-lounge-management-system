@@ -1,10 +1,11 @@
 import React from 'react'
 import CustomAdminForm from './Children/CustomAdminForm'
 import { styled } from '@mui/material/styles';
-import { Box, Alert, CircularProgress as Spinner } from '@mui/material'
+import { Box, Alert, CircularProgress as Spinner, Button } from '@mui/material'
 import { getFunctions, httpsCallable } from "firebase/functions"
 import { useAuth } from '../../contexts/AuthContext';
 import NotFound from '../404/NotFound';
+import DarajaKeysForm from './Children/DarajaKeysForm';
 
 const StyledContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -21,6 +22,7 @@ function Admin() {
     const [error, setError] = React.useState()
     const [loading, setLoading] = React.useState(false)
     const [admin, setAdmin] = React.useState(false)
+    const [show, setShow] = React.useState(false)
     const functions = getFunctions()
 
     const { currentUser } = useAuth()
@@ -104,7 +106,8 @@ function Admin() {
                         label="Unsubscribe User(Insert Email)"
                         submit={(email) => unSubhandler(email)}
                     />
-
+                    <Button color='success' onClick={()=>setShow(true)} size="large">Add Keys</Button>
+                    <DarajaKeysForm show={show} clicked={()=>setShow(false)}/>
                 </StyledContainer> :
                     <NotFound />
             }

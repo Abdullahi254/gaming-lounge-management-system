@@ -9,7 +9,7 @@ function MpesaInfoCard() {
     const [exists, setExists] = React.useState(false)
     React.useEffect(() => {
         // checking if dajara api keys exists in the db
-        const docRef = db.collection("users").doc(currentUser.uid).collection("consoles").doc("darajaKeys")
+        const docRef = db.collection("users").doc(currentUser.uid).collection("daraja").doc("darajaKeys")
         docRef.get().then(doc => {
             if (doc.exists) {
                 setExists(true)

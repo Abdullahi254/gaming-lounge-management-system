@@ -9,7 +9,7 @@ const getApiKeys = ( req, res, next)=> {
   getAuth().getUserByEmail(email).then((user)=>{
     console.log(`${user.uid} found successfully`);
     const docRef = db.collection("users").doc(user.uid).
-        collection("consoles").doc("darajaKeys");
+        collection("daraja").doc("darajaKeys");
     docRef.get().then((doc) => {
       if (doc.exists) {
         console.log("found daraja keys");
