@@ -5,7 +5,6 @@ router.post("/check-membership", (req, res)=>{
   const email = req.body.email;
   getAuth().getUserByEmail((email)).then((user)=>{
     const subEndClaim = user.customClaims["subscriptionEnd"];
-    console.log("subscription end date", subEndClaim);
     const now = new Date();
     const endDate = new Date(subEndClaim);
     const diff = endDate.getTime() - now.getTime();
@@ -21,11 +20,13 @@ router.post("/check-membership", (req, res)=>{
         console.log("user has become or retained premium membership",
             user.email);
         res.send("successfully made or retained user's premium membership");
-      }).catch((er)=>{
+      }).catch(()=>{
         console.log("error making or sustaining user premium memmbership",
             user.email);
-        console.log(JSON.stringify(er));
-        throw Error("error making or sustaining user premium membership");
+        res.status(500).send({
+          code: "Internal",
+          message: "error making or sustaining user premium memmbership",
+        });
       });
     } else {
       const admin = user.customClaims["admin"];
@@ -37,16 +38,20 @@ router.post("/check-membership", (req, res)=>{
       getAuth().setCustomUserClaims(user.uid, customClaims).then(()=>{
         console.log("user subscription has ended", user.email);
         res.send("successfully usubscribed user");
-      }).catch((er)=>{
+      }).catch(()=>{
         console.log("error usubscribing user", user.email);
-        console.log(JSON.stringify(er));
-        throw Error("error usubscribing user");
+        res.status(500).send({
+          code: "Internal",
+          message: "error usubscribing user",
+        });
       });
     }
-  }).catch((er)=>{
+  }).catch(()=>{
     console.log("error fetching user by mail");
-    console.log(JSON.stringify(er));
-    throw Error("error fetching user by mail");
+    res.status(400).send({
+      code: "Bad request",
+      message: "error fetching user by mail(membership route)",
+    });
   });
 });
 

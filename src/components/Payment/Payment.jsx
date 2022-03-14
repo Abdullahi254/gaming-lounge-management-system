@@ -105,9 +105,9 @@ function Payment() {
                 setCheckoutId(res.data.CheckoutRequestID);
 
             }).catch(er => {
-                setMpesaError("Error sending request! Try again later.")
+                setMpesaError("Error sending request!(Might be processing another trans).")
                 setLoading(false)
-                console.log(JSON.stringify(er))
+                console.log(er.message)
             })
         }
 

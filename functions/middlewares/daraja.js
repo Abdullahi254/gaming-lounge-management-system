@@ -21,17 +21,24 @@ const getApiKeys = ( req, res, next)=> {
         next();
       } else {
         console.log("error doc with api keys does not exist");
-        return res.status(500).send("error doc with api keys does not exist");
+        res.status(400).send({
+          code: "Bad request",
+          message: "error doc with api keys does not exist",
+        });
       }
     }).catch(()=>{
       console.log("error fetching daraja api keys");
-      res.status(500).
-          send("error fetching daraja api keys from db");
+      res.status(500).send({
+        code: "Internal",
+        message: "error fetching daraja api keys",
+      });
     });
   }).catch(()=>{
     console.log("error fetching user by email");
-    res.status(500).
-        send("error fetching user email");
+    res.status(400).send({
+      code: "Bad request",
+      message: "error fetching user by email(daraja middleware)",
+    });
   });
 };
 

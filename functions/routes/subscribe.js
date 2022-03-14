@@ -73,17 +73,26 @@ router.post("/", (req, resp)=>{
       }).then((res) => {
         console.log("STP sent to customer");
         resp.send(res.data);
-      }).catch((er)=>{
+      }).catch(()=>{
         console.log("STP error");
-        resp.status(500).send(er);
+        resp.status(500).send({
+          code: "Internal",
+          message: "Error occured sending STP request",
+        });
       });
-    }).catch((er)=>{
-      console.log("failed to get user by email");
-      resp.status(500).send(er);
+    }).catch(()=>{
+      console.log("failed to get user by email(subscribe route)");
+      resp.status(500).send({
+        code: "Internal",
+        message: "failed to get user by email",
+      });
     });
-  }).catch((er) => {
+  }).catch(() => {
     console.log("access token not found");
-    resp.status(500).send(er);
+    resp.status(500).send({
+      code: "Internal",
+      message: "access token not found",
+    });
   });
 });
 
@@ -171,7 +180,7 @@ router.post("/save-receipt/:uid", (req, res) => {
     console.log(JSON.stringify(req.body.Body));
     res.send("THANK YOU SAFARICOM");
   }
-}
+},
 );
 
 module.exports = router;

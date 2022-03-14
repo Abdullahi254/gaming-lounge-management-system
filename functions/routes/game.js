@@ -66,13 +66,19 @@ router.post("/pay", getApiKeys, (req, resp)=>{
     }).then((res) => {
       console.log("STP sent to customer");
       resp.send(res.data);
-    }).catch((er)=>{
+    }).catch(()=>{
       console.log("STP error");
-      resp.status(500).send(er);
+      resp.status(500).send({
+        code: "internal",
+        message: "STP error",
+      });
     });
-  }).catch((er) => {
+  }).catch(() => {
     console.log("access token not found");
-    resp.status(500).send(er);
+    resp.status(500).send({
+      code: "internal",
+      message: "access token not found",
+    });
   });
 });
 
@@ -109,7 +115,7 @@ router.post("/save-receipt/:uid", (req, res) => {
     console.log(JSON.stringify(req.body.Body));
     res.send("THANK YOU SAFARICOM");
   }
-}
+},
 );
 
 module.exports = router;

@@ -47,7 +47,7 @@ function Admin() {
         }).catch(er => {
             setLoading(false)
             console.log(er)
-            setError(er.code)
+            setError(`${er.code}-${er.message}`)
         })
     }
     const subscriptionHandler = (email, days) => {
@@ -62,7 +62,7 @@ function Admin() {
         }).catch(er => {
             setLoading(false)
             console.log(er)
-            setError(er.code)
+            setError(`${er.code}-${er.message}`)
         })
     }
     const unSubhandler = (email) => {
@@ -76,8 +76,7 @@ function Admin() {
             setSuccess(`${email} unsubscribed successfully`)
         }).catch(er => {
             setLoading(false)
-            console.log(er.code)
-            setError(er.code)
+            setError(`${er.code}-${er.message}`)
         })
     }
     const closeAlertHandler = () => {

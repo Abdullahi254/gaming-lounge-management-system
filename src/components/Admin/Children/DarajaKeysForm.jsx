@@ -59,7 +59,7 @@ function DarajaKeysForm({ show, clicked }) {
         }).catch(er => {
             setLoading(false)
             console.log(er)
-            setError("Error adding daraja API keys")
+            setError(`${er.code}-${er.message}`)
         })
     }
     const closeAlertHandler = () => {

@@ -39,9 +39,8 @@ function UpdateSubscription() {
                 setCheckoutId(res.data.CheckoutRequestID);
 
             }).catch(er => {
-                setMpesaError("Error sending request")
+                setMpesaError("Error sending request-Try again")
                 setLoading(false)
-                console.log('error:')
                 console.log(er)
             })
         }
