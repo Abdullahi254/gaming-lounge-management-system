@@ -12,7 +12,7 @@ import logo from '../../assets/imgs/logo.png'
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
 import { Divider, ListItem, ListItemIcon, ListItemText, Switch } from '@mui/material';
-import { AccountBox, Settings, Logout, DarkMode as AppearanceIcon } from '@mui/icons-material'
+import { Receipt, Settings, Logout, DarkMode as AppearanceIcon } from '@mui/icons-material'
 import TemporaryDrawer from './TemporaryDrawer/TemporaryDrawer'
 import CustomLink from './CustomLink/CustomLink';
 import { styled, } from '@mui/material/styles';
@@ -90,8 +90,8 @@ const NavBar = ({ email, triggerThemeChange }) => {
         })
     }
 
-    const accountButtonHandler = () => {
-        navigate('/settings/my-account')
+    const receiptButtonHandler = () => {
+        navigate('/receipts')
     }
 
     React.useEffect(() => {
@@ -266,17 +266,17 @@ const NavBar = ({ email, triggerThemeChange }) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <ListItem button onClick={accountButtonHandler}>
-                                    <ListItemIcon>
-                                        <AccountBox />
-                                    </ListItemIcon>
-                                    <ListItemText primary="Account" />
-                                </ListItem>
                                 <ListItem button onClick={settingsButtonHandler}>
                                     <ListItemIcon>
                                         <Settings />
                                     </ListItemIcon>
                                     <ListItemText primary="Settings" />
+                                </ListItem>
+                                <ListItem button onClick={receiptButtonHandler}>
+                                    <ListItemIcon>
+                                        <Receipt/>
+                                    </ListItemIcon>
+                                    <ListItemText primary="Receipts" />
                                 </ListItem>
                                 <ListItem button >
                                     <ListItemIcon>

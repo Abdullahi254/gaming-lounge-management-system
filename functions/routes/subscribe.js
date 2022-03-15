@@ -153,6 +153,11 @@ router.post("/save-receipt/:uid", (req, res) => {
       console.log("error fetching premium custom claims");
     });
     const date = new Date();
+    let amount = req.body.Body.stkCallback.CallbackMetadata.Item[0].Value;
+    if (amount!==1) {
+      amount = amount / 0.9;
+    }
+    const months = amount/1;
     const statement = {
       type: "Mpesa",
       date: date,
@@ -163,6 +168,7 @@ router.post("/save-receipt/:uid", (req, res) => {
       year: date.getFullYear(),
       viewed: false,
       checkoutId: req.body.Body.stkCallback.CheckoutRequestID,
+      period: months,
     };
     db.collection("users").doc(req.params.uid).
         collection("subscriptions").add(statement).then(()=>{

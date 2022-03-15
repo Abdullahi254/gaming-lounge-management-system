@@ -20,6 +20,7 @@ import ConsoleSettings from './components/Settings/Children/ConsoleSettings/Cons
 import Subscription from './components/Settings/Children/Subscription/Subscription'
 import MpesaIntegration from './components/Settings/Children/MpesaIntegration/MpesaIntegration'
 import Admin from './components/Admin/Admin';
+import Receipts from './components/Receipts/Receipts'
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -95,6 +96,7 @@ function App() {
             <Route path="my-subscription" element={<PrivateRoute> <Subscription /></PrivateRoute>} />
             <Route path="mpesa-integration" element={<PrivateRoute> <MpesaIntegration/> </PrivateRoute>} />
           </Route>
+          <Route path="receipts" element={<PrivateRoute><Receipts/></PrivateRoute>} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/view-amount/:time/:price" element={<AmountStatus />} />
