@@ -7,7 +7,7 @@ import { Box } from '@mui/material'
 export const StyledContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection:'column',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
     width:'70%',

@@ -8,12 +8,10 @@ import { styled } from '@mui/material/styles';
  const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     padding: 20,
     margin: 10,
-    marginTop:0,
     borderRadius: 20,
     [theme.breakpoints.down('xl')]:{
         maxHeight:390,
         marginBottom:0,
-        marginTop:-10
     }
 }))
 

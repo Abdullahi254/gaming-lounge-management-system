@@ -89,7 +89,7 @@ function App() {
           <Route path="dashboard" element={<PrivateRoute><Dashbord /></PrivateRoute>} />
           <Route path="admin-page" element={<PrivateRoute><Admin/></PrivateRoute>} />
           <Route path="settings" element={<PrivateRoute><Layout /></PrivateRoute>}>
-            <Route index element={<Navigate to="console-settings" />} />
+            <Route index element={<Navigate to="my-account" />} />
             <Route path="my-account" element={<PrivateRoute><Account /></PrivateRoute>} />
             <Route path="console-settings" element={<PrivateRoute><ConsoleSettings /></PrivateRoute>} />
             <Route path="my-subscription" element={<PrivateRoute> <Subscription /></PrivateRoute>} />

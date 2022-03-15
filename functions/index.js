@@ -65,7 +65,7 @@ exports.addAdminRole = functions.https.onCall(async (data, context)=>{
     } catch {
       throw new functions.https.HttpsError("invalid-argument",
           "The function must be called with " +
-        "one arguments 'Email' containing the email to unsubscribe");
+        "one arguments 'Email' containing the email.");
     }
   } else {
     throw new functions.https.HttpsError("permission-denied",
@@ -96,7 +96,7 @@ exports.unsubScribeUser = functions.https.onCall(async (data, context)=>{
     } catch {
       throw new functions.https.HttpsError("invalid-argument",
           "The function must be called with " +
-        "one arguments 'Email' containing the email to unsubscribe");
+        "one arguments 'Email' containing the email.");
     }
   } else {
     throw new functions.https.HttpsError("permission-denied",
@@ -129,7 +129,7 @@ exports.updateSubscription = functions.https.onCall(async (data, context)=>{
     } catch {
       throw new functions.https.HttpsError("invalid-argument",
           "The function must be called with " +
-        "one arguments 'Email' containing the email to unsubscribe");
+        "one arguments 'Email' containing the email.");
     }
   } else {
     throw new functions.https.HttpsError("permission-denied",
@@ -163,7 +163,7 @@ exports.addDarajaDetails = functions.https.onCall(async (data, context)=>{
     } catch {
       throw new functions.https.HttpsError("invalid-argument",
           "The function must be called with " +
-        "one arguments 'Email' containing the email to unsubscribe");
+        "one arguments 'Email' containing the email.");
     }
   } else {
     throw new functions.https.HttpsError("permission-denied",
