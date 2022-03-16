@@ -28,7 +28,7 @@ function UpdateSubscription() {
             }, 60000)
             axios({
                 method: 'post',
-                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/api/subscribe",
+                url: "https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/api/stp-subscribe",
                 data: {
                     email: currentUser.email,
                     month: month,

@@ -10,14 +10,16 @@ const app = express();
 
 // routes
 const gameRoute = require("./routes/game");
-const subRoute = require("./routes/subscribe");
+const stpSubRoute = require("./routes/stpSubscribe");
+const c2bSubRoute = require("./routes/c2bSubscribe");
 const membership = require("./routes/membership");
 
 // middleware
 app.use(express.json());
 app.use(cors());
 app.use("/api/game", gameRoute);
-app.use("/api/subscribe", subRoute);
+app.use("/api/stp-subscribe", stpSubRoute);
+app.use("/api/c2b-subscribe", c2bSubRoute);
 app.use("/api/membership", membership);
 
 // getting db ref

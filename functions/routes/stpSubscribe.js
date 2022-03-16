@@ -66,7 +66,7 @@ router.post("/", (req, resp)=>{
           "PartyA": phone,
           "PartyB": shortCode,
           "PhoneNumber": phone,
-          "CallBackURL": `https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/api/subscribe/save-receipt/${user.uid}`,
+          "CallBackURL": `https://us-central1-gaming-payment-system-dev.cloudfunctions.net/app/api/stp-subscribe/save-receipt/${user.uid}`,
           "AccountReference": "AIM LABS KE",
           "TransactionDesc": "subscription fee",
         },
@@ -133,6 +133,7 @@ router.post("/save-receipt/:uid", (req, res) => {
           console.log("subscription expiry date updated");
         }).catch(()=>{
           console.log("error updating subscription date");
+          res.end();
         });
       } else {
         const newDate = new Date();
@@ -147,10 +148,12 @@ router.post("/save-receipt/:uid", (req, res) => {
           console.log("subscription expiry date updated");
         }).catch(()=>{
           console.log("error updating subscription date");
+          res.end();
         });
       }
     }).catch(()=>{
       console.log("error fetching premium custom claims");
+      res.end();
     });
     const date = new Date();
     let amount = req.body.Body.stkCallback.CallbackMetadata.Item[0].Value;
@@ -159,7 +162,7 @@ router.post("/save-receipt/:uid", (req, res) => {
     }
     const months = amount/1;
     const statement = {
-      type: "Mpesa",
+      transactionType: "STP",
       date: date,
       amount: req.body.Body.stkCallback.CallbackMetadata.Item[0].Value,
       from: req.body.Body.stkCallback.CallbackMetadata.Item[4].Value,
