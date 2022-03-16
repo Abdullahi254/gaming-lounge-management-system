@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, FormControl, InputLabel, Select, MenuItem} from '@mui/material'
+import { Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 
 function SelectComp(props) {
 
@@ -11,17 +11,17 @@ function SelectComp(props) {
     return (
         <Box sx={{ minWidth: 120 }} my={2}>
             <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Type</InputLabel>
+                <InputLabel id="demo-simple-select-label">Payment Options</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={props.type}
-                    label="Type"
+                    label="Payment Options"
                     onChange={handleChange}
                     color='success'
                 >
-                    <MenuItem value={"Mpesa"}>Mpesa</MenuItem>
-                    <MenuItem value={"Cash"}>Cash</MenuItem>
+                    <MenuItem value={props.type1}>{props.type1}</MenuItem>
+                    <MenuItem value={props.type2}>{props.type2}</MenuItem>
                 </Select>
             </FormControl>
         </Box>

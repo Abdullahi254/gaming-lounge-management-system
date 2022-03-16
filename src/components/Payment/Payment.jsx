@@ -190,6 +190,8 @@ function Payment() {
                     <SelectComp
                         type={type}
                         handleSelectChange={(value) => handleChange(value)}
+                        type1="Mpesa"
+                        type2="Cash"
                     />
 
                     {type === "Mpesa" && <MpesaComp

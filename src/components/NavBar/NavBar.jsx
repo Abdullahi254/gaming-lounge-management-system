@@ -11,7 +11,7 @@ import Tooltip from '@mui/material/Tooltip';
 import logo from '../../assets/imgs/logo.png'
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
-import { Divider, ListItem, ListItemIcon, ListItemText, Switch } from '@mui/material';
+import { Button, Divider, ListItem, ListItemIcon, ListItemText, Switch } from '@mui/material';
 import { Receipt, Settings, Logout, DarkMode as AppearanceIcon } from '@mui/icons-material'
 import TemporaryDrawer from './TemporaryDrawer/TemporaryDrawer'
 import CustomLink from './CustomLink/CustomLink';
@@ -57,15 +57,20 @@ const NavBar = ({ email, triggerThemeChange }) => {
         setAnchorElUser(null);
     };
 
-
-    const handleCloseNotificationMenu = async () => {
-        setAnchorNotification(null);
+    const clearSubNotification = async () => {
         try {
             const subRef = await db.collection(`users/${currentUser.uid}/subscriptions`).where('viewed', '==', false).get()
             subRef.forEach((doc) => doc.ref.update({
                 viewed: true
             }))
-            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleCloseNotificationMenu = async () => {
+        setAnchorNotification(null);
+        try {
             const statementRef = await db.collection(`users/${currentUser.uid}/statements`).where('viewed', '==', false).get()
             statementRef.forEach((doc) => doc.ref.update({
                 viewed: true
@@ -227,6 +232,14 @@ const NavBar = ({ email, triggerThemeChange }) => {
                                 {
                                     (statements.length <= 0) && (subs.length <= 0) && <Nonotification />
                                 }
+                                {
+                                    subs.length > 0 &&
+                                    <Box sx={{textAlign:'center'}}>
+                                        <Button size='small' onClick={clearSubNotification} color='success'>
+                                            clear
+                                        </Button>
+                                    </Box>
+                                }
                             </Menu>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ ml: 1 }} >
@@ -274,7 +287,7 @@ const NavBar = ({ email, triggerThemeChange }) => {
                                 </ListItem>
                                 <ListItem button onClick={receiptButtonHandler}>
                                     <ListItemIcon>
-                                        <Receipt/>
+                                        <Receipt />
                                     </ListItemIcon>
                                     <ListItemText primary="Receipts" />
                                 </ListItem>

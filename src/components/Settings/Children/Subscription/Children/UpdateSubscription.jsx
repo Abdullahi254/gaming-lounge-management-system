@@ -4,8 +4,9 @@ import { Box, Slider, Typography } from '@mui/material';
 import axios from 'axios';
 import { useAuth } from '../../../../../contexts/AuthContext';
 import MpesaComp from '../../../../Payment/MpesaComp';
+import Paybill from './Paybill';
 
-function UpdateSubscription() {
+function UpdateSubscription(props) {
     const [month, setMonth] = React.useState(1)
     const [price, setPrice] = React.useState(1)
     const [isInvalid, setIsInvalid] = React.useState(true)
@@ -97,26 +98,32 @@ function UpdateSubscription() {
                 </Item>
                 <Item sx={{ background: (theme) => theme.palette.background.paper }}>
                     <Typography variant='h4'>
-                        {price}
+                        {price.toFixed(2)}
                     </Typography>
                     <Typography variant='caption'>PRICE(KSH)</Typography>
                 </Item>
             </MiniContainer>
-            <MpesaComp
-                sx={{ width: '100%', padding: 0, boxShadow: 0 }}
-                mpesaRef={mpesaRef}
-                mpesaPrompt={handleMpesaPrompt}
-                handleChange={checkValidity}
-                error={isInvalid}
-                checkoutId={checkoutId}
-                loading={loading}
-                stopLoading={() => setLoading(false)}
-                resetCheckoutId={() => setCheckoutId(' ')}
-                transactionError={mpesaError}
-                close={() => setMpesaError()}
-                collection="subscriptions"
-            />
-            <Typography variant='caption'>You will get an Mpesa prompt on your phone.</Typography>
+            {
+                props.type === "PAYBILL" ? <Paybill email= {currentUser.email} amount={price}/> :
+                    <>
+                        <MpesaComp
+                            sx={{ width: '100%', padding: 0, boxShadow: 0 }}
+                            mpesaRef={mpesaRef}
+                            mpesaPrompt={handleMpesaPrompt}
+                            handleChange={checkValidity}
+                            error={isInvalid}
+                            checkoutId={checkoutId}
+                            loading={loading}
+                            stopLoading={() => setLoading(false)}
+                            resetCheckoutId={() => setCheckoutId(' ')}
+                            transactionError={mpesaError}
+                            close={() => setMpesaError()}
+                            collection="subscriptions"
+                        />
+                        <Typography variant='caption'>You will get an Mpesa prompt on your phone.</Typography>
+                    </>
+            }
+
         </StyledBox>
     )
 }
