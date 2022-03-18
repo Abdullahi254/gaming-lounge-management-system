@@ -27,6 +27,9 @@ function Paybill(props) {
             <Typography gutterBottom >
                 4. Amount: <b>KSH{props.amount.toFixed(2)}</b>
             </Typography>
+            <Typography gutterBottom >
+                5. Refresh your browser and enjoy
+            </Typography>
             <Typography gutterBottom sx={{ fontStyle: 'italic' }} >
                 NB: Contact us if you have any payment issues.
             </Typography>

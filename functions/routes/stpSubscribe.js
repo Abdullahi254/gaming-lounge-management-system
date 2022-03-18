@@ -112,11 +112,6 @@ router.post("/save-receipt/:uid", (req, res) => {
       let diff = 0;
       if (subscriptionEnd) {
         const now = new Date();
-        console.log("The current date and time is", now);
-        console.log("subscription ends in", subscriptionEnd);
-        console.log("subscription ends in(milliseconds)",
-            subscriptionEndEvent.getTime());
-        console.log("now in(milliseconds)", now.getTime());
         diff = subscriptionEndEvent.getTime() - now.getTime();
       }
       if (diff > 1) {
