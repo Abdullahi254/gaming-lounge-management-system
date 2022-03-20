@@ -1,9 +1,20 @@
 import React from 'react'
 import { StyledBox } from './SalesForm'
 import BackDrop from '../../BackDrop/BackDrop'
-import { FormControl, InputLabel, Select, MenuItem, TextField, InputAdornment, Button } from '@mui/material'
+import {
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    TextField,
+    InputAdornment,
+    Button,
+    Alert,
+    CircularProgress as Spinner,
+    Box
+} from '@mui/material'
 
-function ReportForm({ open, handleClick }) {
+function ReportForm({ open, handleClick, handleForm, loading, error, closeAlert }) {
     const [month, setMonth] = React.useState(new Date().getMonth() + 1)
     const [year, setYear] = React.useState(new Date().getFullYear())
     const [yearList, setYearList] = React.useState([])
@@ -12,8 +23,9 @@ function ReportForm({ open, handleClick }) {
     const handleMonthChange = (e) => {
         setMonth(e.target.value)
     }
-    const handleSubmit = () => {
-        console.log()``
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        handleForm((month-1), year, electBillRef.current.value)
     }
     const handleYearChange = (e) => {
         setYear(e.target.value)
@@ -41,7 +53,29 @@ function ReportForm({ open, handleClick }) {
                 component="form"
                 onSubmit={handleSubmit}
             >
-                <FormControl sx={{ marginRight: 1,  width: '100px' }}>
+                {
+                    loading &&
+                    <Box sx={{
+                        width: '100%',
+                        justifyContent: 'center',
+                        display: 'flex',
+                        marginBottom: 2
+                    }}>
+                        <Spinner />
+                    </Box>
+
+                }
+
+                {
+                    error && <Alert
+                        sx={{ width: '100%', justifyContent: 'center', marginBottom: 2 }}
+                        severity="error"
+                        onClose={closeAlert}
+                    >
+                        {error}
+                    </Alert>
+                }
+                <FormControl sx={{ marginRight: 1, width: '100px' }}>
                     <InputLabel id="month">Select Month</InputLabel>
                     <Select
                         labelId="month"
@@ -72,7 +106,7 @@ function ReportForm({ open, handleClick }) {
                         }
                     </Select>
                 </FormControl>
-                <FormControl sx={{ marginRight: 1,  width: '200px' }}>
+                <FormControl sx={{ marginRight: 1, width: '200px' }}>
                     <TextField
                         required
                         type="number"
@@ -86,7 +120,7 @@ function ReportForm({ open, handleClick }) {
                         color='success'
                     />
                 </FormControl>
-                <Button fullWidth color='success'>Get Report</Button>
+                <Button fullWidth color='success' type="submit">Get Report</Button>
 
             </StyledBox>
         </>
