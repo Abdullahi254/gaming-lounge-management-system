@@ -1,16 +1,16 @@
 import React from 'react'
 import { StyledBox } from './SalesForm'
 import BackDrop from '../../BackDrop/BackDrop'
-import { Paper, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography } from "@mui/material"
+import { Paper, Table, TableHead, TableRow, TableCell, TableBody, TableContainer, Button, Typography, Box } from "@mui/material"
 import { styled } from '@mui/material/styles';
 import { useReactToPrint } from 'react-to-print'
-
+import { tableCellClasses } from "@mui/material/TableCell"
 export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     padding: 20,
     margin: 10,
     marginTop: 0,
     borderRadius: 10,
-    maxHeight: 780,
+    maxHeight: 810,
     [theme.breakpoints.only("xl")]: {
         width: "40%"
     },
@@ -21,21 +21,28 @@ export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
     [theme.breakpoints.down("md")]: {
         width: "100%"
     },
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
 }))
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.common.black,
 
+    [`&.${tableCellClasses.body}`]: {
+        fontSize: 14,
+    },
+}));
 
-function ReportPdf({ open, handleClick, sales, electBill, subFee, date }) {
+function ReportPdf({ open, handleClick, sales, electBill, subFee, date, other }) {
 
     const [week1, setWeek1] = React.useState([])
     const [week2, setWeek2] = React.useState([])
     const [week3, setWeek3] = React.useState([])
     const [week4, setWeek4] = React.useState([])
-    const [week5, setWeek5] = React.useState([])
     const [week1Sales, setWeek1Sales] = React.useState({})
     const [week2Sales, setWeek2Sales] = React.useState({})
     const [week3Sales, setWeek3Sales] = React.useState({})
     const [week4Sales, setWeek4Sales] = React.useState({})
-    const [week5Sales, setWeek5Sales] = React.useState({})
     const [gross, setGross] = React.useState()
     const [sub, setSub] = React.useState(0)
 
@@ -46,23 +53,18 @@ function ReportPdf({ open, handleClick, sales, electBill, subFee, date }) {
             return new Date(sale.date.toMillis()).getDate() > 0 && new Date(sale.date.toMillis()).getDate() <= 8
         })
         const w2 = sales.filter((sale) => {
-            return new Date(sale.date.toMillis()).getDate() > 8 && new Date(sale.date.toMillis()).getDate() <= 15
+            return new Date(sale.date.toMillis()).getDate() > 8 && new Date(sale.date.toMillis()).getDate() <= 16
         })
         const w3 = sales.filter((sale) => {
-            return new Date(sale.date.toMillis()).getDate() > 15 && new Date(sale.date.toMillis()).getDate() <= 22
+            return new Date(sale.date.toMillis()).getDate() > 16 && new Date(sale.date.toMillis()).getDate() <= 24
         })
         const w4 = sales.filter((sale) => {
-            return new Date(sale.date.toMillis()).getDate() > 22 && new Date(sale.date.toMillis()).getDate() <= 28
+            return new Date(sale.date.toMillis()).getDate() > 24 && new Date(sale.date.toMillis()).getDate() <= 31
         })
-        const w5 = sales.filter((sale) => {
-            return new Date(sale.date.toMillis()).getDate() > 28
-        })
-
         setWeek1(w1)
         setWeek2(w2)
         setWeek3(w3)
         setWeek4(w4)
-        setWeek5(w5)
 
     }, [sales])
 
@@ -130,24 +132,9 @@ function ReportPdf({ open, handleClick, sales, electBill, subFee, date }) {
             })
         }
     }, [week4])
-    React.useEffect(() => {
-        let week5Sales = 0
-        let week5Amount = 0
-        if (week5.length > 0) {
-            week5.forEach(sale => {
-                week5Sales += 1
-                week5Amount += sale.amount
-            })
-            setWeek5Sales({
-                name: "Week 5 (29th and above)",
-                sales: week5Sales,
-                amount: week5Amount
-            })
-        }
 
-    }, [week5])
     React.useEffect(() => {
-        const sales = [week1Sales, week2Sales, week3Sales, week4Sales, week5Sales].filter(obj => {
+        const sales = [week1Sales, week2Sales, week3Sales, week4Sales].filter(obj => {
             return obj.amount
         })
         let total = 0
@@ -155,7 +142,7 @@ function ReportPdf({ open, handleClick, sales, electBill, subFee, date }) {
             total += sale.amount
         })
         setGross(total)
-    }, [week1Sales, week2Sales, week3Sales, week4Sales, week5Sales])
+    }, [week1Sales, week2Sales, week3Sales, week4Sales])
 
     React.useEffect(() => {
         if (subFee) {
@@ -184,87 +171,107 @@ function ReportPdf({ open, handleClick, sales, electBill, subFee, date }) {
             >
                 <StyledTableContainer component={Paper}>
                     <div ref={contentRef} >
-                        <Typography variant='h6' align='center' sx={{ textDecoration: 'underline' }}>{date.month}'s {date.year} SALES REPORT</Typography>
+                        <Typography variant='h6' align='center' sx={{ textDecoration: 'underline', color: 'black' }}>{date.month}'s {date.year} SALES REPORT</Typography>
                         <Table aria-label="simple table">
                             <TableHead>
                                 <TableRow >
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>WEEKS</TableCell>
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>SALES</TableCell>
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</TableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>WEEKS</StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>SALES</StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {[week1Sales, week2Sales, week3Sales, week4Sales, week5Sales].map((week, index) => (
+                                {[week1Sales, week2Sales, week3Sales, week4Sales].map((week, index) => (
                                     <TableRow
                                         key={index}
                                     >
-                                        <TableCell align="right">{week.name}</TableCell>
-                                        <TableCell align="right">{week.sales}</TableCell>
-                                        <TableCell align="right">{week.amount === undefined ? '' : week.amount + ".00"}</TableCell>
+                                        <StyledTableCell align="right">{week.name}</StyledTableCell>
+                                        <StyledTableCell align="right">{week.sales}</StyledTableCell>
+                                        <StyledTableCell align="right">{week.amount === undefined ? '' : week.amount + ".00"}</StyledTableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell align="right"><b>Gross (Total)</b></TableCell>
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right"><b>{gross + ".00"}</b></TableCell>
+                                    <StyledTableCell align="right"><b>Gross (Total)</b></StyledTableCell>
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right"><b>{gross + ".00"}</b></StyledTableCell>
                                 </TableRow>
                             </TableBody>
 
                             <TableHead>
                                 <TableRow >
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>ELECTRICITY BILL</TableCell>
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}></TableCell>
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</TableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>ELECTRICITY BILL</StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}></StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 <TableRow
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right">-{electBill + ".00"}</TableCell>
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right">-{electBill + ".00"}</StyledTableCell>
                                 </TableRow>
                             </TableBody>
 
                             <TableHead>
                                 <TableRow >
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>SUBSCRIPTION FEE</TableCell>
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}></TableCell>
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</TableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>SUBSCRIPTION FEE</StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}></StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 <TableRow
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right">-{sub + ".00"}</TableCell>
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right">-{sub + ".00"}</StyledTableCell>
                                 </TableRow>
                             </TableBody>
 
                             <TableHead>
                                 <TableRow >
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>NET (TOTAL)</TableCell>
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}></TableCell>
-                                    <TableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</TableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>OTHER EXPENSES</StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}></StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 <TableRow
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                 >
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right"></TableCell>
-                                    <TableCell align="right">{(gross - electBill - sub) + ".00"}</TableCell>
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right">-{other + ".00"}</StyledTableCell>
+                                </TableRow>
+                            </TableBody>
+
+                            <TableHead>
+                                <TableRow >
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>NET (TOTAL)</StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}></StyledTableCell>
+                                    <StyledTableCell align="right" sx={{ fontWeight: 'bold' }}>Amount&nbsp;(KSH)</StyledTableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right"></StyledTableCell>
+                                    <StyledTableCell align="right">{(gross - electBill - sub - other) + ".00"}</StyledTableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
                     </div>
-                    <Button fullWidth color='success' onClick={handlePrint}>PRINT</Button>
+                    <Box component="div" sx={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
+                        <Button color='error' onClick={handleClick}>CLOSE</Button>
+                        <Button color='success' onClick={handlePrint}>PRINT</Button>
+                    </Box>
                 </StyledTableContainer>
             </StyledBox>
         </>

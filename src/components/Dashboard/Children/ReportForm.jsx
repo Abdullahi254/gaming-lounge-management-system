@@ -19,13 +19,14 @@ function ReportForm({ open, handleClick, handleForm, loading, error, closeAlert 
     const [year, setYear] = React.useState(new Date().getFullYear())
     const [yearList, setYearList] = React.useState([])
     const electBillRef = React.useRef()
+    const otherRef = React.useRef()
 
     const handleMonthChange = (e) => {
         setMonth(e.target.value)
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        handleForm((month-1), year, electBillRef.current.value)
+        handleForm((month-1), year, electBillRef.current.value, otherRef.current.value)
     }
     const handleYearChange = (e) => {
         setYear(e.target.value)
@@ -75,7 +76,7 @@ function ReportForm({ open, handleClick, handleForm, loading, error, closeAlert 
                         {error}
                     </Alert>
                 }
-                <FormControl sx={{ marginRight: 1, width: '100px' }}>
+                <FormControl sx={{ marginRight: 1, width: '100px', marginBottom:2 }}>
                     <InputLabel id="month">Select Month</InputLabel>
                     <Select
                         labelId="month"
@@ -91,7 +92,7 @@ function ReportForm({ open, handleClick, handleForm, loading, error, closeAlert 
 
                     </Select>
                 </FormControl>
-                <FormControl sx={{ marginRight: 1, width: '100px' }}>
+                <FormControl sx={{ marginRight: 1, width: '100px', marginBottom:2 }}>
                     <InputLabel id="Year">Select Year</InputLabel>
                     <Select
                         labelId="year"
@@ -106,7 +107,7 @@ function ReportForm({ open, handleClick, handleForm, loading, error, closeAlert 
                         }
                     </Select>
                 </FormControl>
-                <FormControl sx={{ marginRight: 1, width: '200px' }}>
+                <FormControl sx={{ marginRight: 1, width: '200px', marginBottom:2 }}>
                     <TextField
                         required
                         type="number"
@@ -117,6 +118,19 @@ function ReportForm({ open, handleClick, handleForm, loading, error, closeAlert 
                             startAdornment: <InputAdornment position="start">KSH</InputAdornment>
                         }}
                         inputRef={electBillRef}
+                        color='success'
+                    />
+                </FormControl>
+                <FormControl sx={{ marginRight: 1, width: '200px', marginBottom:2 }}>
+                    <TextField
+                        type="number"
+                        id="outlined-RefNumber2"
+                        label="Other Expenses"
+                        sx={{ marginRight: 1, }}
+                        InputProps={{
+                            startAdornment: <InputAdornment position="start">KSH</InputAdornment>
+                        }}
+                        inputRef={otherRef}
                         color='success'
                     />
                 </FormControl>

@@ -55,6 +55,7 @@ function ReportCard() {
     const [showReportCard, setShowReportCard] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
     const [electBill, setElectBill] = React.useState()
+    const [otherExp, setOtherExp] = React.useState(0)
     const [error, setError] = React.useState()
     const [sales, setSales] = React.useState()
     const [sub, setSub] = React.useState()
@@ -62,18 +63,20 @@ function ReportCard() {
     const handlePopup = () => {
         setShowForm(true)
     }
-    const handleReportForm = async (month, year, bill) => {
+    const handleReportForm = async (month, year, bill, other) => {
+        setOtherExp(0)
         setSales()
         setSub()
         setLoading(true)
         setElectBill(bill)
+        if (other) setOtherExp(other)
         await fetchSubscription(month, year)
         fetchMonthSales(month, year)
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const monthName = months[month];
         setMonthYear({
-            month:monthName,
-            year:year
+            month: monthName,
+            year: year
         })
     }
     const fetchMonthSales = (month, year) => {
@@ -116,6 +119,7 @@ function ReportCard() {
         <>
             {
                 (showReportCard && !loading) && <ReportPdf
+                    other={otherExp}
                     date={monthYear}
                     subFee={sub}
                     sales={sales}
@@ -131,7 +135,7 @@ function ReportCard() {
                 loading={loading}
                 open={showForm}
                 handleClick={() => setShowForm(false)}
-                handleForm={(month, year, bill) => handleReportForm(month, year, bill)}
+                handleForm={(month, year, bill, other) => handleReportForm(month, year, bill, other)}
             />
             <StyledBox>
                 <StyledDiv>
