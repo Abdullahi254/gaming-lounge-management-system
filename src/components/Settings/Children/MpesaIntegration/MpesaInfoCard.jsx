@@ -38,22 +38,16 @@ function MpesaInfoCard() {
                 You need the following:
             </Typography>
             <Typography gutterBottom>
-                1. Copy of Business Certificate of Registration or Business Permit.
+                1. A paybill number linked with a bank account.
             </Typography>
             <Typography gutterBottom>
-                2. Copy of identification documents i.e. Document ID (Passport/Alien ID/Military ID).
-            </Typography>
-            <Typography gutterBottom>
-                3. copy of bank letter with your bank detail.
-            </Typography>
-            <Typography gutterBottom >
-                4. Individual KRA PIN Certificate.
+                2. Or a till number linked with a bank account.
             </Typography>
             <Typography gutterBottom sx={{ marginBottom: 3 }}>
-                5. Contact us once you have all your documents.
+                3. Contact us once you have acquired above.
             </Typography>
             <Typography gutterBottom sx={{ fontStyle: 'italic' }} >
-                NB: If you have a Till number linked with Bank, you do not need the documents above.
+                NB: Only till number or paybill that is linked with bank can be integrated.
             </Typography>
         </StyledBox>
     )
