@@ -47,6 +47,9 @@ function MpesaComp({ mpesaPrompt, mpesaRef, handleChange, error, checkoutId, loa
             <Typography variant="subtitle1" align='center' sx={{ marginBottom: 4 }}>
                 {info}
             </Typography>
+            <Typography variant="subtitle2" align='center' gutterBottom sx={{color:(theme)=>theme.palette.error.light}}>
+                {loading && "Waiting....."}
+            </Typography>
             {success && <Alert severity="success" sx={{ justifyContent: 'center', width: '100%', marginBottom: 3 }} onClose={closeAlertHandler}>{success}</Alert>}
             {transactionError && <Alert severity="error" sx={{ justifyContent: 'center', width: '100%', marginBottom: 3 }} onClose={close}>{transactionError}</Alert>}
             <TextField
